@@ -1,0 +1,19 @@
+.buttonsWrapper {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+
+  button:first-child {
+    margin-right: 15px;
+  }
+}
+.formControl {
+  padding: 10px 0;
+  width: 100%;
+  margin-bottom: 20px !important;
+
+  p {
+    position: absolute;
+    bottom: -18px;
+  }
+}

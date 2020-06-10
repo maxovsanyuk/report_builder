@@ -1,0 +1,24 @@
+.formControl {
+  padding: 10px 0;
+  width: 50%;
+}
+.panel {
+  padding: 10px;
+  margin-bottom: 10px;
+
+  .logicalOperators {
+    margin-bottom: 10px;
+
+    .logicalButton {
+      margin-right: 10px;
+    }
+  }
+  .entity {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .filters {
+    padding: 20px 10px 0;
+  }
+}

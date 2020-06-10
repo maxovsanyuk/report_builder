@@ -1,0 +1,13 @@
+.parameter {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  align-items: center;
+  margin-bottom: 10px;
+
+  p {
+    margin: 0;
+  }
+}
