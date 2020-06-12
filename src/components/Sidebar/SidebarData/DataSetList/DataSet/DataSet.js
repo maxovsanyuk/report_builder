@@ -45,7 +45,7 @@ export default class SidebarParametersList extends Component {
     return (
       <div className={classes.dataSet}>
         <div className={classes.row}>
-          <p>{this.props.dataSet.name}</p>
+          <h6>{this.props.dataSet.name}</h6>
           <IconButton ref={this.buttonRef} onClick={this.openMenu}>
             <MoreVertIcon />
           </IconButton>

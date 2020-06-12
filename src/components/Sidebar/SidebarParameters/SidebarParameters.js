@@ -45,6 +45,11 @@ export default class SidebarParameters extends Component {
         ]
       },
       {
+        name: 'date',
+        type: 'dateTime',
+        label: 'Date'
+      },
+      {
         name: 'dataType',
         type: 'optionSet',
         label: 'Data Type',

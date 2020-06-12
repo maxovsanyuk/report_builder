@@ -12,6 +12,7 @@ import StorageIcon from '@material-ui/icons/Storage';
 
 import cls from 'react-style-classes';
 import classes from './Sidebar.module.scss'
+import Backdrop from "./Backdrop/Backdrop";
 
 export default class Sidebar extends Component {
 
@@ -52,6 +53,12 @@ export default class Sidebar extends Component {
     this.setState({ buttons: newButtons, drawerIsOpen: drawerIsOpen });
   };
 
+  closeDrawer = () => {
+    const newButtons = [...this.state.buttons];
+    newButtons.forEach(btn => btn.active = false);
+    this.setState({ buttons: newButtons, drawerIsOpen: false });
+  };
+
   render() {
     const buttons = this.state.buttons.map(button => {
       let icon = null;
@@ -84,6 +91,7 @@ export default class Sidebar extends Component {
     return (
       <div className={classes.Sidebar}>
         {buttons}
+        <Backdrop open={this.state.drawerIsOpen} onClick={this.closeDrawer} />
         <Drawer open={this.state.drawerIsOpen}>
           {drawerComponent}
         </Drawer>

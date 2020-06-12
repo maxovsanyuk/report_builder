@@ -14,6 +14,9 @@ import Tab from '@material-ui/core/Tab';
 import InputLabel from '@material-ui/core/InputLabel';
 import TabPanel from './TabPanel/TabPanel';
 import FormHelperText from "@material-ui/core/FormHelperText";
+import { DateTimePicker} from '@material-ui/pickers'
+import moment from 'moment';
+
 
 
 
@@ -42,6 +45,10 @@ export default class Form extends Component {
         }
         if (field.type === 'checkbox') {
           form[field.name] = field.checked;
+          return;
+        }
+        if (field.type === 'dateTime') {
+          form[field.name] = field.defaultValue ? field.defaultValue : moment().utc().format();
           return;
         }
         if (field.type === 'optionSet') {
@@ -74,6 +81,9 @@ export default class Form extends Component {
       case 'text':
         value = event.target.value;
         break;
+      case 'dateTime':
+        value = moment(event.date).utc().format();
+        break;
       case 'optionSet':
         value = field.options.find(option => option.value === event.target.value);
         break;
@@ -100,26 +110,28 @@ export default class Form extends Component {
     let errors = {...this.state.errors};
 
     this.props.formFields.filter(field => !field.hidden && field.validation?.length).forEach(field => {
+      const validatorsValue = [];
       field.validation.forEach(validator => {
         switch (validator.name) {
           case 'required':
             if (field.type === 'text') {
-              errors[field.name] = !this.state.form[field.name] ? 'required' : false;
+              validatorsValue.push(!this.state.form[field.name] ? 'required' : false);
             }
             if (field.type === 'optionSet') {
-              errors[field.name] = !this.state.form[field.name].value ? 'required' : false;
+              validatorsValue.push(!this.state.form[field.name].value ? 'required' : false);
             }
             break;
           case 'minLength':
-            errors[field.name] = this.state.form[field.name].length < validator.value ? 'minLength' : false;
+            validatorsValue.push(this.state.form[field.name].length < validator.value ? 'minLength' : false);
             break;
           case 'maxLength':
-            errors[field.name] = this.state.form[field.name].length > validator.value ? 'maxLength' : false;
+            validatorsValue.push(this.state.form[field.name].length > validator.value ? 'maxLength' : false);
             break;
           default:
             break;
         }
       });
+      errors[field.name] = validatorsValue.some(value => value) ? validatorsValue.find(value => value) : false;
     });
 
     const isFormValid = Object.values(errors).every(value => !value);
@@ -184,6 +196,19 @@ export default class Form extends Component {
                     key={field.name}
                     control={<Checkbox onChange={(event) => this.fieldChanged(event, field)} checked={this.state.form[field.name]} name={field.name} />}
                     label={field.label}
+                  />
+                )
+              }
+              if (field.type === 'dateTime' && !field.hidden) {
+                return (
+                  <DateTimePicker
+                    key={field.name}
+                    format={'DD MMM YYYY HH:mm'}
+                    ampm={false}
+                    label={field.label}
+                    disableFuture
+                    value={this.state.form[field.name]}
+                    onChange={(date) => this.fieldChanged({date}, field)}
                   />
                 )
               }
