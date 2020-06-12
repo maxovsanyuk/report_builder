@@ -8,13 +8,15 @@ import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
+import Alert from "../../../../Alert/Alert";
 
 export default class SidebarParametersList extends Component {
   constructor(props) {
     super(props);
     this.buttonRef = React.createRef();
     this.state = {
-      openMenu: false
+      openMenu: false,
+      openDeleteDialog: false
     };
   }
 
@@ -29,8 +31,14 @@ export default class SidebarParametersList extends Component {
     this.props.edit(this.props.dataSet.id);
   };
   deleteParameter = () => {
-    this.setState({openMenu: false});
+    this.setState({openMenu: false, openDeleteDialog: true});
+  };
+  onAgree = () => {
+    this.setState({openDeleteDialog: false});
     this.props.delete(this.props.dataSet.id);
+  };
+  onDisagree = () => {
+    this.setState({openDeleteDialog: false});
   };
 
   render () {
@@ -60,6 +68,7 @@ export default class SidebarParametersList extends Component {
             </TreeItem>)}
           </TreeView>
         </div>
+        <Alert open={this.state.openDeleteDialog} onAgree={this.onAgree} onDisagree={this.onDisagree} text={`Are you sure you want to delete '${this.props.dataSet.name}'?`} title={'Delete'} />
       </div>
     );
   }

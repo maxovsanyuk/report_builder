@@ -1,19 +1,18 @@
 import React, {Component, Fragment} from 'react';
 
-import {getEntitiesAsync} from "../../../../services/get-entities";
-import {getFieldsAsync} from "../../../../services/get-fields";
+import {getEntitiesAsync} from '../../../../services/get-entities';
+import {getFieldsAsync} from '../../../../services/get-fields';
 import cloneDeep from 'lodash/cloneDeep';
-import Entity from "./Entity/Entity";
+import Entity from './Entity/Entity';
 import {fieldTypes} from './fieldTypes';
-import MenuItem from "@material-ui/core/MenuItem";
 import classes from './AdvancedFinder.module.scss';
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import Form from "../../../Form/Form";
-import TextField from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import Form from '../../../Form/Form';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
 
 
 export default class AdvancedFinder extends Component {
@@ -34,7 +33,7 @@ export default class AdvancedFinder extends Component {
       openChooseFieldsDialog: false,
       chooseFieldsEntityId: null,
       dialogFormFields: [],
-      name: 'New data set',
+      name: 'NewDataSet',
       id: new Date().getTime(),
       mode: 'save',
       errors: {},
@@ -92,7 +91,8 @@ export default class AdvancedFinder extends Component {
     let errors = {...this.state.errors};
 
     const isNameAlreadyExist = this.props.dataSets.filter(dataSet => dataSet.id !== this.state.id).some(dataSet => dataSet.name === this.state.name);
-    errors = {...errors, name: isNameAlreadyExist ? 'Name already exists' : ''};
+    const isEmptyName = !this.state.name;
+    errors = {...errors, name: isEmptyName ? 'Name is required' : isNameAlreadyExist ? 'Name already exists' : ''};
 
     const isEmptyEntityValue = this.state.entities.some(entity => !entity.value.value);
     errors = {...errors, entity: isEmptyEntityValue ? 'empty' : ''};
@@ -417,7 +417,7 @@ export default class AdvancedFinder extends Component {
           <Button onClick={this.buildFetch} disabled={!this.state.valid} variant="contained" color="primary">
             Save
           </Button>
-          <Button onClick={this.props.cancel} color="secondary">Cancel</Button>
+          <Button onClick={this.props.cancel}>Cancel</Button>
         </div>
         <Dialog open={this.state.openChooseFieldsDialog} onClose={this.closeChooseFieldsDialog} scroll={'body'}>
           <DialogTitle id="form-dialog-title">Choose fields</DialogTitle>

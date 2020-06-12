@@ -22,12 +22,27 @@ export default class SidebarParameters extends Component {
         type: 'text',
         label: 'Name',
         defaultValue: 'ReportParameter1',
+        validation: [
+          {
+            name: 'required'
+          },
+          {
+            name: 'minLength',
+            value: 2
+          }
+        ]
       },
       {
         name: 'prompt',
         type: 'text',
         label: 'Prompt',
         defaultValue: 'ReportParameter1',
+        validation: [
+          {
+            name: 'maxLength',
+            value: 16
+          }
+        ]
       },
       {
         name: 'dataType',
@@ -55,7 +70,12 @@ export default class SidebarParameters extends Component {
             label: 'Float'
           }
         ],
-        defaultValue: 'string',
+        defaultValue: {value: 'string', label: 'String'},
+        validation: [
+          {
+            name: 'required'
+          }
+        ]
       },
       {
         name: 'isAllowBlankValue',
@@ -93,7 +113,7 @@ export default class SidebarParameters extends Component {
             label: 'Internal'
           }
         ],
-        defaultValue: 'visible',
+        defaultValue: {value: 'visible', label: 'Visible'},
       },
       {
         name: 'parameterAssignValues',

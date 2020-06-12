@@ -13,6 +13,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import InputLabel from '@material-ui/core/InputLabel';
 import TabPanel from './TabPanel/TabPanel';
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 
 
@@ -43,6 +44,10 @@ export default class Form extends Component {
           form[field.name] = field.checked;
           return;
         }
+        if (field.type === 'optionSet') {
+          form[field.name] = field.defaultValue ? field.defaultValue : {value: '', label: ''};
+          return;
+        }
         form[field.name] = field.defaultValue ? field.defaultValue : '';
       });
     }
@@ -51,40 +56,74 @@ export default class Form extends Component {
 
   state = {
     form: this.getForm(this.props.formFields),
-    mode: this.props.formData ? 'edit' : 'save'
+    mode: this.props.formData ? 'edit' : 'save',
+    errors: {},
+    isFormValid: false
   };
 
+  componentDidMount() {
+    this.validate();
+  }
+
   fieldChanged = (event, field) => {
+    let value = null;
     switch (field.type) {
       case 'checkbox':
-        this.setState((prevState) => {
-          return {
-            form: {
-              ...prevState.form,
-              [field.name]: !prevState.form[field.name]
-            }
-          }
-        });
+        value = !this.state.form[field.name];
         break;
       case 'text':
+        value = event.target.value;
+        break;
       case 'optionSet':
-        event.persist();
-        this.setState((prevState) => {
-          return {
-            form: {
-              ...prevState.form,
-              [field.name]: event.target.value
-            }
-          }
-        }, () => {
-          if (field.valueChanged) {
-            this.props.valueChanged(field.name, this.state.form[field.name]);
-          }
-        });
+        value = field.options.find(option => option.value === event.target.value);
         break;
       default:
         return;
     }
+
+    this.setState((prevState) => {
+      return {
+        form: {
+          ...prevState.form,
+          [field.name]: value
+        }
+      }
+    }, () => {
+      this.validate();
+      if (field.valueChanged) {
+        this.props.valueChanged(field.name, this.state.form[field.name]);
+      }
+    });
+  };
+
+  validate = () => {
+    let errors = {...this.state.errors};
+
+    this.props.formFields.filter(field => !field.hidden && field.validation?.length).forEach(field => {
+      field.validation.forEach(validator => {
+        switch (validator.name) {
+          case 'required':
+            if (field.type === 'text') {
+              errors[field.name] = !this.state.form[field.name] ? 'required' : false;
+            }
+            if (field.type === 'optionSet') {
+              errors[field.name] = !this.state.form[field.name].value ? 'required' : false;
+            }
+            break;
+          case 'minLength':
+            errors[field.name] = this.state.form[field.name].length < validator.value ? 'minLength' : false;
+            break;
+          case 'maxLength':
+            errors[field.name] = this.state.form[field.name].length > validator.value ? 'maxLength' : false;
+            break;
+          default:
+            break;
+        }
+      });
+    });
+
+    const isFormValid = Object.values(errors).every(value => !value);
+    this.setState({errors, isFormValid: isFormValid});
   };
 
   tabsHandleChange = (name, newValue) => {
@@ -104,20 +143,38 @@ export default class Form extends Component {
         <form className={classes.form}>
           {
             this.props.formFields.map(field => {
+              let helperText = '';
+              if (this.state.errors[field.name]) {
+                switch (this.state.errors[field.name]) {
+                  case 'required':
+                    helperText = `${field.label} is required`;
+                    break;
+                  case 'minLength':
+                    helperText = `${field.label} is too short`;
+                    break;
+                  case 'maxLength':
+                    helperText = `${field.label} is too long`;
+                    break;
+                  default:
+                    break;
+                }
+              }
+
               if (field.type === 'text' && !field.hidden) {
                 return (
                   <FormControl key={field.name} className={classes.formControl}>
-                    <TextField name={field.name} onChange={(event) => this.fieldChanged(event, field)} label={field.label} value={this.state.form[field.name]} />
+                    <TextField name={field.name} error={!!this.state.errors[field.name]} onChange={(event) => this.fieldChanged(event, field)} helperText={helperText} label={field.label} value={this.state.form[field.name]} />
                   </FormControl>
                 )
               }
               if (field.type === 'optionSet' && !field.hidden) {
                 return (
-                  <FormControl key={field.name} className={classes.formControl}>
+                  <FormControl key={field.name} error={!!this.state.errors[field.name]} className={[classes.formControl, classes.selectFormControl].join(' ')}>
                     <InputLabel>{field.label}</InputLabel>
-                    <Select value={this.state.form[field.name]} multiple={field.multiple} onChange={(event) => this.fieldChanged(event, field)}>
+                    <Select value={this.state.form[field.name].value} multiple={field.multiple} onChange={(event) => this.fieldChanged(event, field)}>
                       {field.options.map(option => <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>)}
                     </Select>
+                    <FormHelperText>{helperText}</FormHelperText>
                   </FormControl>
                 )
               }
@@ -210,10 +267,10 @@ export default class Form extends Component {
           }
         </form>
         <div className={classes.buttonsWrapper}>
-          <Button onClick={() => this.props.save(this.state.form, this.state.mode)} variant="contained" color="primary">
+          <Button onClick={() => this.props.save(this.state.form, this.state.mode)} disabled={!this.state.isFormValid} variant="contained" color="primary">
             Save
           </Button>
-          <Button onClick={this.props.cancel} color="secondary">Cancel</Button>
+          <Button onClick={this.props.cancel}>Cancel</Button>
         </div>
       </Fragment>
     )
