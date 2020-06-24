@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import SidebarParameters from './SidebarParameters';
-import {setReportParameters} from '../../../actions/app_action';
+import {setReportParameters} from '../../../redux/actions/app_action';
 
 const mapStateToProps = state => ({
   parameters: state.app.parameters,

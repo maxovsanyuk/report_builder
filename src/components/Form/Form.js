@@ -242,7 +242,7 @@ export default class Form extends Component {
                         <div style={{minHeight: '250px'}}>
                           <h4>Add the available values for the parameters:</h4>
                           <button>Add</button>
-                          <div style={{border: '1px solid #000', height: '200px'}}></div>
+                          <div style={{border: '1px solid #000', height: '200px'}}/>
                         </div>
                       </TabPanel>
                       <TabPanel value={this.state.form.availableSecondValueType} index={2}>
