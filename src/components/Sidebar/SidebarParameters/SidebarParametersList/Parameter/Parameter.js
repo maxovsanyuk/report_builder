@@ -4,7 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import Alert from "../../../../Alert/Alert";
+import Alert from "../../../../Alerts/Alert";
 
 export default class SidebarParametersList extends Component {
   constructor(props) {

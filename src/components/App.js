@@ -1,25 +1,30 @@
 import React from "react";
-import "../App.scss";
-import { useSelector, useDispatch } from "react-redux";
-
 import Workspace from "./Workspace/Workspace";
 import Sidebar from "./Sidebar/Sidebar";
-import Toolbox from "./Toolbox/Toolbox";
+import WidgetsToolBar from "./WidgetsToolBar/WidgetsToolBar";
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import Loader from "./views/Loader";
+import styled from "styled-components";
+import SettingsToolBar from "./SettingsToolBar/SettingsToolBar";
+
+const MainCont = styled.div`
+  display: flex;
+  height: 100vh;
+  position: relative;
+`;
 
 const App = () => {
-  const state = useSelector((state) => state.app);
-  const { isLoading } = state;
-
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
-      <div className="App">
-        {isLoading && <div id="app-loading" />}
-        <Toolbox />
+      <MainCont>
+        <SettingsToolBar />
+        <WidgetsToolBar />
         <Workspace />
         <Sidebar />
-      </div>
+      </MainCont>
+
+      <Loader />
     </MuiPickersUtilsProvider>
   );
 };

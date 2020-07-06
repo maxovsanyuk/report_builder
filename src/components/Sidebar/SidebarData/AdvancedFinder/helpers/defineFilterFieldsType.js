@@ -1,8 +1,10 @@
-export function getFieldTypes(type) {
+export function defineFilterFieldsType(type) {
   switch (type) {
     case "number":
       return {
-        type: "number",
+        valueField: {
+          type: "number",
+        },
         operatorsField: [
           {
             value: "eq",
@@ -17,13 +19,10 @@ export function getFieldTypes(type) {
             label: "Smaller",
           },
         ],
-        valueField: {
-          type: "number",
-        },
       };
+
     case "boolean":
       return {
-        type: "boolean",
         operatorsField: [
           {
             value: "eq",
@@ -44,6 +43,7 @@ export function getFieldTypes(type) {
           ],
         },
       };
+
     case "date":
       return {
         type: "date",
@@ -71,7 +71,7 @@ export function getFieldTypes(type) {
           ],
         },
       };
-    default: {
-    }
+    default:
+      return {};
   }
 }

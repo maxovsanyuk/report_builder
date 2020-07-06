@@ -1,101 +1,109 @@
-import React, {Component} from 'react';
-import Drawer from './Drawer/Drawer';
-import SidebarSettings from './SidebarSettings/SidebarSettings';
-import SidebarData from './SidebarData/SidebarData-redux';
-import SidebarParameters from './SidebarParameters/SidebarParameters-redux';
-import SidebarImageManager from './SidebarImageManager/SidebarImageManager';
-import IconButton from '@material-ui/core/IconButton';
-import SettingsIcon from '@material-ui/icons/Settings';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import WallpaperIcon from '@material-ui/icons/Wallpaper';
-import StorageIcon from '@material-ui/icons/Storage';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { showAlert, sideBarHandleOpen } from "../../redux/actions/app_action";
 
-import cls from 'react-style-classes';
-import classes from './Sidebar.module.scss'
-import Backdrop from "./Backdrop/Backdrop";
+import { DefineIconComp, DefineActiveComp } from "./views/index";
+import IconButton from "@material-ui/core/IconButton";
 
-export default class Sidebar extends Component {
+import styled from "styled-components";
+import theme from "../../themes/index";
 
-  state = {
-    buttons: [
-      {
-        name: 'properties',
-        active: false,
-        component: <SidebarSettings/>
-      },
-      {
-        name: 'data',
-        active: false,
-        component: <SidebarData/>
-      },
-      {
-        name: 'parameters',
-        active: false,
-        component: <SidebarParameters/>
-      },
-      {
-        name: 'image',
-        active: false,
-        component: <SidebarImageManager/>
-      }
-    ],
-    drawerIsOpen: false
-  };
+const SideBarActiveComp = styled.div`
+  height: calc(100% - 60px);
+  min-width: 550px;
+  max-width: 800px;
+  position: fixed;
+  top: 60px;
+  padding: 20px;
+  z-index: 5;
+  background: ${({ theme }) => theme?.primary?.dark};
+  animation: appearingBar 0.4s ease-in-out 0s 1 normal forwards;
+  border-left: ${({ theme }) => `1px solid ${theme?.border?.color}`};
 
-  toggleDrawer = (name) => {
-    const newButtons = [...this.state.buttons];
-    const clickedButton = newButtons.find(btn => btn.name === name);
-    const clickedButtonIsActive = clickedButton.active;
-    newButtons.forEach(btn => btn.active = false);
-    clickedButton.active = !clickedButtonIsActive;
-    const drawerIsOpen = newButtons.some(btn => btn.active === true);
-
-    this.setState({ buttons: newButtons, drawerIsOpen: drawerIsOpen });
-  };
-
-  closeDrawer = () => {
-    const newButtons = [...this.state.buttons];
-    newButtons.forEach(btn => btn.active = false);
-    this.setState({ buttons: newButtons, drawerIsOpen: false });
-  };
-
-  render() {
-    const buttons = this.state.buttons.map(button => {
-      let icon = null;
-      switch (button.name) {
-        case 'properties':
-          icon = <SettingsIcon/>;
-          break;
-        case 'data':
-          icon = <StorageIcon/>;
-          break;
-        case 'parameters':
-          icon = <FilterListIcon/>;
-          break;
-        case 'image':
-          icon = <WallpaperIcon/>;
-          break;
-        default:
-          break;
-      }
-      return <IconButton className={button.active ? cls(classes.btn, classes.activeBtn) : classes.btn}
-                         key={button.name}
-                         onClick={() => this.toggleDrawer(button.name)}>
-        {icon}
-      </IconButton>
-    });
-
-    const activeButton = this.state.buttons.find(button => button.active);
-    const drawerComponent = activeButton ? activeButton.component : null;
-
-    return (
-      <div className={classes.Sidebar}>
-        {buttons}
-        <Backdrop open={this.state.drawerIsOpen} onClick={this.closeDrawer} />
-        <Drawer open={this.state.drawerIsOpen}>
-          {drawerComponent}
-        </Drawer>
-      </div>
-    );
+  @keyframes appearingBar {
+    0% {
+      right: -500px;
+    }
+    100% {
+      right: 60px;
+    }
   }
-}
+`;
+
+const SidebarComp = styled.div`
+  display: flex;
+  height: calc(100vh - 60px);
+  flex-direction: column;
+  padding: 5px;
+  z-index: 10;
+  position: fixed;
+  right: 0;
+  top: 60px;
+  background: ${({ theme }) => theme?.primary?.bg};
+  border-left: ${({ theme }) => `1px solid ${theme?.border?.color}`};
+`;
+
+const sideBarBtns = [
+  {
+    name: "properties",
+  },
+  {
+    name: "data",
+  },
+  {
+    name: "parameters",
+  },
+  {
+    name: "image",
+  },
+];
+
+const Sidebar = () => {
+  const [activeTab, setActiveTab] = useState("");
+  const state = useSelector((state) => state.app);
+  const { isOpenSideBar, isSavedNewDataSetData } = state;
+  const dispatch = useDispatch();
+
+  return (
+    <>
+      <SidebarComp theme={theme}>
+        {sideBarBtns.map(({ name }) => {
+          return (
+            <div
+              key={name}
+              onClick={() => {
+                !isSavedNewDataSetData
+                  ? dispatch(showAlert(true))
+                  : dispatch(
+                      sideBarHandleOpen(
+                        name === activeTab ? !isOpenSideBar : true
+                      )
+                    );
+                isSavedNewDataSetData && setActiveTab(name);
+              }}
+            >
+              <IconButton
+                style={{
+                  margin: "5px 0",
+                  background:
+                    name === activeTab && isOpenSideBar && "rgba(0, 0, 0, 0.2)",
+                }}
+                key={name}
+              >
+                <DefineIconComp name={name} />
+              </IconButton>
+            </div>
+          );
+        })}
+      </SidebarComp>
+
+      {isOpenSideBar && (
+        <SideBarActiveComp theme={theme}>
+          <DefineActiveComp name={activeTab} />
+        </SideBarActiveComp>
+      )}
+    </>
+  );
+};
+
+export default Sidebar;

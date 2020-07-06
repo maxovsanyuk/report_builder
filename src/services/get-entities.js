@@ -1,6 +1,4 @@
-const odataPrefix = "@odata";
-
-export function getEntitiesAsync() {
+export function getDataSetEntities() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve({
@@ -11,13 +9,13 @@ export function getEntitiesAsync() {
             label: "Organizations",
           },
           {
-            name: "ActivityMimeAttachment",
-            logicalName: "activitymimeattachment",
+            name: "Activity_Mime_Attachment",
+            logicalName: "activity_mime_attachment",
             label: "Attachments",
           },
         ],
         totalRecord: 2,
       });
-    }, 1000);
+    }, 500);
   });
 }

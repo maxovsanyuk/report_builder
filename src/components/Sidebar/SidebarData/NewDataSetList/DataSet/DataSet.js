@@ -8,7 +8,7 @@ import TreeView from '@material-ui/lab/TreeView';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TreeItem from '@material-ui/lab/TreeItem';
-import Alert from "../../../../Alert/Alert";
+import Alert from "../../../../Alerts/Alert";
 
 export default class SidebarParametersList extends Component {
   constructor(props) {

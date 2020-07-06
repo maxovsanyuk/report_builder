@@ -1,9 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import classes from './SidebarImageManager.module.scss'
+import { AnimatedComponent } from "../../views/AnimatedComponent";
 
 export default function SidebarImageManager(props) {
   return (
-    <h2>Image Manager</h2>
-  )
+    <AnimatedComponent>
+      <h2>Image Manager</h2>
+    </AnimatedComponent>
+  );
 }

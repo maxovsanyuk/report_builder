@@ -80,12 +80,12 @@ export default class AdvancedFinder extends Component {
     return data.items;
   };
 
-  componentDidMount() {
-    this.state.entities.forEach(entity => {
-      this.loadEntityOptions(entity.id);
-    });
-    this.validate();
-  }
+  // componentDidMount() {
+  //   this.state.entities.forEach(entity => {
+  //     this.loadEntityOptions(entity.id);
+  //   });
+  //   this.validate();
+  // }
 
   validate = () => {
     let errors = {...this.state.errors};
@@ -401,33 +401,54 @@ export default class AdvancedFinder extends Component {
   render() {
     return (
       <Fragment>
-        <FormControl className={classes.formControl}>
-          <TextField name="Name" error={!!this.state.errors.name} helperText={this.state.errors.name} onChange={(event) => this.fieldChanged(event)} label="Name" value={this.state.name} />
-        </FormControl>
-        {this.state.entities.map(entity => <Entity
-          key={entity.id}
-          combineFilters={this.combineFilters}
-          entityChanged={this.entityChanged}
-          filterChanged={this.filterChanged}
-          openChooseFieldsDialog={this.openChooseFieldsDialog}
-          add={this.addFilter}
-          delete={this.deleteFilter}
-          entity={entity} />)}
-        <div className={classes.buttonsWrapper}>
-          <Button onClick={this.buildFetch} disabled={!this.state.valid} variant="contained" color="primary">
-            Save
-          </Button>
-          <Button onClick={this.props.cancel}>Cancel</Button>
-        </div>
-        <Dialog open={this.state.openChooseFieldsDialog} onClose={this.closeChooseFieldsDialog} scroll={'body'}>
-          <DialogTitle id="form-dialog-title">Choose fields</DialogTitle>
-          <DialogContent>
-            <Form formData={null}
-                  formFields={this.state.dialogFormFields}
-                  save={this.saveChooseFieldsDialog}
-                  cancel={this.closeChooseFieldsDialog}/>
-          </DialogContent>
-        </Dialog>
+        {/*<FormControl className={classes.formControl}>*/}
+        {/*  <TextField*/}
+        {/*    name="Name"*/}
+        {/*    error={!!this.state.errors.name}*/}
+        {/*    helperText={this.state.errors.name}*/}
+        {/*    onChange={(event) => this.fieldChanged(event)}*/}
+        {/*    label="Name"*/}
+        {/*    value={this.state.name}*/}
+        {/*  />*/}
+        {/*</FormControl>*/}
+        {this.state.entities.map((entity) => (
+          <Entity
+            key={entity.id}
+            combineFilters={this.combineFilters}
+            entityChanged={this.entityChanged}
+            filterChanged={this.filterChanged}
+            openChooseFieldsDialog={this.openChooseFieldsDialog}
+            add={this.addFilter}
+            delete={this.deleteFilter}
+            entity={entity}
+          />
+        ))}
+        {/*<div className={classes.buttonsWrapper}>*/}
+        {/*  <Button*/}
+        {/*    onClick={this.buildFetch}*/}
+        {/*    disabled={!this.state.valid}*/}
+        {/*    variant="contained"*/}
+        {/*    color="primary"*/}
+        {/*  >*/}
+        {/*    Save*/}
+        {/*  </Button>*/}
+        {/*  <Button onClick={this.props.cancel}>Cancel</Button>*/}
+        {/*</div>*/}
+        {/*<Dialog*/}
+        {/*  open={this.state.openChooseFieldsDialog}*/}
+        {/*  onClose={this.closeChooseFieldsDialog}*/}
+        {/*  scroll={"body"}*/}
+        {/*>*/}
+        {/*  <DialogTitle id="form-dialog-title">Choose fields</DialogTitle>*/}
+        {/*  <DialogContent>*/}
+        {/*    <Form*/}
+        {/*      formData={null}*/}
+        {/*      formFields={this.state.dialogFormFields}*/}
+        {/*      save={this.saveChooseFieldsDialog}*/}
+        {/*      cancel={this.closeChooseFieldsDialog}*/}
+        {/*    />*/}
+        {/*  </DialogContent>*/}
+        {/*</Dialog>*/}
       </Fragment>
     );
   }

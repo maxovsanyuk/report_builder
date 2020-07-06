@@ -1,17 +1,17 @@
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import SidebarParameters from './SidebarParameters';
-import {setReportParameters} from '../../../redux/actions/app_action';
+import SidebarParameters from "./SidebarParameters";
+import { setReportParameters } from "../../../redux/actions/app_action";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   parameters: state.app.parameters,
-  dataSets: state.app.dataSets
+  dataSets: state.app.dataSets,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   setReportParameters(parameters) {
     dispatch(setReportParameters(parameters));
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SidebarParameters);

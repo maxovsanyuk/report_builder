@@ -1,9 +1,12 @@
-import React from 'react';
+import React from "react";
+import { AnimatedComponent } from "../../views/AnimatedComponent";
 
-import classes from './SidebarSettings.module.scss'
-
-export default function SidebarSettings(props) {
+const SidebarSettings = () => {
   return (
-    <h2>Settings</h2>
-  )
-}
+    <AnimatedComponent>
+      <h2>Settings</h2>
+    </AnimatedComponent>
+  );
+};
+
+export default SidebarSettings;
