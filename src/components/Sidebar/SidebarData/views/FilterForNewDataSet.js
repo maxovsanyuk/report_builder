@@ -22,11 +22,14 @@ import IconButton from "@material-ui/core/IconButton";
 // import isEmpty from "lodash/isEmpty";
 import get from "lodash/get";
 import FilterCombinedComponent from "./FilterCombinedComponent";
+import Checkbox from "@material-ui/core/Checkbox";
+import CombinedFilters from "./CombinedFilters";
 
 const CombinedFilter = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow: auto;
 
   b {
     text-transform: uppercase;
@@ -50,7 +53,9 @@ const FilterForNewDataSet = ({
   control,
   entitiState,
   setEntitiState,
+  isFullEntitie,
   filterData,
+  setIsFullEntitie,
 }) => {
   const [filterState, setFilterState] = useState({ ...filterData });
   const dispatch = useDispatch();
@@ -63,21 +68,23 @@ const FilterForNewDataSet = ({
       ...entitiState,
       filterChangedId: new Date().getTime(),
 
-      isFullNewFilter: filterState.logicalType
-        ? true
-        : filterState?.filterFieldType &&
-          get(filterState, "operatorType") &&
-          filterState.operatorType.value &&
-          filterState?.operatorValue
-        ? true
-        : false,
-
       filtersList:
         get(entitiState, "filtersList") &&
         entitiState?.filtersList.map((f) => {
           return f?.filterId === filterState?.filterId ? { ...filterState } : f;
         }),
     });
+
+    setIsFullEntitie(
+      filterState.logicalType
+        ? true
+        : filterState?.filterFieldType &&
+          get(filterState, "operatorType") &&
+          filterState.operatorType.value &&
+          filterState?.operatorValue
+        ? true
+        : false
+    );
   }, [
     filterState.filterFieldType,
     filterState.operatorValue,
@@ -129,12 +136,11 @@ const FilterForNewDataSet = ({
     if (get(filterState, "filterFieldType.type") === "related") {
       setEntitiState({
         ...entitiState,
-        isFullNewFilter: true,
         filtersList: entitiState?.filtersList?.filter(
           (f) => f?.filterId !== filterState?.filterId
         ),
       });
-
+      setIsFullEntitie(true);
       getDataSet();
     }
   }, [get(filterState, "filterFieldType.type") === "related"]);
@@ -142,19 +148,67 @@ const FilterForNewDataSet = ({
   if (filterState.logicalType) {
     return (
       <CombinedFilter>
+        {entitiState?.filtersList?.length > 1 && (
+          <Checkbox
+            checked={filterState.checked}
+            disabled={
+              !isFullEntitie ||
+              (!filterState?.checked && entitiState?.checkedFilters > 1)
+            }
+            color="primary"
+            inputProps={{ "aria-label": "secondary checkbox" }}
+            onChange={(e) => {
+              setFilterState({ ...filterState, checked: e.target.checked });
+              setEntitiState({
+                ...entitiState,
+
+                checkedFilters:
+                  get(entitiState, "checkedFilters") ||
+                  entitiState.checkedFilters === 0
+                    ? e.target.checked
+                      ? entitiState?.checkedFilters + 1
+                      : entitiState?.checkedFilters - 1
+                    : 1,
+              });
+            }}
+          />
+        )}
+
         <b>{filterState?.logicalType}</b>
 
         <div className="combined-filters-box">
           {filterState?.items?.map((i) => {
+            if (i.logicalType) {
+              return (
+                <CombinedFilters
+                  key={i.filterId}
+                  entitiState={entitiState}
+                  setFilterState={setFilterState}
+                  filterState={i}
+                  setIsFullEntitie={setIsFullEntitie}
+                  setEntitiState={setEntitiState}
+                  register={register}
+                  control={control}
+                  filterId={i.filterId}
+                  filterData={filterData}
+                  isFullEntitie={isFullEntitie}
+                />
+              );
+            }
+
             return (
               <FilterCombinedComponent
                 key={i.filterId}
-                filterState={i}
                 entitiState={entitiState}
                 setFilterState={setFilterState}
+                filterState={i}
                 setEntitiState={setEntitiState}
+                setIsFullEntitie={setIsFullEntitie}
                 register={register}
                 control={control}
+                filterId={i.filterId}
+                filterItems={filterState?.items}
+                filterData={filterData}
               />
             );
           })}
@@ -164,11 +218,13 @@ const FilterForNewDataSet = ({
           onClick={() => {
             setEntitiState({
               ...entitiState,
-              isFullNewFilter: true,
+
               filtersList: entitiState?.filtersList?.filter(
                 (f) => f?.filterId !== filterState?.filterId
               ),
             });
+
+            setIsFullEntitie(true);
           }}
           component="span"
         >
@@ -184,6 +240,8 @@ const FilterForNewDataSet = ({
       entitiState={entitiState}
       setFilterState={setFilterState}
       setEntitiState={setEntitiState}
+      isFullEntitie={isFullEntitie}
+      setIsFullEntitie={setIsFullEntitie}
       register={register}
       control={control}
     />

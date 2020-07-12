@@ -7,7 +7,8 @@ const SettingsToolCont = styled.div`
   height: 60px;
   position: absolute;
   top: 0;
-  z-index: 20;
+  z-index: 100;
+  background: #fff;
   border-bottom: ${({ theme }) => `1px solid ${theme?.border?.color}`};
 `;
 

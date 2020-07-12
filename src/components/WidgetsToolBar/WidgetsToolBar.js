@@ -3,7 +3,7 @@ import styled from "styled-components";
 import theme from "../../themes/index";
 
 const ToolBoxBar = styled.div`
-  width: 200px;
+  width: 165px;
   height: calc(100% - 60px);
   background-color: #fff;
   border-right: ${({ theme }) => `1px solid ${theme?.border?.color}`};

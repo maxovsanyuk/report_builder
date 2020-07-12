@@ -1,23 +1,27 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { setDataSets } from "../../../redux/actions/app_action";
+import NewDataSetList from "./NewDataSetList/NewDataSetList";
+import { AnimatedComponent } from "../../views/AnimatedComponent";
+import EntityRow from "./views/EntitiRow";
 
 import styled from "styled-components";
 
-// MATERIAL
+// MATERIAL UI
 
 import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import TreeView from "@material-ui/lab/TreeView";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
-import NewDataSetList from "./NewDataSetList/NewDataSetList";
-import { AnimatedComponent } from "../../views/AnimatedComponent";
+// LODASH
 
 import isEmpty from "lodash/isEmpty";
 
 const DataSetListCont = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
   flex: 1;
   margin: 0 10px 20px 15px;
@@ -36,35 +40,76 @@ const DataSetListCont = styled.div`
 `;
 
 const SideBarData = () => {
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [editDataSetId, setEditDataSetId] = useState(null);
   const state = useSelector((state) => state.app);
-  const { dataSets } = state;
+  const { dataSets, newDataSet } = state;
 
   console.log(dataSets, "dataSets");
+  console.log(newDataSet, "newDataSet");
+
+  const dispatch = useDispatch();
 
   return (
     <AnimatedComponent>
       <h2 style={{ textAlign: "center" }}>
         {!isEmpty(dataSets) ? "Data sets list" : "Create first DataSet"}
       </h2>
+
       <>
         <div style={{ maxHeight: "70vh", overflow: "auto" }}>
           {!isEmpty(dataSets) &&
             dataSets.map((d, i) => {
-              return (
-                <DataSetListCont key={i}>
-                  <span>{d.dataSetName}</span>
+              if (editDataSetId === d.id) {
+                return (
+                  <NewDataSetList
+                    key={d.id}
+                    editedDataSet={d}
+                    isHiddenControlBtn
+                    setEditDataSetId={setEditDataSetId}
+                  />
+                );
+              }
 
-                  <IconButton
-                    style={{ position: "absolute", right: "5px", top: "5px" }}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
-                </DataSetListCont>
+              return (
+                !editDataSetId && (
+                  <DataSetListCont key={d.id}>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <span style={{ margin: "0 0 5px 0", fontWeight: 600 }}>
+                        {d.dataSetName}
+                      </span>
+
+                      {d?.entities?.map((e) => {
+                        return <EntityRow key={e.id} entiti={e} />;
+                      })}
+                    </div>
+                    <div>
+                      <IconButton
+                        component="span"
+                        onClick={() => {
+                          setEditDataSetId(d.id);
+                        }}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => {
+                          dispatch(
+                            setDataSets(
+                              dataSets?.filter((dataSet) => dataSet.id !== d.id)
+                            )
+                          );
+                        }}
+                        component="span"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </div>
+                  </DataSetListCont>
+                )
               );
             })}
         </div>
-        <NewDataSetList />
+        {!editDataSetId && <NewDataSetList />}
       </>
     </AnimatedComponent>
   );

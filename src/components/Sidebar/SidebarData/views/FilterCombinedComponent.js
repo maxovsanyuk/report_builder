@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { DefineInputTypeForCombinedFilter } from "./DefineInputType";
 
@@ -15,18 +15,28 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 
 import isEmpty from "lodash/isEmpty";
 import get from "lodash/get";
+import { getFieldTypes } from "../AdvancedFinder/fieldTypes";
+import { findChangedFilter } from "../halpers/findChangedFilter";
 
 const FilterCombinedComponent = ({
   filterState,
   entitiState,
-  setFilterState,
   setEntitiState,
+  setIsFullEntitie,
+  filterData,
   register,
   control,
+  filterId,
 }) => {
-  const [state, setState] = useState(filterState);
+  const [combinedFiltertstate, setCombinedFiltertstate] = useState(filterState);
 
-  console.log(state, "filterState");
+  useEffect(() => {
+    combinedFiltertstate && !combinedFiltertstate?.operatorValue
+      ? setIsFullEntitie(false)
+      : setIsFullEntitie(true);
+  }, [combinedFiltertstate && combinedFiltertstate.operatorValue]);
+
+  console.log();
 
   return (
     <Paper
@@ -35,6 +45,7 @@ const FilterCombinedComponent = ({
         justifyContent: "space-between",
         margin: "10px 0",
         padding: "5px 10px 15px 10px",
+        minWidth: "400px",
       }}
     >
       <FormControl>
@@ -43,7 +54,7 @@ const FilterCombinedComponent = ({
           style={{
             width: "120px",
           }}
-          value={state.filterFieldType.label}
+          value={combinedFiltertstate?.filterFieldType?.label}
           renderValue={() => {
             return (
               <div
@@ -53,7 +64,7 @@ const FilterCombinedComponent = ({
                   textOverflow: "ellipsis",
                 }}
               >
-                {state.filterFieldType.label}
+                {get(combinedFiltertstate, "filterFieldType.label")}
               </div>
             );
           }}
@@ -62,13 +73,42 @@ const FilterCombinedComponent = ({
           inputRef={register}
           control={control}
           onChange={(e) => {
-            setState({ ...state, filterFieldType: e.target.value });
+              setCombinedFiltertstate({
+              ...combinedFiltertstate,
+              operatorValue: "",
+              filterFieldType: e.target.value,
+              operatorsField: getFieldTypes(get(e, "target.value.valueType")),
+            });
 
-            // setFilterState({
-            //   ...filterState,
-            //   filterFieldType: e.target.value,
-            //   operatorsField: getFieldTypes(e.target.value.valueType),
-            // });
+            setEntitiState({
+              ...entitiState,
+              filterChangedId: new Date().getTime(),
+              filtersList: entitiState?.filtersList.map((f) => {
+                return f.filterId === filterData?.filterId
+                  ? {
+                      ...f,
+                      items: f?.items?.map((i) => {
+                        return i.filterId === filterId
+                          ? {
+                              ...i,
+                              operatorValue: "",
+                              filterFieldType: e.target.value,
+                              operatorsField: getFieldTypes(
+                                filterState?.filterFieldType?.valueType
+                              ),
+                            }
+                          : i;
+                      }),
+                    }
+                  : findChangedFilter(f, filterData?.filterId, filterId, {
+                      operatorValue: "",
+                      filterFieldType: e.target.value,
+                      operatorsField: getFieldTypes(
+                        filterState?.filterFieldType?.valueType
+                      ),
+                    });
+              }),
+            });
           }}
           inputProps={{
             id: "select-filter-label",
@@ -85,24 +125,12 @@ const FilterCombinedComponent = ({
                   </MenuItem>
                 );
               })}
-
-          <ListSubheader>Related</ListSubheader>
-          {!isEmpty(entitiState) &&
-            entitiState?.dataSetFields?.items
-              .filter((i) => i.type === "related")
-              .map((f) => {
-                return (
-                  <MenuItem key={f.value} value={f}>
-                    {f.label}
-                  </MenuItem>
-                );
-              })}
         </Select>
       </FormControl>
       <FormControl>
         <InputLabel htmlFor="select-filter-operators">Operators*</InputLabel>
         <Select
-          value={state.operatorType.label}
+          value={combinedFiltertstate?.operatorType?.label}
           renderValue={() => {
             return (
               <div
@@ -112,7 +140,7 @@ const FilterCombinedComponent = ({
                   textOverflow: "ellipsis",
                 }}
               >
-                {state.operatorType.label}
+                {combinedFiltertstate?.operatorType?.label}
               </div>
             );
           }}
@@ -124,20 +152,38 @@ const FilterCombinedComponent = ({
           }}
           required
           onChange={(e) => {
-            setState({ ...state, operatorType: e.target.value });
-            // setFilterState({
-            //   ...filterState,
-            //   operatorType: e.target.value,
-            // });
+            setEntitiState({
+              ...entitiState,
+              filterChangedId: new Date().getTime(),
+              filtersList: entitiState?.filtersList.map((f) => {
+                return f.filterId === filterData.filterId
+                  ? {
+                      ...f,
+                      items: f?.items?.map((i) => {
+                        return i.filterId === filterId
+                          ? {
+                              ...i,
+                              operatorType: e.target.value,
+                            }
+                          : i;
+                      }),
+                    }
+                  : findChangedFilter(f, filterData.filterId, filterId, {
+                      operatorType: e.target.value,
+                    });
+              }),
+            });
+
+              setCombinedFiltertstate({ ...combinedFiltertstate, operatorType: e.target.value });
           }}
           inputProps={{
             id: "select-filter-operators",
-            disabled: !get(filterState, "operatorsField"),
+            disabled: !get(combinedFiltertstate, "operatorsField"),
           }}
         >
-          {get(filterState, "operatorsField.operatorsField") &&
-          filterState?.operatorsField ? (
-            filterState?.operatorsField?.operatorsField.map((o) => {
+          {get(combinedFiltertstate, "operatorsField.operatorsField") &&
+          combinedFiltertstate?.operatorsField ? (
+            combinedFiltertstate?.operatorsField?.operatorsField.map((o) => {
               return (
                 <MenuItem key={o.value} value={o}>
                   {o.label}
@@ -151,9 +197,13 @@ const FilterCombinedComponent = ({
       </FormControl>
       <FormControl>
         <DefineInputTypeForCombinedFilter
-          type={get(filterState, "operatorsField.type")}
-          filterState={filterState}
-          setFilterState={setFilterState}
+          type={combinedFiltertstate?.operatorsField?.type}
+          filterState={combinedFiltertstate}
+          setFilterState={setCombinedFiltertstate}
+          setEntitiState={setEntitiState}
+          entitiState={entitiState}
+          filterData={filterData}
+          filterId={filterId}
           control={control}
           register={register}
         />

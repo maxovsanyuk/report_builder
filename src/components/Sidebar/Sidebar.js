@@ -10,12 +10,12 @@ import theme from "../../themes/index";
 
 const SideBarActiveComp = styled.div`
   height: calc(100% - 60px);
-  min-width: 550px;
+  min-width: 700px;
   max-width: 800px;
   position: fixed;
   top: 60px;
   padding: 20px;
-  z-index: 5;
+  z-index: 80;
   background: ${({ theme }) => theme?.primary?.dark};
   animation: appearingBar 0.4s ease-in-out 0s 1 normal forwards;
   border-left: ${({ theme }) => `1px solid ${theme?.border?.color}`};

@@ -14,9 +14,7 @@ import styled from "styled-components";
 // MATERIAL UI
 
 import Paper from "@material-ui/core/Paper";
-// import TextField from "@material-ui/core/TextField";
 import isEmpty from "lodash/isEmpty";
-import { useForm } from "react-hook-form";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -46,8 +44,14 @@ const DataSetListComp = styled.div`
   }
 `;
 
-const NewEntities = ({ entitie }) => {
-  const [entitiState, setEntitiState] = useState({});
+const NewEntities = ({
+  entitie,
+  register,
+  control,
+  isFullEntitie,
+  setIsFullEntitie,
+}) => {
+  const [entitiState, setEntitiState] = useState(entitie);
   const [logicalTypeName, setLogicalTypeName] = useState("");
   const [isModalOpen, setIsMadalOpen] = useState(false);
 
@@ -55,14 +59,10 @@ const NewEntities = ({ entitie }) => {
   const { newDataSet } = state;
   const dispatch = useDispatch();
 
-  const { register, control } = useForm();
-
-  console.log(entitiState, "entitiState");
-  console.log(newDataSet, "newDataSet");
 
   const checkedFilters =
     get(entitiState, "filtersList") &&
-    entitiState?.filtersList?.filter((f) => f.checked);
+    entitiState?.filtersList?.filter((f) => get(f, "checked"));
 
   useEffect(() => {
     setEntitiState({ ...entitie });
@@ -86,7 +86,6 @@ const NewEntities = ({ entitie }) => {
                     ...entitiState,
                     dataSetFields,
                     filtersList: [],
-                    isFullNewFilter: true,
                     checkedFilters: 0,
                   }
                 : e;
@@ -112,9 +111,9 @@ const NewEntities = ({ entitie }) => {
       })
     );
   }, [
-    entitiState.filterChangedId,
-    entitiState.isFullNewFilter,
+    get(entitiState, "filterChangedId") && entitiState.filterChangedId,
     get(entitiState, "filtersList") && entitiState.filtersList.length,
+    get(entitiState, "dataSetFields.id"),
   ]);
 
   return (
@@ -164,6 +163,7 @@ const NewEntities = ({ entitie }) => {
                   filtersList: [],
                 });
 
+                setIsFullEntitie(true);
                 setLogicalTypeName(e.target.value.logicalName);
               }}
               required
@@ -201,7 +201,7 @@ const NewEntities = ({ entitie }) => {
                 disabled={
                   get(entitiState, "filtersList") &&
                   get(entitiState, "filtersList").length &&
-                  !entitiState?.isFullNewFilter
+                  !isFullEntitie
                 }
                 onClick={() => {
                   setEntitiState({
@@ -214,6 +214,7 @@ const NewEntities = ({ entitie }) => {
                         ]
                       : [{ filterId: new Date().getTime() }],
                   });
+                  setIsFullEntitie(false);
                 }}
                 color="primary"
                 component="span"
@@ -234,6 +235,7 @@ const NewEntities = ({ entitie }) => {
                         ),
                       })
                     );
+                    setIsFullEntitie(true);
                   }}
                   component="span"
                 >
@@ -256,7 +258,6 @@ const NewEntities = ({ entitie }) => {
                 checkedFilters.length &&
                   setEntitiState({
                     ...entitiState,
-                    isFullNewFilter: true,
                     checkedFilters: 0,
                     filtersList: [
                       ...entitiState?.filtersList?.filter((f) => !f.checked),
@@ -267,6 +268,7 @@ const NewEntities = ({ entitie }) => {
                       },
                     ],
                   });
+                setIsFullEntitie(true);
               }}
             >
               Or
@@ -280,7 +282,6 @@ const NewEntities = ({ entitie }) => {
                 checkedFilters.length &&
                   setEntitiState({
                     ...entitiState,
-                    isFullNewFilter: true,
                     checkedFilters: 0,
                     filtersList: [
                       ...entitiState?.filtersList?.filter((f) => !f.checked),
@@ -291,6 +292,7 @@ const NewEntities = ({ entitie }) => {
                       },
                     ],
                   });
+                setIsFullEntitie(true);
               }}
             >
               And
@@ -311,9 +313,11 @@ const NewEntities = ({ entitie }) => {
                   <FilterForNewDataSet
                     entitiState={entitiState}
                     setEntitiState={setEntitiState}
+                    isFullEntitie={isFullEntitie}
+                    setIsFullEntitie={setIsFullEntitie}
                     register={register}
                     control={control}
-                    key={f.filterId}
+                    key={get(f, "filterId")}
                     filterData={f}
                   />
                 );

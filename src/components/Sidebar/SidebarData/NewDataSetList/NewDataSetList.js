@@ -5,8 +5,6 @@ import styled from "styled-components";
 
 // material-ui
 
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 
 import { useForm, ErrorMessage } from "react-hook-form";
@@ -54,8 +52,18 @@ const NewDataSetComp = styled.div`
   }
 `;
 
-const NewDataSetList = ({ minNameLength, maxNameLength }) => {
+const NewDataSetList = ({
+  minNameLength,
+  maxNameLength,
+  editedDataSet,
+  isHiddenControlBtn,
+  setEditDataSetId,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isFullEntitie, setIsFullEntitie] = useState(false);
+  const [isHiddenEditControlBtn, setHiddenEditControlBtn] = useState(
+    isHiddenControlBtn
+  );
 
   const state = useSelector((state) => state.app);
   const { dataSets, newDataSet, isShownAlert, isSavedNewDataSetData } = state;
@@ -71,7 +79,16 @@ const NewDataSetList = ({ minNameLength, maxNameLength }) => {
   } = useForm();
 
   let dataSetName = watch("dataSetName");
-  let selectType = watch("selectType");
+
+  // EDIT DATASET
+
+  useEffect(() => {
+    editedDataSet && dispatch(setNewDataSetState(editedDataSet));
+    editedDataSet && setIsFullEntitie(true);
+  }, [
+    editedDataSet,
+    get(editedDataSet, "entities") && editedDataSet.entities.length,
+  ]);
 
   // LOADING DATASETS OPT
 
@@ -99,7 +116,7 @@ const NewDataSetList = ({ minNameLength, maxNameLength }) => {
         console.warn(e);
       }
     }
-    isOpen && getDataSet();
+    !editedDataSet && isOpen && getDataSet();
   }, [isOpen]);
 
   // SET DATASET NAME
@@ -116,7 +133,7 @@ const NewDataSetList = ({ minNameLength, maxNameLength }) => {
     }
   }, [dataSetName]);
 
-  if (!isOpen && isSavedNewDataSetData) {
+  if (!isOpen && isSavedNewDataSetData && !isHiddenEditControlBtn) {
     return (
       <div
         style={{
@@ -162,10 +179,18 @@ const NewDataSetList = ({ minNameLength, maxNameLength }) => {
           }}
           label="Name"
           name="dataSetName"
-          value={dataSetName}
+          value={dataSetName || get(editedDataSet, "dataSetName")}
           inputRef={register({
             validate: (value) => {
-              return isEmpty(dataSets.filter((d) => d.dataSetName === value));
+              return isEmpty(
+                dataSets.filter((d) => {
+                  if (d.dataSetName === get(editedDataSet, "dataSetName")) {
+                    return false;
+                  }
+
+                  return d.dataSetName === value;
+                })
+              );
             },
             maxLength: {
               value: maxNameLength,
@@ -199,6 +224,8 @@ const NewDataSetList = ({ minNameLength, maxNameLength }) => {
                 control={control}
                 key={e.id}
                 entitie={e}
+                setIsFullEntitie={setIsFullEntitie}
+                isFullEntitie={isFullEntitie}
               />
             );
           })}
@@ -218,27 +245,44 @@ const NewDataSetList = ({ minNameLength, maxNameLength }) => {
                 dataSetName &&
                 dataSetName.length > minNameLength &&
                 dataSetName.length < maxNameLength &&
-                // !isExistedDataSetName &&
-                selectType
-                // !isFullNFilter
+                isFullEntitie &&
+                isEmpty(
+                  dataSets.filter((d) => {
+                    if (d.dataSetName === get(editedDataSet, "dataSetName")) {
+                      return false;
+                    }
+                    return d.dataSetName === dataSetName;
+                  })
+                )
               ) {
                 dispatch(savedNewDataSetSettings(true));
-                dispatch(setDataSets([...dataSets, newDataSet]));
+                dispatch(
+                  setDataSets(
+                    editedDataSet
+                      ? dataSets.map((d) => {
+                          return d?.id === editedDataSet?.id ? newDataSet : d;
+                        })
+                      : [...dataSets, newDataSet]
+                  )
+                );
+                editedDataSet && setHiddenEditControlBtn(false);
+                editedDataSet && setEditDataSetId(null);
                 isShownAlert && dispatch(showAlert(false));
                 dispatch(setNewDataSetState({}));
                 setIsOpen(false);
-                dispatch(setNewDataSetState({}));
+                setIsFullEntitie(false);
               }
             }}
           />
           <button
             className="close-btn"
-            // onClick={() => {
-            //     isShownAlert && dispatch(showAlert(false));
-            //     dispatch(savedNewDataSetSettings(true));
-            //     setIsOpen(false);
-            //     dispatch(setNewDataSetState({}));
-            // }}
+            onClick={() => {
+              isShownAlert && dispatch(showAlert(false));
+              dispatch(savedNewDataSetSettings(true));
+              setIsOpen(false);
+              dispatch(setNewDataSetState({}));
+              editedDataSet && setEditDataSetId(null);
+            }}
           >
             Close
           </button>
@@ -248,6 +292,10 @@ const NewDataSetList = ({ minNameLength, maxNameLength }) => {
   );
 };
 
-NewDataSetList.defaultProps = { minNameLength: 4, maxNameLength: 20 };
+NewDataSetList.defaultProps = {
+  minNameLength: 4,
+  maxNameLength: 20,
+  hideNewBtn: false,
+};
 
 export default NewDataSetList;

@@ -1,9 +1,15 @@
+import React, { useEffect, useState } from "react";
+
+import { findChangedFilter } from "../halpers/findChangedFilter";
+
+// MATERIAL
+
 import TextField from "@material-ui/core/TextField";
-import get from "lodash/get";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import React from "react";
+
+import get from "lodash/get";
 
 export const DefineInputType = ({
   type,
@@ -84,6 +90,10 @@ export const DefineInputTypeForCombinedFilter = ({
   type,
   filterState,
   setFilterState,
+  setEntitiState,
+  entitiState,
+  filterData,
+  filterId,
   register,
   control,
 }) => {
@@ -101,12 +111,34 @@ export const DefineInputTypeForCombinedFilter = ({
           control={control}
           value={get(filterState, "operatorValue")}
           required
-          // onChange={(e) => {
-          //   setFilterState({
-          //     ...filterState,
-          //     operatorValue: e.target.value >= 0 ? e.target.value : 0,
-          //   });
-          // }}
+          onChange={(e) => {
+            setFilterState({
+              ...filterState,
+              operatorValue: e.target.value >= 0 ? e.target.value : 0,
+            });
+
+            setEntitiState({
+              ...entitiState,
+              filterChangedId: new Date().getTime(),
+              filtersList: entitiState?.filtersList.map((f) => {
+                return f.filterId === filterData.filterId
+                  ? {
+                      ...f,
+                      items: f?.items?.map((i) => {
+                        return i.filterId === filterId
+                          ? {
+                              ...i,
+                              operatorValue: e.target.value,
+                            }
+                          : i;
+                      }),
+                    }
+                  : findChangedFilter(f, filterData.filterId, filterId, {
+                      operatorValue: e.target.value,
+                    });
+              }),
+            });
+          }}
           InputLabelProps={{
             shrink: true,
           }}
@@ -122,16 +154,50 @@ export const DefineInputTypeForCombinedFilter = ({
             control={control}
             disabled={!get(filterState, "operatorsField")}
             value={get(filterState, "operatorValue")}
+            renderValue={() => {
+              return (
+                <div
+                  style={{
+                    maxWidth: "80px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {get(filterState, "operatorValue")}
+                </div>
+              );
+            }}
             style={{
               width: "100px",
             }}
             required
-            // onChange={(e) => {
-            //   setFilterState({
-            //     ...filterState,
-            //     operatorValue: e.target.value,
-            //   });
-            // }}
+            onChange={(e) => {
+              setFilterState({
+                ...filterState,
+                operatorValue: e.target.value,
+              });
+              setEntitiState({
+                ...entitiState,
+                filterChangedId: new Date().getTime(),
+                filtersList: entitiState?.filtersList.map((f) => {
+                  return f.filterId === filterData.filterId
+                    ? {
+                        ...f,
+                        items: f?.items?.map((i) => {
+                          return i.filterId === filterId
+                            ? {
+                                ...i,
+                                operatorValue: e.target.value,
+                              }
+                            : i;
+                        }),
+                      }
+                    : findChangedFilter(f, filterData.filterId, filterId, {
+                        operatorValue: e.target.value,
+                      });
+                }),
+              });
+            }}
             inputProps={{
               id: "select-filter-value",
             }}

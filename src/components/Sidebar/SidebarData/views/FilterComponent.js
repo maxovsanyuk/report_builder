@@ -1,26 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { DefineInputType } from "./DefineInputType";
+import { getFieldTypes } from "../AdvancedFinder/fieldTypes";
+
+// MATERIAL UI
+
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
-import get from "lodash/get";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import { getFieldTypes } from "../AdvancedFinder/fieldTypes";
 import ListSubheader from "@material-ui/core/ListSubheader";
-import isEmpty from "lodash/isEmpty";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { DefineInputType } from "./DefineInputType";
+
+// LODASH
+
+import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 
 const FilterComponent = ({
   filterState,
   entitiState,
   setFilterState,
   setEntitiState,
+  isFullEntitie,
+  setIsFullEntitie,
   register,
   control,
 }) => {
+  const [currentFiltertstate, setCurrentFiltertstate] = useState(filterState);
+
+  useEffect(() => {
+    currentFiltertstate && !currentFiltertstate?.operatorValue
+      ? setIsFullEntitie(false)
+      : setIsFullEntitie(true);
+  }, [currentFiltertstate && currentFiltertstate.operatorValue]);
+
   return (
     <Paper
       style={{
@@ -32,10 +49,9 @@ const FilterComponent = ({
     >
       {entitiState?.filtersList?.length > 1 && (
         <Checkbox
-          // defaultChecked
           checked={filterState.checked}
           disabled={
-            !entitiState.isFullNewFilter ||
+            !isFullEntitie ||
             (!filterState?.checked && entitiState?.checkedFilters > 1)
           }
           color="primary"
@@ -62,8 +78,23 @@ const FilterComponent = ({
           style={{
             width: "120px",
           }}
-          defaultValue={filterState?.filterFieldType?.label}
-          value={filterState?.filterFieldType?.label}
+          value={
+            currentFiltertstate?.filterFieldType?.label ||
+            filterState?.filterFieldType?.label
+          }
+          renderValue={() => {
+            return (
+              <div
+                style={{
+                  maxWidth: "100px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {filterState?.filterFieldType?.label}
+              </div>
+            );
+          }}
           required
           name="filterFieldType"
           inputRef={register}
@@ -73,6 +104,13 @@ const FilterComponent = ({
               ...filterState,
               filterFieldType: e.target.value,
               operatorsField: getFieldTypes(e.target.value.valueType),
+            });
+
+            setCurrentFiltertstate({
+              ...currentFiltertstate,
+              operatorValue: "",
+              filterFieldType: e.target.value,
+              operatorsField: getFieldTypes(get(e, "target.value.valueType")),
             });
           }}
           inputProps={{
@@ -112,12 +150,32 @@ const FilterComponent = ({
           style={{
             width: "100px",
           }}
-          defaultValue={filterState?.filterFieldType?.label}
-          value={filterState?.filterFieldType?.label}
+          value={
+            currentFiltertstate?.operatorType?.label ||
+            filterState?.operatorType?.label
+          }
+          renderValue={() => {
+            return (
+              <div
+                style={{
+                  maxWidth: "100px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {filterState?.operatorType?.label}
+              </div>
+            );
+          }}
           required
           onChange={(e) => {
             setFilterState({
               ...filterState,
+              operatorType: e.target.value,
+            });
+
+            setCurrentFiltertstate({
+              ...currentFiltertstate,
               operatorType: e.target.value,
             });
           }}
@@ -153,7 +211,6 @@ const FilterComponent = ({
         onClick={() => {
           setEntitiState({
             ...entitiState,
-            isFullNewFilter: true,
             checkedFilters:
               get(filterState, "checked") && filterState.checked
                 ? entitiState.checkedFilters - 1
@@ -162,6 +219,7 @@ const FilterComponent = ({
               (f) => f?.filterId !== filterState?.filterId
             ),
           });
+          setIsFullEntitie(true);
         }}
         component="span"
       >
