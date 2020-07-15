@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import app_reducer from "./app_reducer";
-import { RESET_STATE } from "../types";
+import { RESET_STATE } from "../types/types";
 
 const reducer = combineReducers({
   app: app_reducer,

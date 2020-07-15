@@ -44,6 +44,8 @@ const DnDBox = styled.div`
     flex-grow: 1;
     border: 1px solid #ccc;
     border-radius: 2px;
+    //resize: both;
+    //overflow: auto;
   }
 
   .withMargin {
@@ -81,45 +83,45 @@ export const Dustbin = () => {
           handleClass="handle-style"
           style={{ flexGrow: "1" }}
         >
-          <div
-            className="sidebar withMargin"
-            ref={drop}
-            style={{ backgroundColor }}
-          >
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern
-                  id="smallGrid"
-                  width="6"
-                  height="6"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M 8 0 L 0 0 0 8"
-                    fill="none"
-                    stroke="gray"
-                    stroke-width="0.5"
-                  />
-                </pattern>
-                <pattern
-                  id="grid"
-                  width="60"
-                  height="60"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <rect width="60" height="60" fill="url(#smallGrid)" />
-                  <path
-                    d="M 60 0 L 0 0 0 60"
-                    fill="none"
-                    stroke="gray"
-                    stroke-width="1"
-                  />
-                </pattern>
-              </defs>
+        <div
+          className="sidebar withMargin"
+          ref={drop}
+          style={{ backgroundColor }}
+        >
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern
+                id="smallGrid"
+                width="6"
+                height="6"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 8 0 L 0 0 0 8"
+                  fill="none"
+                  stroke="gray"
+                  stroke-width="0.5"
+                />
+              </pattern>
+              <pattern
+                id="grid"
+                width="60"
+                height="60"
+                patternUnits="userSpaceOnUse"
+              >
+                <rect width="60" height="60" fill="url(#smallGrid)" />
+                <path
+                  d="M 60 0 L 0 0 0 60"
+                  fill="none"
+                  stroke="gray"
+                  stroke-width="1"
+                />
+              </pattern>
+            </defs>
 
-              <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
-          </div>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+        </div>
         </ResizePanel>
 
         {isActive ? "Release to drop" : "Drag a box here"}

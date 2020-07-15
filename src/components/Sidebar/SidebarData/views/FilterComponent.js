@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { DefineInputType } from "./DefineInputType";
-import { getFieldTypes } from "../AdvancedFinder/fieldTypes";
+import { getFieldTypes } from "../halpers/getFieldTypes";
 
 // MATERIAL UI
 

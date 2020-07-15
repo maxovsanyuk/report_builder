@@ -5,11 +5,11 @@ import {
   SET_REPORT_PARAMETERS,
   SIDE_BAR_OPEN_HANDLER,
   IS_SAVED_NEW_DATASET_SETTINGS,
+  IS_SAVED_NEW_PARAMETERS_SETTINGS,
   SHOW_ALERT,
   SET_NEW_DATASET_STATE,
-  SET_DATASET_OPTIONS,
-  SET_IS_FULL_NEW_FILTER,
-} from "../types";
+  SET_NEW_PARAMETERS_STATE,
+} from "../types/types";
 
 export const resetState = () => ({
   type: RESET_STATE,
@@ -40,6 +40,11 @@ export const savedNewDataSetSettings = (isSaved) => ({
   payload: isSaved,
 });
 
+export const savedNewParametersSetSettings = (isSaved) => ({
+  type: IS_SAVED_NEW_PARAMETERS_SETTINGS,
+  payload: isSaved,
+});
+
 export const showAlert = (show) => ({
   type: SHOW_ALERT,
   payload: show,
@@ -47,5 +52,10 @@ export const showAlert = (show) => ({
 
 export const setNewDataSetState = (state) => ({
   type: SET_NEW_DATASET_STATE,
+  payload: state,
+});
+
+export const setNewParametersSetState = (state) => ({
+  type: SET_NEW_PARAMETERS_STATE,
   payload: state,
 });

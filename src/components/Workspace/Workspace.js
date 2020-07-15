@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Dustbin } from "./Dustbin";
@@ -9,6 +9,7 @@ import {
   sideBarHandleOpen,
   setNewDataSetState,
   savedNewDataSetSettings,
+  savedNewParametersSetSettings,
 } from "../../redux/actions/app_action";
 
 import styled from "styled-components";
@@ -16,20 +17,68 @@ import styled from "styled-components";
 // MATERIAL UI
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import RemoveOutlinedIcon from "@material-ui/icons/RemoveOutlined";
-import { Alert } from "@material-ui/lab";
+import Alert from "@material-ui/lab/Alert";
 import Button from "@material-ui/core/Button";
+import SearchIcon from "@material-ui/icons/Search";
 
 const WidgetsToolBar = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 165px;
   max-width: 165px;
-  height: calc(100% - 60px);
+  height: 100%;
   position: absolute;
+  overflow-x: hidden;
   overflow-y: auto;
   background: #fff;
-  left: 0;
-  top: 60px;
+  left: -166px;
+  top: 0;
+  z-index: 80;
+
+  .input-wrapper {
+    position: relative;
+    background: dodgerblue;
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-40%) scale(0.7);
+      right: 5px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .search-wg-input {
+      width: 100%;
+      padding: 10px 25px 10px 10px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+
+      &:focus {
+        outline: 0 solid #ccc;
+      }
+    }
+  }
+`;
+
+const WidgetInfoComponent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 150px;
+  height: 100px;
+  background: #fff;
+  box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2);
+  border: 1px solid silver;
+  border-radius: 2px;
+  color: #000;
+  z-index: 90;
+  padding: 20px;
+  transition: 0.5s;
 `;
 
 const toolBarCfg = [
@@ -123,13 +172,14 @@ const Row = styled.div`
     align-items: center;
     justify-content: space-between;
     position: relative;
-    z-index: 200;
+    z-index: 90;
     background: #fff;
     transition: 0.3s;
     margin: 0 0 2px 0;
     &:hover {
       transition: 0.3s;
-      background: silver;
+      background: gainsboro;
+      color: dodgerblue;
       cursor: pointer;
     }
   }
@@ -145,6 +195,7 @@ const Row = styled.div`
       cursor: pointer;
     }
   }
+
   .widgets-box {
     display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
     justify-content: center;
@@ -164,8 +215,12 @@ const Row = styled.div`
   }
 `;
 
-const ToolbarRow = ({ toolData, zIndex }) => {
+const ToolbarRow = ({ toolData, zIndex, searchValue, setCurrentWgInfo }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(!!searchValue);
+  }, [searchValue]);
 
   return (
     <Row zIndex={zIndex} isOpen={isOpen}>
@@ -183,7 +238,23 @@ const ToolbarRow = ({ toolData, zIndex }) => {
 
       <div className="widgets-box">
         {toolData?.widgetsList?.map((w, i) => {
-          return <Widget key={w.name} name={w.name} />;
+          if (!searchValue) {
+            return (
+              <Widget
+                key={w.name}
+                name={w.name}
+                setCurrentWgInfo={setCurrentWgInfo}
+              />
+            );
+          }
+
+          return searchValue && w?.name?.startsWith(searchValue) ? (
+            <Widget
+              key={w.name}
+              name={w.name}
+              setCurrentWgInfo={setCurrentWgInfo}
+            />
+          ) : null;
         })}
       </div>
     </Row>
@@ -191,15 +262,41 @@ const ToolbarRow = ({ toolData, zIndex }) => {
 };
 
 const Container = memo(function Container() {
+  const [searchValue, setSearchValue] = useState();
+  const [currentWgInfo, setCurrentWgInfo] = useState();
+
   return (
     <>
       <Dustbin />
 
+      <WidgetInfoComponent style={{ opacity: currentWgInfo ? 1 : 0 }}>
+        {currentWgInfo}
+      </WidgetInfoComponent>
+
       <WidgetsToolBar>
-        {/*<input type="search" />*/}
+        <div className="input-wrapper">
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Search Widgets"
+            className="search-wg-input"
+            onChange={(e) => setSearchValue(e.target.value)}
+          />
+          <label htmlFor="search-input" className="input-icon">
+            <SearchIcon />
+          </label>
+        </div>
 
         {toolBarCfg.map((t, i) => {
-          return <ToolbarRow key={t.title} toolData={t} zIndex={50 - i} />;
+          return (
+            <ToolbarRow
+              key={t.title}
+              toolData={t}
+              zIndex={50 - i}
+              searchValue={searchValue}
+              setCurrentWgInfo={setCurrentWgInfo}
+            />
+          );
         })}
       </WidgetsToolBar>
     </>
@@ -207,16 +304,18 @@ const Container = memo(function Container() {
 });
 
 const WorkSpaceComp = styled.div`
-  background: #eee;
   width: calc(100% - 120px);
   height: calc(100% - 60px);
+  position: relative;
+  z-index: 80;
+  background: #eee;
   margin: 60px 0 0 0;
 `;
 
 const AlertCont = styled.div`
   position: fixed;
   top: 10px;
-  z-index: 500;
+  z-index: 100;
   animation: appearingBar 0.4s ease-in-out 0s 1 normal forwards;
 
   @keyframes appearingBar {
@@ -231,7 +330,12 @@ const AlertCont = styled.div`
 
 const Workspace = () => {
   const state = useSelector((state) => state.app);
-  const { isOpenSideBar, isSavedNewDataSetData, isShownAlert } = state;
+  const {
+    isOpenSideBar,
+    isSavedNewDataSetData,
+    isSavedNewParametersData,
+    isShownAlert,
+  } = state;
   const dispatch = useDispatch();
 
   return (
@@ -240,7 +344,7 @@ const Workspace = () => {
         onClick={() => {
           isOpenSideBar &&
             dispatch(
-              isSavedNewDataSetData
+              isSavedNewDataSetData && isSavedNewParametersData
                 ? sideBarHandleOpen(false)
                 : dispatch(showAlert(true))
             );
@@ -254,7 +358,8 @@ const Workspace = () => {
       {isShownAlert && (
         <AlertCont>
           <Alert severity="warning">
-            Please save new data set
+            {!isSavedNewParametersData && "Please save new parameters set"}
+            {!isSavedNewDataSetData && "Please save new  data set"}
             <Button
               variant="contained"
               size="small"
@@ -265,6 +370,7 @@ const Workspace = () => {
                 dispatch(showAlert(false));
                 dispatch(setNewDataSetState({}));
                 dispatch(savedNewDataSetSettings(true));
+                dispatch(savedNewParametersSetSettings(true));
               }}
             >
               remove

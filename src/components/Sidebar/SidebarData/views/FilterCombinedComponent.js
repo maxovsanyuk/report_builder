@@ -15,7 +15,7 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 
 import isEmpty from "lodash/isEmpty";
 import get from "lodash/get";
-import { getFieldTypes } from "../AdvancedFinder/fieldTypes";
+import { getFieldTypes } from "../halpers/getFieldTypes";
 import { findChangedFilter } from "../halpers/findChangedFilter";
 
 const FilterCombinedComponent = ({
@@ -73,7 +73,7 @@ const FilterCombinedComponent = ({
           inputRef={register}
           control={control}
           onChange={(e) => {
-              setCombinedFiltertstate({
+            setCombinedFiltertstate({
               ...combinedFiltertstate,
               operatorValue: "",
               filterFieldType: e.target.value,
@@ -174,7 +174,10 @@ const FilterCombinedComponent = ({
               }),
             });
 
-              setCombinedFiltertstate({ ...combinedFiltertstate, operatorType: e.target.value });
+            setCombinedFiltertstate({
+              ...combinedFiltertstate,
+              operatorType: e.target.value,
+            });
           }}
           inputProps={{
             id: "select-filter-operators",

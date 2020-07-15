@@ -5,7 +5,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import WallpaperIcon from "@material-ui/icons/Wallpaper";
 import SidebarSettings from "../SidebarSettings/SidebarSettings";
 import SidebarData from "../SidebarData/SideBarData";
-import SidebarParameters from "../SidebarParameters/SidebarParameters-redux";
+import SideBarParameters from "../SidebarParameters/SideBarParameters";
 import SidebarImageManager from "../SidebarImageManager/SidebarImageManager";
 
 export const DefineIconComp = ({ name }) => {
@@ -27,6 +27,7 @@ export const DefineIconComp = ({ name }) => {
   }
 };
 
+
 export const DefineActiveComp = ({ name }) => {
   switch (name) {
     case "properties":
@@ -36,7 +37,7 @@ export const DefineActiveComp = ({ name }) => {
       return <SidebarData />;
 
     case "parameters":
-      return <SidebarParameters />;
+    return <SideBarParameters />;
 
     case "image":
       return <SidebarImageManager />;

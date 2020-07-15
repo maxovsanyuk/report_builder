@@ -243,8 +243,8 @@ const NewDataSetList = ({
             onClick={() => {
               if (
                 dataSetName &&
-                dataSetName.length > minNameLength &&
-                dataSetName.length < maxNameLength &&
+                dataSetName.length >= minNameLength &&
+                dataSetName.length <= maxNameLength &&
                 isFullEntitie &&
                 isEmpty(
                   dataSets.filter((d) => {

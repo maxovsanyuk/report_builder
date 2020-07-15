@@ -4,17 +4,21 @@ import {
   SET_REPORT_PARAMETERS,
   SIDE_BAR_OPEN_HANDLER,
   IS_SAVED_NEW_DATASET_SETTINGS,
+  IS_SAVED_NEW_PARAMETERS_SETTINGS,
   SET_NEW_DATASET_STATE,
+  SET_NEW_PARAMETERS_STATE,
   SHOW_ALERT,
-} from "../types";
+} from "../types/types";
 
 const INITIAL_STATE = {
   parameters: [],
   dataSets: [],
   newDataSet: {},
+  newParametersSet: {},
   isLoading: false,
   isOpenSideBar: false,
   isSavedNewDataSetData: true,
+  isSavedNewParametersData: true,
   isShownAlert: false,
 };
 
@@ -48,6 +52,12 @@ export default function app_reducer(state = INITIAL_STATE, action) {
         ...state,
         isSavedNewDataSetData: payload,
       };
+    case IS_SAVED_NEW_PARAMETERS_SETTINGS:
+      return {
+        ...state,
+        isSavedNewParametersData: payload,
+      };
+
     case SHOW_ALERT:
       return {
         ...state,
@@ -58,6 +68,12 @@ export default function app_reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         newDataSet: payload,
+      };
+
+    case SET_NEW_PARAMETERS_STATE:
+      return {
+        ...state,
+        newParametersSet: payload,
       };
 
     default:

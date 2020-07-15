@@ -116,3 +116,105 @@ const SideBarData = () => {
 };
 
 export default SideBarData;
+
+
+
+
+// buildFetch = () => {
+//     const newEntities = cloneDeep(this.state.entities);
+//     const fetch = {
+//         'fetch': {
+//             'entity': {
+//                 '@name': newEntities[0].value.value,
+//             }
+//         }
+//     };
+//
+//     // adding 'attribute'
+//
+//     const attributes = newEntities[0].filtersOptions.filter(option => option.type === 'field' && option.chosen);
+//     if (attributes.length && attributes.length > 1) {
+//         fetch['fetch']['entity']['attribute'] = attributes.map(attribute => {
+//             return {
+//                 '@name': attribute.value
+//             }
+//         })
+//     }
+//     if (attributes.length && attributes.length === 1) {
+//         fetch['fetch']['entity']['attribute'] = {
+//             '@name': attributes[0].value
+//         };
+//     }
+//     if (!attributes.length) {
+//         fetch['fetch']['entity']['all-attributes'] = null;
+//     }
+//
+//     // adding 'filter'
+//
+//     const parseFilters = (filters) => {
+//         let result = filters.length > 1 ? [] : {};
+//         filters.forEach(filter => {
+//             if (filter.logicalType) {
+//                 const newElement = {
+//                     '@type': filter.logicalType
+//                 };
+//                 const conditionElements = filter.items.filter(item => !item.logicalType);
+//                 const conditionQuantity = conditionElements.length;
+//                 if (conditionQuantity && conditionQuantity > 1) {
+//                     newElement['condition'] = conditionElements.map(item => {
+//                         return {
+//                             '@attribute': item.field.value,
+//                             '@operator': item.operator.value,
+//                             '@value': typeof item.value === 'object' && item.value !== null ? item.value.value : item.value
+//                         }
+//                     });
+//                 }
+//                 if (conditionQuantity && conditionQuantity === 1) {
+//                     newElement['condition'] = {
+//                         '@attribute': conditionElements[0].field.value,
+//                         '@operator': conditionElements[0].operator.value,
+//                         '@value': typeof conditionElements[0].value === 'object' && conditionElements[0].value !== null ? conditionElements[0].value.value : conditionElements[0].value
+//                     }
+//                 }
+//
+//                 const filterElements = filter.items.filter(item => item.logicalType);
+//                 const filterQuantity = filterElements.length;
+//                 if (filterQuantity) {
+//                     newElement['filter'] = parseFilters(filterElements);
+//                 }
+//
+//                 if (filters.length > 1) {
+//                     result.push(newElement);
+//                 } else {
+//                     result = newElement;
+//                 }
+//             } else {
+//                 if (filters.length > 1) {
+//                     result.push({
+//                         '@type': 'and',
+//                         'condition': {
+//                             '@attribute': filter.field.value,
+//                             '@operator': filter.operator.value,
+//                             '@value': typeof filter.value === 'object' && filter.value !== null ? filter.value.value : filter.value
+//                         }
+//                     });
+//                 } else {
+//                     result = {
+//                         '@type': 'and',
+//                         'condition': {
+//                             '@attribute': filter.field.value,
+//                             '@operator': filter.operator.value,
+//                             '@value': typeof filter.value === 'object' && filter.value !== null ? filter.value.value : filter.value
+//                         }
+//                     };
+//                 }
+//             }
+//         });
+//
+//         return result;
+//     };
+//
+//     const filters = newEntities[0].filters;
+//     if (filters.length) {
+//         fetch['fetch']['entity']['filter'] = parseFilters(filters);
+//     }

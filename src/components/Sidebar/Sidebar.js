@@ -35,7 +35,7 @@ const SidebarComp = styled.div`
   height: calc(100vh - 60px);
   flex-direction: column;
   padding: 5px;
-  z-index: 10;
+  z-index: 90;
   position: fixed;
   right: 0;
   top: 60px;
@@ -61,7 +61,11 @@ const sideBarBtns = [
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("");
   const state = useSelector((state) => state.app);
-  const { isOpenSideBar, isSavedNewDataSetData } = state;
+  const {
+    isOpenSideBar,
+    isSavedNewDataSetData,
+    isSavedNewParametersData,
+  } = state;
   const dispatch = useDispatch();
 
   return (
@@ -72,14 +76,16 @@ const Sidebar = () => {
             <div
               key={name}
               onClick={() => {
-                !isSavedNewDataSetData
+                !isSavedNewDataSetData || !isSavedNewParametersData
                   ? dispatch(showAlert(true))
                   : dispatch(
                       sideBarHandleOpen(
                         name === activeTab ? !isOpenSideBar : true
                       )
                     );
-                isSavedNewDataSetData && setActiveTab(name);
+                isSavedNewDataSetData &&
+                  isSavedNewParametersData &&
+                  setActiveTab(name);
               }}
             >
               <IconButton

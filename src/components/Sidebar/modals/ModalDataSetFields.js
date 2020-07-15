@@ -4,8 +4,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
-import { setNewDataSetState } from "../../../redux/actions/app_action";
-import { useSelector } from "react-redux";
 
 const ModalDataSetFields = ({
   setIsMadalOpen,
