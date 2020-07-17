@@ -1,3 +1,13 @@
+import React, { useState } from "react";
+import { setNewParametersSetState } from "../../../../redux/actions/app_action";
+
+import SpecifyRadioComponent from "./SpecifyRadioComponent";
+import QueryValueRadioComponent from "./QueryValueRadioComponent";
+
+// MATERIAL UI
+
+import TabPanel from "@material-ui/lab/TabPanel";
+import Radio from "@material-ui/core/Radio";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TabContext from "@material-ui/lab/TabContext";
@@ -6,13 +16,10 @@ import TabList from "@material-ui/lab/TabList";
 import Tab from "@material-ui/core/Tab";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import React, { useState } from "react";
+
+// LODASH
+
 import get from "lodash/get";
-import { setNewParametersSetState } from "../../../../redux/actions/app_action";
-import TabPanel from "@material-ui/lab/TabPanel";
-import Radio from "@material-ui/core/Radio";
-import SpecifyRadioComponent from "./SpecifyRadioComponent";
-import QueryValueRadioComponent from "./QueryValueRadioComponent";
 
 const TabPanelComponent = ({
   value,

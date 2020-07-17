@@ -1,11 +1,12 @@
 import React from "react";
-
 import { AnimatedComponent } from "../../views/AnimatedComponent";
 
-export default function SidebarImageManager(props) {
+const SidebarImageManager = () => {
   return (
     <AnimatedComponent>
-      <h2>Image Manager</h2>
+      <h2 style={{ textAlign: "center" }}>Image Manager</h2>
     </AnimatedComponent>
   );
-}
+};
+
+export default SidebarImageManager;

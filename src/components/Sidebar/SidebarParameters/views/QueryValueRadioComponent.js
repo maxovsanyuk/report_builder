@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
-import get from "lodash/get";
+
 import { useForm } from "react-hook-form";
-import { setNewParametersSetState } from "../../../../redux/actions/app_action";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import styled from "styled-components";
 import { useSelector } from "react-redux";
+import { setNewParametersSetState } from "../../../../redux/actions/app_action";
+
+import styled from "styled-components";
+
+// MATERIAL
+
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import isEmpty from "lodash/isEmpty";
 import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
+import TextField from "@material-ui/core/TextField";
+
+// LODASH
+
+import get from "lodash/get";
 
 const QueryValueComponent = styled.div`
   .btn-title {

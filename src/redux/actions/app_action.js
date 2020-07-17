@@ -9,6 +9,7 @@ import {
   SHOW_ALERT,
   SET_NEW_DATASET_STATE,
   SET_NEW_PARAMETERS_STATE,
+  SET_SETTINGS_STATE,
 } from "../types/types";
 
 export const resetState = () => ({
@@ -57,5 +58,10 @@ export const setNewDataSetState = (state) => ({
 
 export const setNewParametersSetState = (state) => ({
   type: SET_NEW_PARAMETERS_STATE,
+  payload: state,
+});
+
+export const setSettings = (state) => ({
+  type: SET_SETTINGS_STATE,
   payload: state,
 });

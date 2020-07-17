@@ -7,11 +7,13 @@ import {
   IS_SAVED_NEW_PARAMETERS_SETTINGS,
   SET_NEW_DATASET_STATE,
   SET_NEW_PARAMETERS_STATE,
+  SET_SETTINGS_STATE,
   SHOW_ALERT,
 } from "../types/types";
 
 const INITIAL_STATE = {
   parameters: [],
+  settings: {},
   dataSets: [],
   newDataSet: {},
   newParametersSet: {},
@@ -74,6 +76,12 @@ export default function app_reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         newParametersSet: payload,
+      };
+
+    case SET_SETTINGS_STATE:
+      return {
+        ...state,
+        settings: payload,
       };
 
     default:

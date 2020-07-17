@@ -59,7 +59,6 @@ const NewEntities = ({
   const { newDataSet } = state;
   const dispatch = useDispatch();
 
-
   const checkedFilters =
     get(entitiState, "filtersList") &&
     entitiState?.filtersList?.filter((f) => get(f, "checked"));
