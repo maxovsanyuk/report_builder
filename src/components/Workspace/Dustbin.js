@@ -171,7 +171,6 @@ export const Dustbin = () => {
                     left: `${w?.left}px`,
                     top: `${w?.top}px`,
                     background: `#fff url(${require(`../WidgetsToolBar/images/${w.name}.png`)}) no-repeat center`,
-                    backgroundSize: "60%",
                   }}
                   onMouseOver={() => {
                     document.getElementById(`wg-info-${w.name}`).style.display =
