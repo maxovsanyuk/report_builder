@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { setDataSets } from "../../../redux/actions/app_action";
 import NewDataSetList from "./NewDataSetList/NewDataSetList";
 import { AnimatedComponent } from "../../views/AnimatedComponent";
@@ -116,9 +115,6 @@ const SideBarData = () => {
 };
 
 export default SideBarData;
-
-
-
 
 // buildFetch = () => {
 //     const newEntities = cloneDeep(this.state.entities);

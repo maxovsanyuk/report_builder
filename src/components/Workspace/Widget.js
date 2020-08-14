@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDrag } from "react-dnd";
 
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { setWidgetsList } from "../../redux/actions/app_action";
 
 const WidgetBox = styled.div`
   display: flex;
@@ -27,26 +29,65 @@ const WidgetBox = styled.div`
 `;
 
 export const Widget = ({ name, setCurrentWgInfo }) => {
+  const state = useSelector((state) => state.app);
+  const { widgetsList } = state;
+
+  const dispatch = useDispatch();
+
+  function getCoords(elem) {
+    const box = elem.getBoundingClientRect();
+    return {
+      top: box.top + window.pageYOffset,
+      left: box.left + window.pageXOffset,
+    };
+  }
+
   const [{ isDragging }, drag] = useDrag({
     item: { name, type: "box" },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
+
       if (item && dropResult) {
+        var ball = document.getElementById(name);
+
+        dispatch(
+          setWidgetsList([
+            ...widgetsList,
+            {
+              id: new Date().getTime(),
+              top: getCoords(ball).top,
+              left: getCoords(ball).left,
+              name,
+            },
+          ])
+        );
+
         alert(`You dropped ${item.name} into ${dropResult.name}!`);
       }
     },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
+    collect: (monitor) => {
+      return {
+        isDragging: monitor.isDragging(),
+      };
+    },
   });
 
   return (
     <WidgetBox
+      id={name}
       ref={drag}
       style={{ opacity: isDragging ? 0.4 : 1 }}
-      onMouseEnter={() => setCurrentWgInfo(name)}
-      onMouseLeave={() => setCurrentWgInfo(null)}
-      onMouseDown={() => setCurrentWgInfo(null)}
+      onMouseEnter={() => {
+        setCurrentWgInfo(name);
+      }}
+      onMouseLeave={() => {
+        setCurrentWgInfo(null);
+      }}
+      onMouseDown={() => {
+        widgetsList.filter((w) => w.name === name).length &&
+          alert("Widget already exist");
+        setCurrentWgInfo(null);
+      }}
     >
       <img src={require(`../WidgetsToolBar/images/${name}.png`)} alt={name} />
     </WidgetBox>

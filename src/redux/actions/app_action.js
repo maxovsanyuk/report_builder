@@ -10,6 +10,7 @@ import {
   SET_NEW_DATASET_STATE,
   SET_NEW_PARAMETERS_STATE,
   SET_SETTINGS_STATE,
+  SET_WIDGETS_LIST,
 } from "../types/types";
 
 export const resetState = () => ({
@@ -63,5 +64,10 @@ export const setNewParametersSetState = (state) => ({
 
 export const setSettings = (state) => ({
   type: SET_SETTINGS_STATE,
+  payload: state,
+});
+
+export const setWidgetsList = (state) => ({
+  type: SET_WIDGETS_LIST,
   payload: state,
 });

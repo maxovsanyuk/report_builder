@@ -8,6 +8,7 @@ import {
   SET_NEW_DATASET_STATE,
   SET_NEW_PARAMETERS_STATE,
   SET_SETTINGS_STATE,
+  SET_WIDGETS_LIST,
   SHOW_ALERT,
 } from "../types/types";
 
@@ -22,6 +23,7 @@ const INITIAL_STATE = {
   isSavedNewDataSetData: true,
   isSavedNewParametersData: true,
   isShownAlert: false,
+  widgetsList: [],
 };
 
 export default function app_reducer(state = INITIAL_STATE, action) {
@@ -82,6 +84,11 @@ export default function app_reducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         settings: payload,
+      };
+    case SET_WIDGETS_LIST:
+      return {
+        ...state,
+        widgetsList: payload,
       };
 
     default:

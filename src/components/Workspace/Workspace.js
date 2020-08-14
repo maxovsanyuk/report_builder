@@ -35,6 +35,10 @@ const WidgetsToolBar = styled.div`
   top: 0;
   z-index: 80;
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   .input-wrapper {
     position: relative;
     background: dodgerblue;
