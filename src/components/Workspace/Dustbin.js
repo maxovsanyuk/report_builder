@@ -3,9 +3,8 @@ import { useDrop } from "react-dnd";
 import ResizePanel from "react-resize-panel";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
-import update from "immutability-helper";
+import ImgMenu from "../../components/WidgetsToolBar/images/menu-icon.png";
+import { setWidgetsList } from "../../redux/actions/app_action";
 
 const DnDBox = styled.div`
   width: 95%;
@@ -62,37 +61,185 @@ const DnDBox = styled.div`
   }
 
   .wg-info {
-    display: none;
-  }
-
-  .widget {
-    min-height: 100px;
-    min-width: 100px;
-    max-width: 90%;
-    max-height: 90%;
-    background: #fff;
-    resize: both;
-    overflow: auto;
-    outline: 2px dashed #999;
-
-    &::-webkit-resizer {
-    }
-  }
-
-  .wg-info {
     text-align: center;
     padding: 10px;
     background: #fff;
   }
+
+  .wg-menu-bar {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    min-height: 140px;
+    padding: 10px;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.8);
+    background: #fff;
+    position: absolute;
+    top: 0;
+    z-index: 100;
+  }
+
+  .close-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    background: #fff;
+    transition: 0.3s;
+    &:hover {
+      cursor: pointer;
+      transition: 0.3s;
+      background: #4da6ff;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  .remove-btn {
+    margin: 5px 0 0 0;
+    padding: 5px;
+    border: none;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.8);
+    background: #fff;
+    transition: 0.3s;
+    &:hover {
+      transition: 0.3s;
+      cursor: pointer;
+      color: crimson;
+    }
+  }
 `;
 
+const WgMainBox = styled.div`
+  min-height: 100px;
+  min-width: 100px;
+  max-width: 90%;
+  max-height: 90%;
+  background: #fff;
+  resize: both;
+  overflow: auto;
+  outline: 2px dashed #999;
+
+  //&::-webkit-resizer {
+  //}
+
+  .wg-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-bottom-left-radius: 20%;
+    z-index: 20;
+    background: #ccc url(${ImgMenu}) no-repeat center;
+    background-size: 70%;
+    transition: 0.3s;
+
+    &:hover {
+      transition: 0.3s;
+      cursor: pointer;
+      background: #4da6ff url(${ImgMenu}) no-repeat center;
+      background-size: 70%;
+    }
+  }
+`;
+
+const WgBox = ({ widget, widgetState, setWidgetState }) => {
+  const [wgMenuState, setWgMenuState] = useState({
+    isOpen: false,
+    position: {},
+  });
+
+  const state = useSelector((state) => state.app);
+  const { widgetsList } = state;
+
+  const dispatch = useDispatch();
+
+  return (
+    <>
+      <WgMainBox
+        style={{
+          position: "absolute",
+          left: `${widget?.left}px`,
+          top: `${widget?.top}px`,
+          background: `#fff url(${require(`../WidgetsToolBar/images/${widget.name}.png`)}) no-repeat center`,
+        }}
+        // onMouseDown={() => alert("D")}
+        onMouseOver={() => {
+          setWidgetState({ isActive: true, name: widget.name });
+        }}
+        onMouseLeave={() => {
+          setWidgetState({ isActive: false, name: null });
+        }}
+      >
+        {widgetState?.isActive && widgetState?.name === widget.name && (
+          <div
+            className="wg-menu"
+            onClick={(e) => {
+              setWgMenuState({
+                isOpen: !wgMenuState?.isOpen,
+                position: { x: e.clientX, y: e.clientY },
+              });
+            }}
+          />
+        )}
+      </WgMainBox>
+
+      {wgMenuState?.isOpen && (
+        <div
+          style={{
+            top: `${wgMenuState?.position?.y}px`,
+            left: `${wgMenuState?.position?.x / 2}px`,
+          }}
+          className="wg-menu-bar"
+        >
+          <div
+            className="close-btn"
+            onClick={(e) => {
+              setWgMenuState({
+                isOpen: false,
+                position: {},
+              });
+            }}
+          >
+            X
+          </div>
+          {widget.name}
+          <button
+            className="remove-btn"
+            onClick={() =>
+              dispatch(
+                setWidgetsList(
+                  widgetsList.filter((w) => w?.name !== widget?.name)
+                )
+              )
+            }
+          >
+            Remove {widget.name}
+          </button>
+        </div>
+      )}
+    </>
+  );
+};
+
 export const Dustbin = () => {
+  const [widgetState, setWidgetState] = useState({
+    isActive: false,
+    name: null,
+  });
+
   const state = useSelector((state) => state.app);
   const { widgetsList } = state;
 
   console.log(widgetsList, "widgetsList");
-
-  const dispatch = useDispatch();
 
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: "box",
@@ -163,28 +310,12 @@ export const Dustbin = () => {
 
             {widgetsList.map((w) => {
               return (
-                <div
+                <WgBox
                   key={w.name}
-                  className="widget"
-                  style={{
-                    position: "absolute",
-                    left: `${w?.left}px`,
-                    top: `${w?.top}px`,
-                    background: `#fff url(${require(`../WidgetsToolBar/images/${w.name}.png`)}) no-repeat center`,
-                  }}
-                  onMouseOver={() => {
-                    document.getElementById(`wg-info-${w.name}`).style.display =
-                      "flex";
-                  }}
-                  onMouseLeave={() => {
-                    document.getElementById(`wg-info-${w.name}`).style.display =
-                      "none";
-                  }}
-                >
-                  <div className="wg-info" id={`wg-info-${w.name}`}>
-                    {w.name}
-                  </div>
-                </div>
+                  widget={w}
+                  setWidgetState={setWidgetState}
+                  widgetState={widgetState}
+                />
               );
             })}
           </div>
