@@ -249,6 +249,11 @@ const WidgetMenu = ({
         className="remove-btn"
         onClick={() => {
           setIsWgMwnuOpen(false);
+          setCurrentWidgetState({
+            ...currentWidgetState,
+            isMenuOpen: false,
+          });
+
           dispatch(
             setWidgetsList([
               ...widgetsList,
@@ -258,6 +263,7 @@ const WidgetMenu = ({
                 top: 20,
                 left: 20,
                 clone: true,
+                draggable: false,
               },
             ])
           );
