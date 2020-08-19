@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setWidgetsList } from "../../redux/actions/app_action";
 
@@ -272,16 +272,27 @@ const WidgetMenu = ({
 const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
   const [isWgMenuOpen, setIsWgMwnuOpen] = useState(false);
 
+  let currentWidget = document.getElementById(`${widget?.id}`);
+
+  const state = useSelector((state) => state.app);
+  const { widgetsList } = state;
+  const dispatch = useDispatch();
+
+  useEffect(() => {}, [widget.height, widget.width]);
+
   return (
     <>
       <WgMainBox
+        id={widget?.id}
         style={{
           position: "absolute",
           width: "100%",
           height: "100%",
           background: `#fff url(${require(`../WidgetsToolBar/images/${widget.name}.png`)}) no-repeat center`,
         }}
-        onMouseOver={() => {
+        onMouseOver={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
           setCurrentWidgetState({
             ...currentWidgetState,
             isActive: true,
@@ -289,8 +300,37 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
             draggable: false,
             id: widget.id,
           });
+
+          dispatch(
+            setWidgetsList(
+              widgetsList.map((w) => {
+                return w.id === widget.id
+                  ? {
+                      ...w,
+                      height: currentWidget ? currentWidget.offsetHeight : 200,
+                      width: currentWidget ? currentWidget.offsetWidth : 200,
+                    }
+                  : w;
+              })
+            )
+          );
         }}
-        onMouseLeave={() => {
+        onMouseLeave={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          dispatch(
+            setWidgetsList(
+              widgetsList.map((w) => {
+                return w.id === widget.id
+                  ? {
+                      ...w,
+                      height: currentWidget ? currentWidget.offsetHeight : 200,
+                      width: currentWidget ? currentWidget.offsetWidth : 200,
+                    }
+                  : w;
+              })
+            )
+          );
           setCurrentWidgetState({
             ...currentWidgetState,
             isActive: false,
@@ -315,6 +355,23 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
             }}
           />
         )}
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+            position: "absolute",
+            bottom: "5px",
+            fontSize: "14px",
+          }}
+        >
+          <span style={{ margin: "0 10px 0 0" }}>
+            H:{currentWidget ? currentWidget.offsetHeight : widget?.height}px
+          </span>
+          <span>
+            W:{currentWidget ? currentWidget.offsetWidth : widget?.width}
+          </span>
+        </div>
       </WgMainBox>
 
       {isWgMenuOpen && (

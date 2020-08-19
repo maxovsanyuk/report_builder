@@ -57,6 +57,8 @@ export const Widget = ({ name, setCurrentWgInfo }) => {
               id: new Date().getTime(),
               top: getCoords(widget).top,
               left: getCoords(widget).left,
+              height: 200,
+              width: 200,
               name,
             },
           ])
