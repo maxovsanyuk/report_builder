@@ -366,10 +366,10 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
           }}
         >
           <span style={{ margin: "0 10px 0 0" }}>
-            H:{currentWidget ? currentWidget.offsetHeight : widget?.height}px
+            H: {currentWidget ? currentWidget.offsetHeight : widget?.height}px
           </span>
           <span>
-            W:{currentWidget ? currentWidget.offsetWidth : widget?.width}
+            W: {currentWidget ? currentWidget.offsetWidth : widget?.width}px
           </span>
         </div>
       </WgMainBox>
@@ -428,8 +428,6 @@ export const Dustbin = () => {
   }
 
   const dragHandlers = { onStart, onStop };
-
-  console.log(widgetsList, "widgetsList");
 
   return (
     <DnDBox>
