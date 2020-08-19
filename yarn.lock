@@ -5757,7 +5757,7 @@ http-proxy-middleware@0.19.1:
     lodash "^4.17.11"
     micromatch "^3.1.10"
 
-http-proxy@^1.17.0, http-proxy@^1.18.0:
+http-proxy@^1.17.0:
   version "1.18.1"
   resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.18.1.tgz#401541f0534884bbf95260334e72f88ee3976549"
   integrity sha512-7mz/721AbnJwIVbnaSv1Cz3Am0ZLT/UBwkC92VlxhXv/k/BBQfM2fXElQNC27BVGr0uwUpplYPQM9LnaBMR5NQ==
@@ -9579,17 +9579,6 @@ raw-body@2.4.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-amazing-proxy@^1.0.63:
-  version "1.0.63"
-  resolved "https://registry.yarnpkg.com/react-amazing-proxy/-/react-amazing-proxy-1.0.63.tgz#1fd4dced3bf73a52709cb32ef8926f7dcbe478a8"
-  integrity sha512-c5R1PH+W0zMP6j9myWjkXjo6O2GFTz/t15Em2qM3hA1+Wb1iPopJsO6ZUtAE7W6RI3ua4BOt8UD26sIemPxyRA==
-  dependencies:
-    chalk "^3.0.0"
-    chokidar "^3.3.0"
-    compression "^1.7.4"
-    express "^4.17.1"
-    http-proxy "^1.18.0"
-
 react-app-polyfill@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-1.0.6.tgz#890f8d7f2842ce6073f030b117de9130a5f385f0"
@@ -9671,7 +9660,7 @@ react-dom@^16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
-react-draggable@^4.0.3:
+react-draggable@^4.0.3, react-draggable@^4.4.3:
   version "4.4.3"
   resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-4.4.3.tgz#0727f2cae5813e36b0e4962bf11b2f9ef2b406f3"
   integrity sha512-jV4TE59MBuWm7gb6Ns3Q1mxX8Azffb7oTtDtBgFkxRvhDp38YAARmRplrj0+XGkhOJB5XziArX+4HUUABtyZ0w==

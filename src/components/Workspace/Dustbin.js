@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setWidgetsList } from "../../redux/actions/app_action";
+
 import { useDrop } from "react-dnd";
 import ResizePanel from "react-resize-panel";
+import Draggable from "react-draggable";
+
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+
 import ImgMenu from "../../components/WidgetsToolBar/images/menu-icon.png";
-import { setWidgetsList } from "../../redux/actions/app_action";
-import Draggable, { DraggableCore } from "react-draggable";
+import ResizibleImg from "../../components/WidgetsToolBar/images/resizible.png";
+
+import get from "lodash/get";
 
 const DnDBox = styled.div`
   width: 95%;
@@ -30,9 +36,22 @@ const DnDBox = styled.div`
   }
 
   .box {
-    min-height: 100px;
-    min-width: 100px;
+    min-height: 200px;
+    min-width: 200px;
     float: left;
+    resize: both;
+    overflow: auto;
+    outline: 2px dashed #999;
+    z-index: 999;
+
+    &:hover {
+      cursor: default;
+    }
+
+    &::-webkit-resizer {
+      width: 10px;
+      height: 10px;
+    }
   }
 
   .handle-style {
@@ -93,10 +112,10 @@ const DnDBox = styled.div`
     align-items: center;
     font-size: 12px;
     position: absolute;
-    top: -10px;
-    right: -10px;
-    width: 20px;
-    height: 20px;
+    top: -15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     border: 1px solid #ccc;
     background: #fff;
@@ -126,40 +145,51 @@ const DnDBox = styled.div`
       outline: none;
     }
   }
+
+  .resizible-btn {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background: #fff url(${ResizibleImg}) no-repeat center;
+    background-size: 50%;
+    border-radius: 50%;
+    left: -10px;
+    top: -10px;
+    z-index: 100;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.8);
+    transition: 0.3s;
+    &:hover {
+      transition: 0.3s;
+      cursor: move;
+      background: #4da6ff url(${ResizibleImg}) no-repeat center;
+      background-size: 50%;
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 const WgMainBox = styled.div`
-  min-height: 100px;
-  min-width: 100px;
-  max-width: 90%;
-  max-height: 90%;
+  min-height: 100%;
+  min-width: 100%;
   background: #fff;
-  resize: both;
-  overflow: auto;
-  outline: 2px dashed #999;
-
-  &::-webkit-resizer {
-    width: 10px;
-    height: 10px;
-  }
 
   .wg-menu {
     position: absolute;
     top: 0;
     right: 0;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-bottom-left-radius: 20%;
     z-index: 20;
     background: #ccc url(${ImgMenu}) no-repeat center;
-    background-size: 70%;
+    background-size: 60%;
     transition: 0.3s;
 
     &:hover {
       transition: 0.3s;
       cursor: pointer;
       background: #4da6ff url(${ImgMenu}) no-repeat center;
-      background-size: 70%;
+      background-size: 60%;
     }
   }
 `;
@@ -188,127 +218,54 @@ const WidgetMenu = ({
   setCurrentWidgetState,
   currentWidgetState,
 }) => {
-  const [menuState, setMenuState] = useState({
-    position: { x: null, y: null },
-    proportions: { height: null, width: null },
-  });
   const state = useSelector((state) => state.app);
   const { widgetsList } = state;
   const dispatch = useDispatch();
 
-  console.log(menuState, "menuState");
-
   return (
-    <WgMenu className="wg-menu-bar">
+    <WgMenu className="wg-menu-bar" onMouseOver={(e) => e.stopPropagation()}>
       <div
         className="close-btn"
         onClick={(e) => {
           setIsWgMwnuOpen(false);
+          setCurrentWidgetState({
+            ...currentWidgetState,
+            isMenuOpen: false,
+          });
         }}
       >
         X
       </div>
-      {widget.name}
+      {widget.name} {get(widget, "clone") && "(Clone)"}
       <button
         className="remove-btn"
         onClick={() => {
-          setMenuState({});
           dispatch(
-            setWidgetsList(widgetsList.filter((w) => w?.name !== widget?.name))
+            setWidgetsList(widgetsList.filter((w) => w?.id !== widget?.id))
           );
         }}
       >
         Remove {widget.name}
       </button>
-
-      <span
-        style={{
-          width: "100%",
-          fontSize: "14px",
-          textAlign: "center",
-          margin: "5px 0",
-        }}
-      >
-        Position
-      </span>
-      <label>
-        x:
-        <input
-          onChange={(e) =>
-            setMenuState({
-              ...menuState,
-              position: { ...menuState?.position, x: e.target.value },
-            })
-          }
-          className="input"
-          type="number"
-        />{" "}
-        px
-      </label>
-      <label>
-        y:
-        <input
-          onChange={(e) =>
-            setMenuState({
-              ...menuState,
-              position: { ...menuState?.position, y: e.target.value },
-            })
-          }
-          className="input"
-          type="number"
-        />{" "}
-        px
-      </label>
-      <span
-        style={{
-          width: "100%",
-          fontSize: "14px",
-          textAlign: "center",
-          margin: "5px 0",
-        }}
-      >
-        Widget proportions
-      </span>
-      <label>
-        h:
-        <input
-          onChange={(e) =>
-            setMenuState({
-              ...menuState,
-              proportions: {
-                ...menuState?.proportions,
-                height: e.target.value,
-              },
-            })
-          }
-          className="input"
-          type="number"
-        />{" "}
-        px
-      </label>
-      <label>
-        w:
-        <input
-          onChange={(e) =>
-            setMenuState({
-              ...menuState,
-              proportions: { ...menuState?.proportions, width: e.target.value },
-            })
-          }
-          className="input"
-          type="number"
-        />{" "}
-        px
-      </label>
-
       <button
         className="remove-btn"
         onClick={() => {
-          setCurrentWidgetState({ ...currentWidgetState, ...menuState });
           setIsWgMwnuOpen(false);
+          dispatch(
+            setWidgetsList([
+              ...widgetsList,
+              {
+                id: new Date().getTime(),
+                name: widget.name,
+                top: 10,
+                left: 10,
+                clone: true,
+              },
+            ])
+          );
         }}
       >
-        Save
+        Clone
       </button>
     </WgMenu>
   );
@@ -327,21 +284,39 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
           background: `#fff url(${require(`../WidgetsToolBar/images/${widget.name}.png`)}) no-repeat center`,
         }}
         onMouseOver={() => {
-          setCurrentWidgetState({ isActive: true, name: widget.name });
+          setCurrentWidgetState({
+            ...currentWidgetState,
+            isActive: true,
+            name: widget.name,
+            draggable: false,
+            id: widget.id,
+          });
         }}
         onMouseLeave={() => {
-          setCurrentWidgetState({ isActive: false, name: null });
+          setCurrentWidgetState({
+            ...currentWidgetState,
+            isActive: false,
+            name: null,
+            draggable: true,
+            id: null,
+          });
         }}
       >
-        {currentWidgetState?.isActive &&
-          currentWidgetState?.name === widget.name && (
-            <div
-              className="wg-menu"
-              onClick={(e) => {
-                setIsWgMwnuOpen(!isWgMenuOpen);
-              }}
-            />
-          )}
+        {currentWidgetState?.isActive && currentWidgetState?.id === widget.id && (
+          <div
+            className="wg-menu"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsWgMwnuOpen(!isWgMenuOpen);
+
+              setCurrentWidgetState({
+                ...currentWidgetState,
+                draggable: false,
+                isMenuOpen: !isWgMenuOpen,
+              });
+            }}
+          />
+        )}
       </WgMainBox>
 
       {isWgMenuOpen && (
@@ -360,11 +335,9 @@ export const Dustbin = () => {
   const [currentWidgetState, setCurrentWidgetState] = useState({
     isActive: false,
     name: null,
-    position: { x: null, y: null },
-    proportions: { height: null, width: null },
+    draggable: true,
+    isMenuOpen: false,
   });
-
-  console.log(currentWidgetState, "widgetState");
 
   const state = useSelector((state) => state.app);
   const { widgetsList } = state;
@@ -389,19 +362,19 @@ export const Dustbin = () => {
     backgroundColor = "lightgreen";
   }
 
-  const [stateS, setState] = useState({
-    activeDrags: 0,
-  });
+  const [activeDrags, setActiveDrags] = useState(0);
 
   function onStart() {
-    setState({ activeDrags: stateS?.activeDrags });
+    return currentWidgetState?.draggable;
   }
 
   function onStop() {
-    setState({ activeDrags: stateS?.activeDrags });
+    setActiveDrags(activeDrags);
   }
 
   const dragHandlers = { onStart, onStop };
+
+  console.log(widgetsList, "widgetsList");
 
   return (
     <DnDBox>
@@ -456,15 +429,40 @@ export const Dustbin = () => {
 
             {widgetsList.map((w) => {
               return (
-                <Draggable bounds="parent" {...dragHandlers}>
+                <Draggable key={w.id} bounds="parent" {...dragHandlers}>
                   <div
+                    onMouseOver={() => {
+                      setCurrentWidgetState({
+                        ...currentWidgetState,
+                        draggable: false,
+                        isActive: true,
+                        id: w.id,
+                      });
+                    }}
+                    className="box"
                     style={{
                       position: "absolute",
                       left: `${w?.left}px`,
                       top: `${w?.top}px`,
+                      overflow:
+                        w?.id === currentWidgetState?.id &&
+                        !currentWidgetState?.draggable &&
+                        !currentWidgetState?.isMenuOpen
+                          ? "auto"
+                          : "visible",
                     }}
-                    className="box"
                   >
+                    <div
+                      onMouseOver={(e) => {
+                        e.stopPropagation();
+                        setCurrentWidgetState({
+                          ...currentWidgetState,
+                          draggable: true,
+                        });
+                      }}
+                      className="resizible-btn"
+                    />
+
                     <WgBox
                       widget={w}
                       setCurrentWidgetState={setCurrentWidgetState}

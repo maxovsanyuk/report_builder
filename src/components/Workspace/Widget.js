@@ -48,21 +48,21 @@ export const Widget = ({ name, setCurrentWgInfo }) => {
       const dropResult = monitor.getDropResult();
 
       if (item && dropResult) {
-        var ball = document.getElementById(name);
+        var widget = document.getElementById(name);
 
         dispatch(
           setWidgetsList([
             ...widgetsList,
             {
               id: new Date().getTime(),
-              top: getCoords(ball).top,
-              left: getCoords(ball).left,
+              top: getCoords(widget).top,
+              left: getCoords(widget).left,
               name,
             },
           ])
         );
 
-        alert(`You dropped ${item.name} into ${dropResult.name}!`);
+        // alert(`You dropped ${item.name} into ${dropResult.name}!`);
       }
     },
     collect: (monitor) => {
