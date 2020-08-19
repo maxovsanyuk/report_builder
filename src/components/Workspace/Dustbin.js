@@ -322,6 +322,8 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
       <WgMainBox
         style={{
           position: "absolute",
+          width: "100%",
+          height: "100%",
           background: `#fff url(${require(`../WidgetsToolBar/images/${widget.name}.png`)}) no-repeat center`,
         }}
         onMouseOver={() => {
