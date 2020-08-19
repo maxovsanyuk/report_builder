@@ -48,10 +48,8 @@ const DnDBox = styled.div`
       cursor: default;
     }
 
-    &::-webkit-resizer {
-      width: 10px;
-      height: 10px;
-    }
+    //&::-webkit-resizer {
+    //}
   }
 
   .handle-style {
@@ -205,7 +203,7 @@ const WgMenu = styled.div`
   position: absolute;
   z-index: 100;
   top: 20px;
-  left: 20px;
+  right: -80px;
 
   .input {
     margin: 0 0 10px 0;
@@ -257,8 +255,8 @@ const WidgetMenu = ({
               {
                 id: new Date().getTime(),
                 name: widget.name,
-                top: 10,
-                left: 10,
+                top: 20,
+                left: 20,
                 clone: true,
               },
             ])
