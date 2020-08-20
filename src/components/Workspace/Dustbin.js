@@ -221,10 +221,27 @@ const WidgetMenu = ({
   const dispatch = useDispatch();
 
   return (
-    <WgMenu className="wg-menu-bar" onMouseOver={(e) => e.stopPropagation()}>
+    <WgMenu
+      onMouseDown={(e) => {
+        e.stopPropagation();
+        setCurrentWidgetState({
+          ...currentWidgetState,
+          draggable: false,
+        });
+      }}
+      className="wg-menu-bar"
+      onMouseOver={(e) => e.stopPropagation()}
+    >
       <div
+        onMouseDown={(e) => {
+          e.stopPropagation();
+          setCurrentWidgetState({
+            ...currentWidgetState,
+            draggable: false,
+          });
+        }}
         className="close-btn"
-        onClick={(e) => {
+        onClick={() => {
           setIsWgMwnuOpen(false);
           setCurrentWidgetState({
             ...currentWidgetState,
