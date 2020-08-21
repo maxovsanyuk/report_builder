@@ -349,7 +349,7 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
   const { widgetsList } = state;
   const dispatch = useDispatch();
 
-  makeResizableDiv(`.${widget.id}_resizable`);
+  makeResizableDiv(`.${widget.name}_${widget.id}_resizable`);
 
   return (
     <>
@@ -576,7 +576,7 @@ export const Dustbin = () => {
                         id: w.id,
                       });
                     }}
-                    className={`box resizable ${w.id}_resizable`}
+                    className={`box resizable ${w.name}_${w.id}_resizable`}
                     style={{
                       position: "absolute",
                       left: `${w?.left}px`,
