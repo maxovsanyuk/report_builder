@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setWidgetsList } from "../../redux/actions/app_action";
 
@@ -349,7 +349,7 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
   const { widgetsList } = state;
   const dispatch = useDispatch();
 
-  makeResizableDiv(".resizable");
+  makeResizableDiv(`.${widget.id}_resizable`);
 
   return (
     <>
@@ -576,7 +576,7 @@ export const Dustbin = () => {
                         id: w.id,
                       });
                     }}
-                    className="box resizable"
+                    className={`box resizable ${w.id}_resizable`}
                     style={{
                       position: "absolute",
                       left: `${w?.left}px`,
