@@ -172,7 +172,6 @@ const DnDBox = styled.div`
     background: black;
   }
   .resizable {
-    background: white;
     width: 100px;
     height: 100px;
     position: absolute;
@@ -217,7 +216,6 @@ const DnDBox = styled.div`
 const WgMainBox = styled.div`
   min-height: 100%;
   min-width: 100%;
-  background: #fff;
 
   .wg-menu {
     position: absolute;
@@ -360,7 +358,7 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
           position: "absolute",
           width: "100%",
           height: "100%",
-          background: `#fff url(${require(`../WidgetsToolBar/images/${widget.name}.png`)}) no-repeat center`,
+          background: `rgba(255,255,255,0.9) url(${require(`../WidgetsToolBar/images/${widget.name}.png`)}) no-repeat center`,
         }}
         onMouseOver={(e) => {
           e.stopPropagation();
