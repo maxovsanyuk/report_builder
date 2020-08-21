@@ -6,9 +6,8 @@ import styled from "styled-components";
 import GeneralSettings from "./views/GeneralSettings";
 import Dynamics365Settings from "./views/Dynamics365Settings";
 import ReportSettings from "./views/ReportSettings";
-import Position from "./views/Position";
 
-// MATERIAL
+// MATERIAL UI
 
 import RemoveOutlinedIcon from "@material-ui/icons/RemoveOutlined";
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
@@ -28,7 +27,6 @@ const settingsRows = [
   "General Settings",
   "Dynamics 365 Settings",
   "Report Settings",
-  "Position",
 ];
 
 const SRow = styled.div`
@@ -63,8 +61,6 @@ const DefineSettingsComponent = ({ title }) => {
       return <Dynamics365Settings />;
     case "Report Settings":
       return <ReportSettings />;
-    case "Position":
-      return <Position />;
     default:
       return "Coming Soon";
   }

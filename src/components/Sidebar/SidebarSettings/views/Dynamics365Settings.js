@@ -9,6 +9,7 @@ import styled from "styled-components";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
+import Paper from "@material-ui/core/Paper";
 
 import MenuItem from "@material-ui/core/MenuItem";
 
@@ -50,239 +51,248 @@ const Dynamics365Settings = () => {
 
   return (
     <SettingsBox>
-      <FormControl>
-        <InputLabel htmlFor="categories-label">Categories</InputLabel>
+      <Paper>
+        <div style={{ display: "flex", flexWrap: "wrap", padding: "15px" }}>
+          <FormControl>
+            <InputLabel htmlFor="categories-label">Categories</InputLabel>
 
-        <Select
-          name="Categories"
-          value={
-            get(currentState, "categories") ||
-            get(settings, "dynamics365Settings.categories")
-          }
-          onChange={(e) => {
-            setCurrentState({ ...currentState, categories: e.target.value });
-
-            dispatch(
-              setSettings({
-                ...settings,
-                dynamics365Settings: {
-                  ...settings?.dynamics365Settings,
+            <Select
+              name="Categories"
+              value={
+                get(currentState, "categories") ||
+                get(settings, "dynamics365Settings.categories")
+              }
+              onChange={(e) => {
+                setCurrentState({
+                  ...currentState,
                   categories: e.target.value,
-                },
-              })
-            );
-          }}
-          style={{
-            width: "100px",
-            maxWidth: "100px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-          required
-          inputProps={{
-            id: "categories-label",
-          }}
-        >
-          {categories.map(({ name, type }) => {
-            return (
-              <MenuItem key={type} value={type}>
-                {name}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
+                });
 
-      <FormControl style={{ margin: "0 0 0 20px" }}>
-        <InputLabel htmlFor="relatedRecordTypes-label">
-          Related Record Types
-        </InputLabel>
+                dispatch(
+                  setSettings({
+                    ...settings,
+                    dynamics365Settings: {
+                      ...settings?.dynamics365Settings,
+                      categories: e.target.value,
+                    },
+                  })
+                );
+              }}
+              style={{
+                width: "100px",
+                maxWidth: "100px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+              required
+              inputProps={{
+                id: "categories-label",
+              }}
+            >
+              {categories.map(({ name, type }) => {
+                return (
+                  <MenuItem key={type} value={type}>
+                    {name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
 
-        <Select
-          name="Categories"
-          value={
-            get(currentState, "relatedRecordTypes") ||
-            get(settings, "dynamics365Settings.relatedRecordTypes")
-          }
-          onChange={(e) => {
-            setCurrentState({
-              ...currentState,
-              relatedRecordTypes: e.target.value,
-            });
+          <FormControl style={{ margin: "0 0 0 20px" }}>
+            <InputLabel htmlFor="relatedRecordTypes-label">
+              Related Record Types
+            </InputLabel>
 
-            dispatch(
-              setSettings({
-                ...settings,
-                dynamics365Settings: {
-                  ...settings?.dynamics365Settings,
+            <Select
+              name="Categories"
+              value={
+                get(currentState, "relatedRecordTypes") ||
+                get(settings, "dynamics365Settings.relatedRecordTypes")
+              }
+              onChange={(e) => {
+                setCurrentState({
+                  ...currentState,
                   relatedRecordTypes: e.target.value,
-                },
-              })
-            );
-          }}
-          style={{
-            width: "180px",
-            maxWidth: "180px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-          required
-          inputProps={{
-            id: "relatedRecordTypes-label",
-          }}
-        >
-          {range(1, 6, 1).map((i) => {
-            return (
-              <MenuItem key={i} value={i}>
-                {i} item
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
+                });
 
-      <FormControl style={{ margin: "0 0 0 20px" }}>
-        <InputLabel htmlFor="displayIn-label">Display in</InputLabel>
+                dispatch(
+                  setSettings({
+                    ...settings,
+                    dynamics365Settings: {
+                      ...settings?.dynamics365Settings,
+                      relatedRecordTypes: e.target.value,
+                    },
+                  })
+                );
+              }}
+              style={{
+                width: "180px",
+                maxWidth: "180px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+              required
+              inputProps={{
+                id: "relatedRecordTypes-label",
+              }}
+            >
+              {range(1, 6, 1).map((i) => {
+                return (
+                  <MenuItem key={i} value={i}>
+                    {i} item
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
 
-        <Select
-          name="DisplayIn"
-          value={
-            get(currentState, "displayIn") ||
-            get(settings, "dynamics365Settings.displayIn")
-          }
-          onChange={(e) => {
-            setCurrentState({
-              ...currentState,
-              displayIn: e.target.value,
-            });
+          <FormControl style={{ margin: "0 0 0 20px" }}>
+            <InputLabel htmlFor="displayIn-label">Display in</InputLabel>
 
-            dispatch(
-              setSettings({
-                ...settings,
-                dynamics365Settings: {
-                  ...settings?.dynamics365Settings,
+            <Select
+              name="DisplayIn"
+              value={
+                get(currentState, "displayIn") ||
+                get(settings, "dynamics365Settings.displayIn")
+              }
+              onChange={(e) => {
+                setCurrentState({
+                  ...currentState,
                   displayIn: e.target.value,
-                },
-              })
-            );
-          }}
-          style={{
-            width: "140px",
-            maxWidth: "140px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-          required
-          inputProps={{
-            id: "displayIn-label",
-          }}
-        >
-          {displayIn.map(({ name, type }) => {
-            return (
-              <MenuItem key={type} value={type}>
-                {name}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
+                });
 
-      <FormControl style={{ margin: "0 0 0 20px" }}>
-        <InputLabel htmlFor="languages-label">Languages</InputLabel>
+                dispatch(
+                  setSettings({
+                    ...settings,
+                    dynamics365Settings: {
+                      ...settings?.dynamics365Settings,
+                      displayIn: e.target.value,
+                    },
+                  })
+                );
+              }}
+              style={{
+                width: "140px",
+                maxWidth: "140px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+              required
+              inputProps={{
+                id: "displayIn-label",
+              }}
+            >
+              {displayIn.map(({ name, type }) => {
+                return (
+                  <MenuItem key={type} value={type}>
+                    {name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
 
-        <Select
-          name="Languages"
-          value={
-            get(currentState, "languages") ||
-            get(settings, "dynamics365Settings.languages")
-          }
-          onChange={(e) => {
-            setCurrentState({
-              ...currentState,
-              languages: e.target.value,
-            });
+          <FormControl style={{ margin: "0 0 0 20px" }}>
+            <InputLabel htmlFor="languages-label">Languages</InputLabel>
 
-            dispatch(
-              setSettings({
-                ...settings,
-                dynamics365Settings: {
-                  ...settings?.dynamics365Settings,
+            <Select
+              name="Languages"
+              value={
+                get(currentState, "languages") ||
+                get(settings, "dynamics365Settings.languages")
+              }
+              onChange={(e) => {
+                setCurrentState({
+                  ...currentState,
                   languages: e.target.value,
-                },
-              })
-            );
-          }}
-          style={{
-            width: "140px",
-            maxWidth: "140px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-          required
-          inputProps={{
-            id: "languages-label",
-          }}
-        >
-          {["All languages", "EN", "PL", "DA", "RU", "IT", "UK"].map((l) => {
-            return (
-              <MenuItem key={l} value={l}>
-                {l}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
+                });
 
-      <FormControl>
-        <InputLabel htmlFor="viewableBy-label">Viewable By</InputLabel>
+                dispatch(
+                  setSettings({
+                    ...settings,
+                    dynamics365Settings: {
+                      ...settings?.dynamics365Settings,
+                      languages: e.target.value,
+                    },
+                  })
+                );
+              }}
+              style={{
+                width: "140px",
+                maxWidth: "140px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+              required
+              inputProps={{
+                id: "languages-label",
+              }}
+            >
+              {["All languages", "EN", "PL", "DA", "RU", "IT", "UK"].map(
+                (l) => {
+                  return (
+                    <MenuItem key={l} value={l}>
+                      {l}
+                    </MenuItem>
+                  );
+                }
+              )}
+            </Select>
+          </FormControl>
 
-        <Select
-          name="viewableBy"
-          value={
-            get(currentState, "viewableBy") ||
-            get(settings, "dynamics365Settings.viewableBy")
-          }
-          onChange={(e) => {
-            setCurrentState({
-              ...currentState,
-              viewableBy: e.target.value,
-            });
+          <FormControl>
+            <InputLabel htmlFor="viewableBy-label">Viewable By</InputLabel>
 
-            dispatch(
-              setSettings({
-                ...settings,
-                dynamics365Settings: {
-                  ...settings?.dynamics365Settings,
+            <Select
+              name="viewableBy"
+              value={
+                get(currentState, "viewableBy") ||
+                get(settings, "dynamics365Settings.viewableBy")
+              }
+              onChange={(e) => {
+                setCurrentState({
+                  ...currentState,
                   viewableBy: e.target.value,
-                },
-              })
-            );
-          }}
-          style={{
-            width: "140px",
-            maxWidth: "140px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-          required
-          inputProps={{
-            id: "viewableBy-label",
-          }}
-        >
-          {["Organization", "Individual"].map((l) => {
-            return (
-              <MenuItem key={l} value={l}>
-                {l}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
+                });
+
+                dispatch(
+                  setSettings({
+                    ...settings,
+                    dynamics365Settings: {
+                      ...settings?.dynamics365Settings,
+                      viewableBy: e.target.value,
+                    },
+                  })
+                );
+              }}
+              style={{
+                width: "140px",
+                maxWidth: "140px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+              required
+              inputProps={{
+                id: "viewableBy-label",
+              }}
+            >
+              {["Organization", "Individual"].map((l) => {
+                return (
+                  <MenuItem key={l} value={l}>
+                    {l}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </div>
+      </Paper>
     </SettingsBox>
   );
 };

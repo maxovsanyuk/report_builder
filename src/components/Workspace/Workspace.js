@@ -1,8 +1,9 @@
 import React, { memo, useEffect, useState } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { Dustbin } from "./Dustbin";
+
+import styled from "styled-components";
+
 import { Widget } from "./Widget";
+import { Dustbin } from "./Dustbin";
 import { useDispatch, useSelector } from "react-redux";
 import {
   showAlert,
@@ -12,9 +13,13 @@ import {
   savedNewParametersSetSettings,
 } from "../../redux/actions/app_action";
 
-import styled from "styled-components";
+// DND
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 // MATERIAL UI
+
 import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
 import RemoveOutlinedIcon from "@material-ui/icons/RemoveOutlined";
 import Alert from "@material-ui/lab/Alert";

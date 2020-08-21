@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setSettings } from "../../../../redux/actions/app_action";
+
 import styled from "styled-components";
 
 // MATERIAL
 
 import TextField from "@material-ui/core/TextField";
-import { setSettings } from "../../../../redux/actions/app_action";
+import Paper from "@material-ui/core/Paper";
 
 // LODASH
 
@@ -28,59 +30,61 @@ const GeneralSettings = () => {
 
   return (
     <SettingsBox>
-      <TextField
-        required
-        style={{
-          width: "100%",
-          margin: "0 0 15px 0",
-        }}
-        label="Name"
-        name="GeneralSettingsName"
-        value={
-          get(currentState, "name") || get(settings, "generalSettings.name")
-        }
-        onChange={(e) => {
-          setCurrentState({ ...currentState, name: e.target.value });
+      <Paper>
+        <TextField
+          required
+          style={{
+            width: "calc(100% - 30px)",
+            margin: "15px 0 15px 15px",
+          }}
+          label="Name"
+          name="GeneralSettingsName"
+          value={
+            get(currentState, "name") || get(settings, "generalSettings.name")
+          }
+          onChange={(e) => {
+            setCurrentState({ ...currentState, name: e.target.value });
 
-          dispatch(
-            setSettings({
-              ...settings,
-              generalSettings: {
-                ...settings?.generalSettings,
-                name: e.target.value,
-              },
-            })
-          );
-        }}
-      />
+            dispatch(
+              setSettings({
+                ...settings,
+                generalSettings: {
+                  ...settings?.generalSettings,
+                  name: e.target.value,
+                },
+              })
+            );
+          }}
+        />
 
-      <TextField
-        style={{
-          width: "100%",
-          margin: "0 0 15px 0",
-        }}
-        label="Description"
-        multiline
-        rows={4}
-        onChange={(e) => {
-          setCurrentState({ ...currentState, description: e.target.value });
+        <TextField
+          style={{
+            width: "calc(100% - 30px)",
+            margin: "15px 0 15px 15px",
+          }}
+          label="Description"
+          multiline
+          rows={4}
+          onChange={(e) => {
+            setCurrentState({ ...currentState, description: e.target.value });
 
-          dispatch(
-            setSettings({
-              ...settings,
-              generalSettings: {
-                ...settings?.generalSettings,
-                description: e.target.value,
-              },
-            })
-          );
-        }}
-        value={
-          get(currentState, "description") ||
-          get(settings, "generalSettings.description")
-        }
-        variant="outlined"
-      />
+            dispatch(
+              setSettings({
+                ...settings,
+                generalSettings: {
+                  ...settings?.generalSettings,
+                  description: e.target.value,
+                },
+              })
+            );
+          }}
+          value={
+            get(currentState, "description") ||
+            get(settings, "generalSettings.description")
+          }
+          variant="outlined"
+        />
+      </Paper>
     </SettingsBox>
   );
 };

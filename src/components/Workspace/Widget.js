@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDrag } from "react-dnd";
 
-import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setWidgetsList } from "../../redux/actions/app_action";
+
+import styled from "styled-components";
 
 const WidgetBox = styled.div`
   display: flex;

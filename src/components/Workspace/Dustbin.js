@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setWidgetsList } from "../../redux/actions/app_action";
 
+import ImgMenu from "../../components/WidgetsToolBar/images/menu-icon.png";
+import ResizibleImg from "../../components/WidgetsToolBar/images/resizible.png";
+
+import styled from "styled-components";
+
+// DND
+
 import { useDrop } from "react-dnd";
 import ResizePanel from "react-resize-panel";
 import Draggable from "react-draggable";
 
-import styled from "styled-components";
-
-import ImgMenu from "../../components/WidgetsToolBar/images/menu-icon.png";
-import ResizibleImg from "../../components/WidgetsToolBar/images/resizible.png";
+// LODASH
 
 import get from "lodash/get";
+import { makeResizableDiv } from "./helpers/makeResizibleDiv";
 
 const DnDBox = styled.div`
   width: 95%;
@@ -39,9 +44,6 @@ const DnDBox = styled.div`
     min-height: 200px;
     min-width: 200px;
     float: left;
-    resize: both;
-    overflow: auto;
-    outline: 2px dashed #999;
     z-index: 999;
 
     &:hover {
@@ -163,6 +165,52 @@ const DnDBox = styled.div`
       background-size: 50%;
       transform: rotate(360deg);
     }
+  }
+
+  body,
+  html {
+    background: black;
+  }
+  .resizable {
+    background: white;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+  }
+
+  .resizable .resizers {
+    width: 100%;
+    height: 100%;
+    border: 3px dashed #4286f4;
+    box-sizing: border-box;
+  }
+
+  .resizable .resizers .resizer {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #4286f4;
+    position: absolute;
+    z-index: 1000;
+  }
+
+  .resizable .resizers .resizer.top-right {
+    right: -5px;
+    top: -5px;
+    cursor: nesw-resize;
+  }
+  .resizable .resizers .resizer.bottom-left {
+    left: -5px;
+    bottom: -5px;
+    cursor: nesw-resize;
+  }
+  .resizable .resizers .resizer.bottom-right {
+    right: -5px;
+    bottom: -5px;
+    cursor: nwse-resize;
   }
 `;
 
@@ -301,11 +349,12 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
   const { widgetsList } = state;
   const dispatch = useDispatch();
 
-  useEffect(() => {}, [widget.height, widget.width]);
+  makeResizableDiv(".resizable");
 
   return (
     <>
       <WgMainBox
+        className="resizers"
         id={widget?.id}
         style={{
           position: "absolute",
@@ -395,8 +444,20 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
             W: {currentWidget ? currentWidget.offsetWidth : widget?.width}px
           </span>
         </div>
+        <div
+          className="resizer top-right"
+          onMouseMove={(e) => {
+            e.stopPropagation();
+            setCurrentWidgetState({
+              ...currentWidgetState,
+              draggable: false,
+            });
+          }}
+          onMouseOver={(e) => e.stopPropagation()}
+        />
+        <div className="resizer bottom-left" />
+        <div className="resizer bottom-right" />
       </WgMainBox>
-
       {isWgMenuOpen && (
         <WidgetMenu
           widget={widget}
@@ -515,17 +576,11 @@ export const Dustbin = () => {
                         id: w.id,
                       });
                     }}
-                    className="box"
+                    className="box resizable"
                     style={{
                       position: "absolute",
                       left: `${w?.left}px`,
                       top: `${w?.top}px`,
-                      overflow:
-                        w?.id === currentWidgetState?.id &&
-                        !currentWidgetState?.draggable &&
-                        !currentWidgetState?.isMenuOpen
-                          ? "auto"
-                          : "visible",
                     }}
                   >
                     <div
