@@ -207,10 +207,10 @@ const Row = styled.div`
 
   .widgets-box {
     display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
-    justify-content: center;
     position: relative;
     flex-wrap: wrap;
     background: #fff;
+    margin: 0 0 0 12px;
     animation: appearingComp 0.5s ease-in-out 0s 1 normal forwards;
 
     @keyframes appearingComp {
