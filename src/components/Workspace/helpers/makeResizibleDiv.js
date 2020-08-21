@@ -1,6 +1,4 @@
 export function makeResizableDiv(div) {
-  console.log(div, "DIV");
-
   const element = document.querySelector(div);
   const resizers = document.querySelectorAll(div + " .resizer");
   const minimum_size = 20;
