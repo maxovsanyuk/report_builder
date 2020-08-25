@@ -7,6 +7,8 @@ import ResizibleImg from "../../components/WidgetsToolBar/images/resizible.png";
 
 import styled from "styled-components";
 
+import Grid from "../../images/grid.png";
+
 // DND
 
 import { useDrop } from "react-dnd";
@@ -492,11 +494,11 @@ export const Dustbin = () => {
   });
 
   const isActive = canDrop && isOver;
-  let backgroundColor = "#fff";
+  let background = `url(${Grid})`;
   if (isActive) {
-    backgroundColor = "lightskyblue";
+    background = `lightskyblue url(${Grid})`;
   } else if (canDrop) {
-    backgroundColor = "lightgreen";
+    background = `lightgreen url(${Grid})`;
   }
 
   const [activeDrags, setActiveDrags] = useState(0);
@@ -517,50 +519,50 @@ export const Dustbin = () => {
         <ResizePanel
           direction="e"
           handleClass="handle-style"
-          style={{ flexGrow: "1" }}
+          style={{ flexGrow: 1 }}
         >
           <div
             className="sidebar withMargin"
             ref={drop}
             style={{
-              backgroundColor,
+              background,
               position: "relative",
-              overflow: "hidden",
+              overflow: "auto",
             }}
           >
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern
-                  id="smallGrid"
-                  width="6"
-                  height="6"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M 8 0 L 0 0 0 8"
-                    fill="none"
-                    stroke="gray"
-                    stroke-width="0.5"
-                  />
-                </pattern>
-                <pattern
-                  id="grid"
-                  width="60"
-                  height="60"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <rect width="60" height="60" fill="url(#smallGrid)" />
-                  <path
-                    d="M 60 0 L 0 0 0 60"
-                    fill="none"
-                    stroke="gray"
-                    stroke-width="1"
-                  />
-                </pattern>
-              </defs>
+            {/*<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">*/}
+            {/*  <defs>*/}
+            {/*    <pattern*/}
+            {/*      id="smallGrid"*/}
+            {/*      width="6"*/}
+            {/*      height="6"*/}
+            {/*      patternUnits="userSpaceOnUse"*/}
+            {/*    >*/}
+            {/*      <path*/}
+            {/*        d="M 8 0 L 0 0 0 8"*/}
+            {/*        fill="none"*/}
+            {/*        stroke="gray"*/}
+            {/*        stroke-width="0.5"*/}
+            {/*      />*/}
+            {/*    </pattern>*/}
+            {/*    <pattern*/}
+            {/*      id="grid"*/}
+            {/*      width="60"*/}
+            {/*      height="60"*/}
+            {/*      patternUnits="userSpaceOnUse"*/}
+            {/*    >*/}
+            {/*      <rect width="60" height="60" fill="url(#smallGrid)" />*/}
+            {/*      <path*/}
+            {/*        d="M 60 0 L 0 0 0 60"*/}
+            {/*        fill="none"*/}
+            {/*        stroke="gray"*/}
+            {/*        stroke-width="1"*/}
+            {/*      />*/}
+            {/*    </pattern>*/}
+            {/*  </defs>*/}
 
-              <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
+            {/*  <rect width="100%" height="100%" fill="url(#grid)" />*/}
+            {/*</svg>*/}
 
             {widgetsList.map((w) => {
               return (
