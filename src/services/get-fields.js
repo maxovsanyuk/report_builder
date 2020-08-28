@@ -46,7 +46,6 @@ export function getDataSetFields(entityName) {
                 chosen: false,
               },
             ],
-            totalRecord: 2,
           });
           break;
         case "account":
@@ -79,7 +78,6 @@ export function getDataSetFields(entityName) {
                 chosen: false,
               },
             ],
-            totalRecord: 2,
           });
           break;
         case "contacts":
@@ -112,7 +110,6 @@ export function getDataSetFields(entityName) {
                 chosen: false,
               },
             ],
-            totalRecord: 2,
           });
           break;
         default:

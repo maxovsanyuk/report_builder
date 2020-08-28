@@ -29,8 +29,6 @@ const PositionComp = () => {
   const { settings } = state;
   const dispatch = useDispatch();
 
-  console.log(settings, "SSSS");
-
   return (
     <Paper>
       <SettingsBox>
@@ -55,7 +53,8 @@ const PositionComp = () => {
                   label={i}
                   name={i}
                   value={
-                    get(currentState, `${i}`) || get(settings, `position.${i}`)
+                    get(currentState, `${i}`) ||
+                    get(settings, `reportSettings.position.${i}`)
                   }
                   onChange={(e) => {
                     setCurrentState({
@@ -66,9 +65,15 @@ const PositionComp = () => {
                     dispatch(
                       setSettings({
                         ...settings,
-                        position: {
-                          ...settings?.position,
-                          [i]: e.target.value >= 600 ? e.target.value : 600,
+                        reportSettings: {
+                          ...settings.reportSettings,
+                          position: {
+                            ...settings?.reportSettings?.position,
+                            [i]:
+                              e.target.value >= 600
+                                ? parseInt(e.target.value)
+                                : 600,
+                          },
                         },
                       })
                     );

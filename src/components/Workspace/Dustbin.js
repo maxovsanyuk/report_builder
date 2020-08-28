@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSettings, setWidgetsList } from "../../redux/actions/app_action";
 
@@ -21,12 +21,12 @@ import get from "lodash/get";
 import { makeResizableDiv } from "./helpers/makeResizibleDiv";
 
 const DnDBox = styled.div`
-  width: 95%;
+  width: calc(100% - 60px);
   margin: 0 60px 0 0;
   height: calc(100vh - 60px);
   display: flex;
   flex-flow: nowrap column;
-  overflow: hidden;
+  overflow: auto;
 
   .react-draggable,
   .cursor {
@@ -57,27 +57,12 @@ const DnDBox = styled.div`
   }
 
   .sidebar {
-    background: #fff;
-    width: ${({ position }) => `${position.width}px`};
-    height: ${({ position }) => `${position.height}px`};
-    text-align: center;
-    border: 1px solid #ccc;
     border-radius: 2px;
     position: relative;
-    min-width: 600px;
-    min-height: 600px;
     z-index: 1000;
     resize: both;
     overflow: auto;
-  }
-
-  .withMargin {
-    margin: 10px;
     box-sizing: border-box;
-  }
-
-  .content {
-    flex-grow: 2;
   }
 
   .wg-info {
@@ -330,37 +315,36 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
   makeResizableDiv(`.${widget.name}_${widget.id}_resizable`);
 
   return (
-    <ReactResizeDetector          onResize={(w,h) => {
-
+    <ReactResizeDetector
+      onResize={(w, h) => {
         dispatch(
-        setWidgetsList(
-        widgetsList.map((w) => {
-        return w.id === widget.id
-        ? {
-        ...w,
-        size: {
-        sizing: {
-        height: currentWidget
-        ? currentWidget.offsetHeight
-        : 600,
-        width: currentWidget
-        ? currentWidget.offsetWidth
-        : 600,
-    },
-    },
-    }
-        : w;
-    })
-        )
+          setWidgetsList(
+            widgetsList.map((w) => {
+              return w.id === widget.id
+                ? {
+                    ...w,
+                    size: {
+                      sizing: {
+                        height: currentWidget
+                          ? currentWidget.offsetHeight
+                          : 600,
+                        width: currentWidget ? currentWidget.offsetWidth : 600,
+                      },
+                    },
+                  }
+                : w;
+            })
+          )
         );
         setCurrentWidgetState({
-        ...currentWidgetState,
-        isActive: false,
-        name: null,
-        draggable: true,
-        id: null,
-    });
-    }}>
+          ...currentWidgetState,
+          isActive: false,
+          name: null,
+          draggable: true,
+          id: null,
+        });
+      }}
+    >
       <WgMainBox
         className="resizers"
         id={widget?.id}
@@ -371,17 +355,16 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
           background: `rgba(255,255,255,0.9) url(${require(`../WidgetsToolBar/images/${widget.name}.png`)}) no-repeat center`,
         }}
         onMouseOver={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            setCurrentWidgetState({
-                ...currentWidgetState,
-                isActive: true,
-                name: widget.name,
-                draggable: false,
-                id: widget.id,
-            });
+          e.stopPropagation();
+          e.preventDefault();
+          setCurrentWidgetState({
+            ...currentWidgetState,
+            isActive: true,
+            name: widget.name,
+            draggable: false,
+            id: widget.id,
+          });
         }}
-
       >
         {currentWidgetState?.isActive && currentWidgetState?.id === widget.id && (
           <div
@@ -459,7 +442,9 @@ export const Dustbin = () => {
 
   const state = useSelector((state) => state.app);
   const { widgetsList, settings } = state;
-  const { position } = settings;
+  const { reportSettings } = settings;
+
+  console.log(reportSettings, "reportSettings");
 
   const dispatch = useDispatch();
 
@@ -496,36 +481,74 @@ export const Dustbin = () => {
   const dragHandlers = { onStart, onStop };
 
   return (
-    <DnDBox position={position}>
-      <div style={{ position: "relative", width: "fit-content" }}>
+    <DnDBox reportSettings={reportSettings}>
+      <div
+        style={{
+          position: "relative",
+          width: "fit-content",
+          margin: "10px",
+          background: `rgba(${reportSettings?.basic?.backgroundColor?.rgb.r}, ${reportSettings?.basic?.backgroundColor?.rgb.g},${reportSettings?.basic?.backgroundColor?.rgb.b}, 0.6)`,
+        }}
+      >
         <ReactResizeDetector
           handleWidth
           handleHeight
-          onResize={(width, height) =>
+          onResize={(width, height) => {
             dispatch(
               setSettings({
                 ...settings,
-                position: {
-                  ...settings?.position,
-                  width: width + 2,
-                  height: height + 2,
+                reportSettings: {
+                  ...settings.reportSettings,
+                  position: {
+                    ...settings?.reportSettings?.position,
+                    width: width + 4,
+                    height: height + 4,
+                  },
                 },
               })
-            )
-          }
+            );
+          }}
         >
           {({ width, height }) => {
             return (
               <div
-                className="sidebar withMargin"
+                className="sidebar"
                 ref={drop}
                 style={{
                   background,
                   position: "relative",
                   overflow: "auto",
+                  textAlign: "center",
+                  width: `${reportSettings.position.width}px`,
+                  height: `${reportSettings.position.height}px`,
+                  minHeight: `${reportSettings.position.minHeight}px`,
+                  minWidth: `${reportSettings.position.minWidth}px`,
+                  border:
+                    reportSettings?.basic?.border === "None"
+                      ? "2px solid transparent"
+                      : `2px ${reportSettings?.basic?.border || "solid"} ${
+                          reportSettings?.basic?.color?.hex || "#ccc"
+                        }`,
                 }}
               >
-                {`W:${width + 2} x H:${height + 2}`}
+                <div style={{ margin: "5px 0 0 0" }}>
+                  W:{" "}
+                  {get(
+                    settings,
+                    "reportSettings.position.width",
+                    get(reportSettings, "basic.border") === "None"
+                      ? width
+                      : width + 4
+                  )}{" "}
+                  x H:{" "}
+                  {get(
+                    settings,
+                    "reportSettings.position.height",
+                    get(reportSettings, "basic.border") === "None"
+                      ? height
+                      : height + 4
+                  )}
+                </div>
                 {/*<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">*/}
                 {/*  <defs>*/}
                 {/*    <pattern*/}

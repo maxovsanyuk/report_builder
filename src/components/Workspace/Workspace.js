@@ -87,7 +87,7 @@ const WidgetInfoComponent = styled.div`
   border: 1px solid silver;
   border-radius: 2px;
   color: #000;
-  z-index: 90;
+  z-index: 1100;
   padding: 20px;
   transition: 0.5s;
 `;

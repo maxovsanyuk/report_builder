@@ -15,9 +15,8 @@ import {
 const INITIAL_STATE = {
   parameters: [],
   settings: {
-    position: {
-      height: "600",
-      width: "600",
+    reportSettings: {
+      position: { minWidth: 600, minHeight: 600, width: 600, height: 600 },
     },
   },
   dataSets: [],

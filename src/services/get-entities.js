@@ -14,7 +14,6 @@ export function getDataSetEntities() {
             label: "Attachments",
           },
         ],
-        totalRecord: 2,
       });
     }, 500);
   });
