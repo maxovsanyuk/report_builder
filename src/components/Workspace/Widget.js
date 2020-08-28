@@ -94,7 +94,10 @@ export const Widget = ({ wgConfig, setCurrentWgInfo }) => {
         setCurrentWgInfo(null);
       }}
     >
-      <img src={require(`../WidgetsToolBar/images/${name}.png`)} alt={name} />
+      <img
+        src={require(`../WidgetsToolBar/images/${name}.png`)}
+        alt={name}
+      />
     </WidgetBox>
   );
 };
