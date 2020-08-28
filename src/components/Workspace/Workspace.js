@@ -200,7 +200,7 @@ const Container = memo(function Container() {
     <>
       <Dustbin />
 
-      <WidgetInfoComponent style={{ opacity: currentWgInfo ? 1 : 0 }}>
+      <WidgetInfoComponent style={{ display: currentWgInfo ? "flex" : "none" }}>
         {currentWgInfo}
       </WidgetInfoComponent>
 
