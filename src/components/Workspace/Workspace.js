@@ -13,6 +13,8 @@ import {
   savedNewParametersSetSettings,
 } from "../../redux/actions/app_action";
 
+import { widgetsConfig } from "./helpers/widgetsConfig";
+
 // DND
 
 import { DndProvider } from "react-dnd";
@@ -89,86 +91,6 @@ const WidgetInfoComponent = styled.div`
   padding: 20px;
   transition: 0.5s;
 `;
-
-const toolBarCfg = [
-  {
-    title: "Basic items",
-    widgetsList: [
-      { name: "text" },
-      { name: "image" },
-      { name: "line" },
-      { name: "rectangle" },
-    ],
-  },
-  {
-    title: "Comparison",
-    widgetsList: [
-      { name: "column" },
-      { name: "bar" },
-      { name: "stacked-column" },
-      { name: "stacked-bar" },
-      { name: "stacked-column-100" },
-      { name: "stacked-bar-100" },
-    ],
-  },
-  {
-    title: "Data regions",
-    widgetsList: [{ name: "table" }, { name: "list" }],
-  },
-
-  {
-    title: "KPI",
-    widgetsList: [
-      { name: "data-bar" },
-      { name: "sparkline" },
-      { name: "indicator" },
-    ],
-  },
-
-  {
-    title: "Deviation",
-    widgetsList: [{ name: "radial-gauge" }, { name: "linear-gauge" }],
-  },
-
-  {
-    title: "Proportion",
-    widgetsList: [
-      { name: "pie" },
-      { name: "exploded-pie" },
-      { name: "doughnut" },
-      { name: "pyramid" },
-      { name: "funnel" },
-    ],
-  },
-
-  {
-    title: "Distribution",
-    widgetsList: [
-      { name: "area" },
-      { name: "smooth-area" },
-      { name: "stacked-area" },
-      { name: "stacked-area-100" },
-      { name: "line-d" },
-      { name: "smooth-line" },
-      { name: "stepped-line" },
-      { name: "line-with-markers" },
-      { name: "smoothLine-with-markers" },
-      { name: "bubble" },
-      { name: "polar" },
-      { name: "scatter" },
-      { name: "radar" },
-    ],
-  },
-  {
-    title: "SubReports",
-    widgetsList: [{ name: "subReports" }],
-  },
-
-  {
-    title: "Barcodes",
-    widgetsList: [{ name: "1D-Barcode" }, { name: "QR-Barcode" }],
-  },
-];
 
 const Row = styled.div`
   display: flex;
@@ -251,7 +173,7 @@ const ToolbarRow = ({ toolData, zIndex, searchValue, setCurrentWgInfo }) => {
             return (
               <Widget
                 key={w.name}
-                name={w.name}
+                wgConfig={w}
                 setCurrentWgInfo={setCurrentWgInfo}
               />
             );
@@ -296,7 +218,7 @@ const Container = memo(function Container() {
           </label>
         </div>
 
-        {toolBarCfg.map((t, i) => {
+        {widgetsConfig.map((t, i) => {
           return (
             <ToolbarRow
               key={t.title}

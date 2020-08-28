@@ -29,6 +29,8 @@ const PositionComp = () => {
   const { settings } = state;
   const dispatch = useDispatch();
 
+  console.log(settings, "SSSS");
+
   return (
     <Paper>
       <SettingsBox>
@@ -58,7 +60,7 @@ const PositionComp = () => {
                   onChange={(e) => {
                     setCurrentState({
                       ...currentState,
-                      [i]: e.target.value,
+                      [i]: e.target.value >= 600 ? e.target.value : 600,
                     });
 
                     dispatch(
@@ -66,7 +68,7 @@ const PositionComp = () => {
                         ...settings,
                         position: {
                           ...settings?.position,
-                          [i]: e.target.value,
+                          [i]: e.target.value >= 600 ? e.target.value : 600,
                         },
                       })
                     );

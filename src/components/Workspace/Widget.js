@@ -29,7 +29,8 @@ const WidgetBox = styled.div`
   }
 `;
 
-export const Widget = ({ name, setCurrentWgInfo }) => {
+export const Widget = ({ wgConfig, setCurrentWgInfo }) => {
+  const { name } = wgConfig;
   const state = useSelector((state) => state.app);
   const { widgetsList } = state;
 
@@ -56,11 +57,12 @@ export const Widget = ({ name, setCurrentWgInfo }) => {
             ...widgetsList,
             {
               id: new Date().getTime(),
-              top: getCoords(widget).top,
-              left: getCoords(widget).left,
-              height: 200,
-              width: 200,
-              name,
+              position: {
+                top: getCoords(widget).top,
+                left: getCoords(widget).left,
+              },
+              size: { sizing: { height: 200, width: 200 } },
+              ...wgConfig,
             },
           ])
         );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setWidgetsList } from "../../redux/actions/app_action";
+import { setSettings, setWidgetsList } from "../../redux/actions/app_action";
 
 import ImgMenu from "../../components/WidgetsToolBar/images/menu-icon.png";
 import ResizibleImg from "../../components/WidgetsToolBar/images/resizible.png";
@@ -12,8 +12,8 @@ import Grid from "../../images/grid.png";
 // DND
 
 import { useDrop } from "react-dnd";
-import ResizePanel from "react-resize-panel";
 import Draggable from "react-draggable";
+import ReactResizeDetector from "react-resize-detector";
 
 // LODASH
 
@@ -56,41 +56,19 @@ const DnDBox = styled.div`
     //}
   }
 
-  .handle-style {
-    display: none;
-  }
-
-  .footer {
-    height: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: stretch;
-    text-align: center;
-    justify-content: flex-start;
-    overflow: hidden;
-  }
-
-  .body {
-    flex-grow: 2;
-    min-height: 500px;
-    display: flex;
-    flex-flow: row nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-
   .sidebar {
     background: #fff;
-    min-width: 800px;
-    min-height: 500px;
-    width: 100%;
-    box-sizing: border-box;
+    width: ${({ position }) => `${position.width}px`};
+    height: ${({ position }) => `${position.height}px`};
     text-align: center;
-    flex-grow: 1;
     border: 1px solid #ccc;
     border-radius: 2px;
-    //resize: both;
-    //overflow: auto;
+    position: relative;
+    min-width: 600px;
+    min-height: 600px;
+    z-index: 1000;
+    resize: both;
+    overflow: auto;
   }
 
   .withMargin {
@@ -352,7 +330,37 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
   makeResizableDiv(`.${widget.name}_${widget.id}_resizable`);
 
   return (
-    <>
+    <ReactResizeDetector          onResize={(w,h) => {
+
+        dispatch(
+        setWidgetsList(
+        widgetsList.map((w) => {
+        return w.id === widget.id
+        ? {
+        ...w,
+        size: {
+        sizing: {
+        height: currentWidget
+        ? currentWidget.offsetHeight
+        : 600,
+        width: currentWidget
+        ? currentWidget.offsetWidth
+        : 600,
+    },
+    },
+    }
+        : w;
+    })
+        )
+        );
+        setCurrentWidgetState({
+        ...currentWidgetState,
+        isActive: false,
+        name: null,
+        draggable: true,
+        id: null,
+    });
+    }}>
       <WgMainBox
         className="resizers"
         id={widget?.id}
@@ -363,54 +371,17 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
           background: `rgba(255,255,255,0.9) url(${require(`../WidgetsToolBar/images/${widget.name}.png`)}) no-repeat center`,
         }}
         onMouseOver={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          setCurrentWidgetState({
-            ...currentWidgetState,
-            isActive: true,
-            name: widget.name,
-            draggable: false,
-            id: widget.id,
-          });
+            e.stopPropagation();
+            e.preventDefault();
+            setCurrentWidgetState({
+                ...currentWidgetState,
+                isActive: true,
+                name: widget.name,
+                draggable: false,
+                id: widget.id,
+            });
+        }}
 
-          dispatch(
-            setWidgetsList(
-              widgetsList.map((w) => {
-                return w.id === widget.id
-                  ? {
-                      ...w,
-                      height: currentWidget ? currentWidget.offsetHeight : 200,
-                      width: currentWidget ? currentWidget.offsetWidth : 200,
-                    }
-                  : w;
-              })
-            )
-          );
-        }}
-        onMouseLeave={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
-          dispatch(
-            setWidgetsList(
-              widgetsList.map((w) => {
-                return w.id === widget.id
-                  ? {
-                      ...w,
-                      height: currentWidget ? currentWidget.offsetHeight : 200,
-                      width: currentWidget ? currentWidget.offsetWidth : 200,
-                    }
-                  : w;
-              })
-            )
-          );
-          setCurrentWidgetState({
-            ...currentWidgetState,
-            isActive: false,
-            name: null,
-            draggable: true,
-            id: null,
-          });
-        }}
       >
         {currentWidgetState?.isActive && currentWidgetState?.id === widget.id && (
           <div
@@ -438,10 +409,18 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
           }}
         >
           <span style={{ margin: "0 10px 0 0" }}>
-            H: {currentWidget ? currentWidget.offsetHeight : widget?.height}px
+            H:{" "}
+            {currentWidget
+              ? currentWidget.offsetHeight
+              : widget?.size?.sizing?.height}
+            px
           </span>
           <span>
-            W: {currentWidget ? currentWidget.offsetWidth : widget?.width}px
+            W:{" "}
+            {currentWidget
+              ? currentWidget.offsetWidth
+              : widget?.size?.sizing?.width}
+            px
           </span>
         </div>
         <div
@@ -466,7 +445,7 @@ const WgBox = ({ widget, currentWidgetState, setCurrentWidgetState }) => {
           currentWidgetState={currentWidgetState}
         />
       )}
-    </>
+    </ReactResizeDetector>
   );
 };
 
@@ -479,7 +458,10 @@ export const Dustbin = () => {
   });
 
   const state = useSelector((state) => state.app);
-  const { widgetsList } = state;
+  const { widgetsList, settings } = state;
+  const { position } = settings;
+
+  const dispatch = useDispatch();
 
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: "box",
@@ -514,108 +496,112 @@ export const Dustbin = () => {
   const dragHandlers = { onStart, onStop };
 
   return (
-    <DnDBox>
-      <div className="body">
-        <ResizePanel
-          direction="e"
-          handleClass="handle-style"
-          style={{ flexGrow: 1 }}
+    <DnDBox position={position}>
+      <div style={{ position: "relative", width: "fit-content" }}>
+        <ReactResizeDetector
+          handleWidth
+          handleHeight
+          onResize={(width, height) =>
+            dispatch(
+              setSettings({
+                ...settings,
+                position: {
+                  ...settings?.position,
+                  width: width + 2,
+                  height: height + 2,
+                },
+              })
+            )
+          }
         >
-          <div
-            className="sidebar withMargin"
-            ref={drop}
-            style={{
-              background,
-              position: "relative",
-              overflow: "auto",
-            }}
-          >
-            {/*<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">*/}
-            {/*  <defs>*/}
-            {/*    <pattern*/}
-            {/*      id="smallGrid"*/}
-            {/*      width="6"*/}
-            {/*      height="6"*/}
-            {/*      patternUnits="userSpaceOnUse"*/}
-            {/*    >*/}
-            {/*      <path*/}
-            {/*        d="M 8 0 L 0 0 0 8"*/}
-            {/*        fill="none"*/}
-            {/*        stroke="gray"*/}
-            {/*        stroke-width="0.5"*/}
-            {/*      />*/}
-            {/*    </pattern>*/}
-            {/*    <pattern*/}
-            {/*      id="grid"*/}
-            {/*      width="60"*/}
-            {/*      height="60"*/}
-            {/*      patternUnits="userSpaceOnUse"*/}
-            {/*    >*/}
-            {/*      <rect width="60" height="60" fill="url(#smallGrid)" />*/}
-            {/*      <path*/}
-            {/*        d="M 60 0 L 0 0 0 60"*/}
-            {/*        fill="none"*/}
-            {/*        stroke="gray"*/}
-            {/*        stroke-width="1"*/}
-            {/*      />*/}
-            {/*    </pattern>*/}
-            {/*  </defs>*/}
+          {({ width, height }) => {
+            return (
+              <div
+                className="sidebar withMargin"
+                ref={drop}
+                style={{
+                  background,
+                  position: "relative",
+                  overflow: "auto",
+                }}
+              >
+                {`W:${width + 2} x H:${height + 2}`}
+                {/*<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">*/}
+                {/*  <defs>*/}
+                {/*    <pattern*/}
+                {/*      id="smallGrid"*/}
+                {/*      width="6"*/}
+                {/*      height="6"*/}
+                {/*      patternUnits="userSpaceOnUse"*/}
+                {/*    >*/}
+                {/*      <path*/}
+                {/*        d="M 8 0 L 0 0 0 8"*/}
+                {/*        fill="none"*/}
+                {/*        stroke="gray"*/}
+                {/*        stroke-width="0.5"*/}
+                {/*      />*/}
+                {/*    </pattern>*/}
+                {/*    <pattern*/}
+                {/*      id="grid"*/}
+                {/*      width="60"*/}
+                {/*      height="60"*/}
+                {/*      patternUnits="userSpaceOnUse"*/}
+                {/*    >*/}
+                {/*      <rect width="60" height="60" fill="url(#smallGrid)" />*/}
+                {/*      <path*/}
+                {/*        d="M 60 0 L 0 0 0 60"*/}
+                {/*        fill="none"*/}
+                {/*        stroke="gray"*/}
+                {/*        stroke-width="1"*/}
+                {/*      />*/}
+                {/*    </pattern>*/}
+                {/*  </defs>*/}
+                {/*  <rect width="100%" height="100%" fill="url(#grid)" />*/}
+                {/*</svg>*/}
+                {widgetsList.map((w) => {
+                  return (
+                    <Draggable key={w.id} bounds="parent" {...dragHandlers}>
+                      <div
+                        onMouseOver={() => {
+                          setCurrentWidgetState({
+                            ...currentWidgetState,
+                            draggable: false,
+                            isActive: true,
+                            id: w.id,
+                          });
+                        }}
+                        className={`box resizable ${w.name}_${w.id}_resizable`}
+                        style={{
+                          position: "absolute",
+                          left: `${w?.left}px`,
+                          top: `${w?.top}px`,
+                        }}
+                      >
+                        <div
+                          onMouseOver={(e) => {
+                            e.stopPropagation();
+                            setCurrentWidgetState({
+                              ...currentWidgetState,
+                              draggable: true,
+                            });
+                          }}
+                          className="resizible-btn"
+                        />
 
-            {/*  <rect width="100%" height="100%" fill="url(#grid)" />*/}
-            {/*</svg>*/}
-
-            {widgetsList.map((w) => {
-              return (
-                <Draggable key={w.id} bounds="parent" {...dragHandlers}>
-                  <div
-                    onMouseOver={() => {
-                      setCurrentWidgetState({
-                        ...currentWidgetState,
-                        draggable: false,
-                        isActive: true,
-                        id: w.id,
-                      });
-                    }}
-                    className={`box resizable ${w.name}_${w.id}_resizable`}
-                    style={{
-                      position: "absolute",
-                      left: `${w?.left}px`,
-                      top: `${w?.top}px`,
-                    }}
-                  >
-                    <div
-                      onMouseOver={(e) => {
-                        e.stopPropagation();
-                        setCurrentWidgetState({
-                          ...currentWidgetState,
-                          draggable: true,
-                        });
-                      }}
-                      className="resizible-btn"
-                    />
-
-                    <WgBox
-                      widget={w}
-                      setCurrentWidgetState={setCurrentWidgetState}
-                      currentWidgetState={currentWidgetState}
-                    />
-                  </div>
-                </Draggable>
-              );
-            })}
-          </div>
-        </ResizePanel>
-
-        <div className="content" />
+                        <WgBox
+                          widget={w}
+                          setCurrentWidgetState={setCurrentWidgetState}
+                          currentWidgetState={currentWidgetState}
+                        />
+                      </div>
+                    </Draggable>
+                  );
+                })}
+              </div>
+            );
+          }}
+        </ReactResizeDetector>
       </div>
-
-      <ResizePanel
-        handleClass="handle-style"
-        direction="n"
-        style={{ height: "100px" }}
-      >
-        <div className="footer" />
-      </ResizePanel>
     </DnDBox>
   );
 };

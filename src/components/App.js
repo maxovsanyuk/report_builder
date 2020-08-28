@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import Workspace from "./Workspace/Workspace";
 import Sidebar from "./Sidebar/Sidebar";
 import WidgetsToolBar from "./WidgetsToolBar/WidgetsToolBar";
@@ -14,19 +14,21 @@ const MainCont = styled.div`
   position: relative;
 `;
 
-const App = () => {
-  return (
-    <MuiPickersUtilsProvider utils={MomentUtils}>
-      <MainCont>
-        <SettingsToolBar />
-        <WidgetsToolBar />
-        <Workspace />
-        <Sidebar />
-      </MainCont>
+class App extends Component {
+  render() {
+    return (
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+        <MainCont>
+          <SettingsToolBar />
+          <WidgetsToolBar />
+          <Workspace />
+          <Sidebar />
+        </MainCont>
 
-      <Loader />
-    </MuiPickersUtilsProvider>
-  );
-};
+        <Loader />
+      </MuiPickersUtilsProvider>
+    );
+  }
+}
 
 export default App;

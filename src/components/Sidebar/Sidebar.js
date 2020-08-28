@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { showAlert, sideBarHandleOpen } from "../../redux/actions/app_action";
 
@@ -7,6 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 import styled from "styled-components";
 import theme from "../../themes/index";
+import { getReports } from "../../loaders";
 
 const SideBarActiveComp = styled.div`
   height: calc(100% - 60px);
@@ -67,6 +68,16 @@ const Sidebar = () => {
     isSavedNewParametersData,
   } = state;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    async function a() {
+      const d = await getReports();
+
+      return d;
+    }
+
+    a();
+  }, []);
 
   return (
     <>

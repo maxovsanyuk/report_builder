@@ -14,7 +14,12 @@ import {
 
 const INITIAL_STATE = {
   parameters: [],
-  settings: {},
+  settings: {
+    position: {
+      height: "600",
+      width: "600",
+    },
+  },
   dataSets: [],
   newDataSet: {},
   newParametersSet: {},
