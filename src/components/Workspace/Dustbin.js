@@ -189,8 +189,6 @@ export const Dustbin = () => {
   const { widgetsList, settings } = state;
   const { reportSettings } = settings;
 
-  console.log(reportSettings, "reportSettings");
-
   const dispatch = useDispatch();
 
   const [{ canDrop, isOver }, drop] = useDrop({
