@@ -1,0 +1,79 @@
+{
+  "name": "uds-reports-builder",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@date-io/moment": "^1.3.13",
+    "@material-ui/core": "^4.10.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.55",
+    "@material-ui/pickers": "^3.2.10",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "concurrently": "^5.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.0",
+    "express-react-views": "^0.11.0",
+    "immutability-helper": "^3.1.1",
+    "install": "^0.13.0",
+    "lodash": "^4.17.15",
+    "material-ui-color-picker": "^3.5.0",
+    "moment": "^2.26.0",
+    "multer": "^1.4.2",
+    "node-sass": "^4.14.1",
+    "nodemon": "^2.0.4",
+    "path": "^0.12.7",
+    "prettier-eslint": "^11.0.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-color": "^2.18.1",
+    "react-dnd": "^11.1.3",
+    "react-dnd-html5-backend": "^11.1.3",
+    "react-dom": "^16.13.1",
+    "react-draggable": "^4.4.3",
+    "react-hook-form": "^5.7.2",
+    "react-images-upload": "^1.2.8",
+    "react-intl": "^5.0.2",
+    "react-redux": "^7.2.0",
+    "react-resize-detector": "^5.0.7",
+    "react-resize-panel": "^0.3.5",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "react-style-classes": "^2.0.2",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.1.1",
+    "superagent": "^5.2.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "../node_modules/.bin/react-scripts build",
+    "test": "../node_modules/.bin/react-scripts test",
+    "eject": "../node_modules/.bin/react-scripts eject",
+    "server": "../node_modules/.bin/nodemon server.js",
+    "dev": "../node_modules/.bin/concurrently --kill-others-on-fail \\\"nodemon server.js\\\" \\\"yarn run react-scripts start\\\""
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "proxy": "http://localhost:3000",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "redux-devtools": "^3.5.0"
+  }
+}
