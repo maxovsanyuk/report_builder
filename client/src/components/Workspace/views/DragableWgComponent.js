@@ -17,7 +17,12 @@ const WgMainBox = styled.div`
   min-height: 100%;
   min-width: 100%;
 
+  &:hover .wg-menu {
+    display: flex;
+  }
+
   .wg-menu {
+    display: none;
     position: absolute;
     top: 0;
     right: 0;
@@ -87,7 +92,8 @@ const WidgetMenu = ({
           });
         }}
         className="close-btn"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           setIsWgMwnuOpen(false);
           setCurrentWidgetState({
             ...currentWidgetState,
@@ -213,21 +219,20 @@ const WgBox = ({
           });
         }}
       >
-        {currentWidgetState?.isActive && currentWidgetState?.id === widget.id && (
-          <div
-            className="wg-menu"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsWgMwnuOpen(!isWgMenuOpen);
+        <div
+          className="wg-menu"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsWgMwnuOpen(!isWgMenuOpen);
 
-              setCurrentWidgetState({
-                ...currentWidgetState,
-                draggable: false,
-                isMenuOpen: !isWgMenuOpen,
-              });
-            }}
-          />
-        )}
+            setCurrentWidgetState({
+              ...currentWidgetState,
+              draggable: false,
+              isMenuOpen: !isWgMenuOpen,
+            });
+          }}
+        />
+
         <div
           style={{
             display: "flex",
