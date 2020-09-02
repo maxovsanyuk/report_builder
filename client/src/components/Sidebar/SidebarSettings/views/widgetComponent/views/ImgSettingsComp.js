@@ -15,6 +15,12 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { useDispatch, useSelector } from "react-redux";
+
+// LODASH
+
+import get from "lodash/get";
+import { setWidgetsList } from "../../../../../../redux/actions/app_action";
 
 const SettingsBox = styled.div`
   display: flex;
@@ -67,91 +73,79 @@ const ImgSettingsComp = ({ choosenWidget }) => {
   const [currentState, setCurrentState] = useState({});
   const [colorPickerOpen, setColorPickerOpen] = useState(false);
 
+  const state = useSelector((state) => state.app);
+  const { widgetsList } = state;
+
+  const dispatch = useDispatch();
+
+  const choosenWg = widgetsList.find((w) => w?.id === choosenWidget?.id);
+
+  console.log(choosenWg, "choosenWg");
+
   return (
     <>
       <h3 style={{ textAlign: "center" }}>{choosenWidget?.name} Settings</h3>
 
       <Paper style={{ padding: "20px", margin: "10px 0" }}>
         <TextField
-          required
           style={{
             width: "100%",
             margin: "15px 0",
           }}
           label="Name"
           name="widgetName"
-          // value={
-          //   get(currentState, "name") || get(settings, "generalSettings.name")
-          // }
-          // onChange={(e) => {
-          //   setCurrentState({ ...currentState, name: e.target.value });
-          //
-          //   dispatch(
-          //     setSettings({
-          //       ...settings,
-          //       generalSettings: {
-          //         ...settings?.generalSettings,
-          //         name: e.target.value,
-          //       },
-          //     })
-          //   );
-          // }}
+          value={get(choosenWg, "displayName", "")}
+          onChange={(e) => {
+            dispatch(
+              setWidgetsList(
+                widgetsList.map((w) => {
+                  return w?.id === choosenWidget?.id
+                    ? { ...choosenWg, displayName: e.target.value }
+                    : w;
+                })
+              )
+            );
+          }}
         />
         <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>Basic</h3>
 
         <TextField
-          required
           style={{
             width: "100%",
             margin: "15px 0",
           }}
           label="Value"
           name="widgetName"
-          // value={
-          //   get(currentState, "name") || get(settings, "generalSettings.name")
-          // }
-          // onChange={(e) => {
-          //   setCurrentState({ ...currentState, name: e.target.value });
-          //
-          //   dispatch(
-          //     setSettings({
-          //       ...settings,
-          //       generalSettings: {
-          //         ...settings?.generalSettings,
-          //         name: e.target.value,
-          //       },
-          //     })
-          //   );
-          // }}
+          value={get(choosenWg, "value", "")}
+          onChange={(e) => {
+            dispatch(
+              setWidgetsList(
+                widgetsList.map((w) => {
+                  return w?.id === choosenWidget?.id
+                    ? { ...choosenWg, value: e.target.value }
+                    : w;
+                })
+              )
+            );
+          }}
         />
 
         <FormControl style={{ margin: "0 20px 0 0" }}>
           <InputLabel htmlFor="source-label">Source</InputLabel>
           <Select
             name="Source"
-            // value={
-            //   get(currentState, "basic.border") ||
-            //   get(settings, "reportSettings.basic.border")
-            // }
-            // onChange={(e) => {
-            //   setCurrentState({
-            //     ...currentState,
-            //     basic: { ...currentState?.basic, border: e.target.value },
-            //   });
-            //
-            //   dispatch(
-            //     setSettings({
-            //       ...settings,
-            //       reportSettings: {
-            //         ...settings?.reportSettings,
-            //         basic: {
-            //           ...settings?.reportSettings?.basic,
-            //           border: e.target.value,
-            //         },
-            //       },
-            //     })
-            //   );
-            // }}
+            value={get(choosenWg, "source", "")}
+            onChange={(e) => {
+              dispatch(
+                setWidgetsList(
+                  widgetsList.map((w) => {
+                    return w?.id === choosenWidget?.id
+                      ? { ...choosenWg, source: e.target.value }
+                      : w;
+                  })
+                )
+              );
+            }}
             style={{
               width: "100px",
               maxWidth: "100px",
@@ -159,7 +153,6 @@ const ImgSettingsComp = ({ choosenWidget }) => {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
             }}
-            required
             inputProps={{
               id: "source-label",
             }}
@@ -178,29 +171,18 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           <InputLabel htmlFor="link-label">Link to</InputLabel>
           <Select
             name="Link"
-            // value={
-            //   get(currentState, "basic.border") ||
-            //   get(settings, "reportSettings.basic.border")
-            // }
-            // onChange={(e) => {
-            //   setCurrentState({
-            //     ...currentState,
-            //     basic: { ...currentState?.basic, border: e.target.value },
-            //   });
-            //
-            //   dispatch(
-            //     setSettings({
-            //       ...settings,
-            //       reportSettings: {
-            //         ...settings?.reportSettings,
-            //         basic: {
-            //           ...settings?.reportSettings?.basic,
-            //           border: e.target.value,
-            //         },
-            //       },
-            //     })
-            //   );
-            // }}
+            value={get(choosenWg, "linkTo", "")}
+            onChange={(e) => {
+              dispatch(
+                setWidgetsList(
+                  widgetsList.map((w) => {
+                    return w?.id === choosenWidget?.id
+                      ? { ...choosenWg, linkTo: e.target.value }
+                      : w;
+                  })
+                )
+              );
+            }}
             style={{
               width: "100px",
               maxWidth: "100px",
@@ -208,7 +190,6 @@ const ImgSettingsComp = ({ choosenWidget }) => {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
             }}
-            required
             inputProps={{
               id: "link-label",
             }}
@@ -226,29 +207,18 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           <InputLabel htmlFor="border-label">Border</InputLabel>
           <Select
             name="Border"
-            // value={
-            //   get(currentState, "basic.border") ||
-            //   get(settings, "reportSettings.basic.border")
-            // }
-            // onChange={(e) => {
-            //   setCurrentState({
-            //     ...currentState,
-            //     basic: { ...currentState?.basic, border: e.target.value },
-            //   });
-            //
-            //   dispatch(
-            //     setSettings({
-            //       ...settings,
-            //       reportSettings: {
-            //         ...settings?.reportSettings,
-            //         basic: {
-            //           ...settings?.reportSettings?.basic,
-            //           border: e.target.value,
-            //         },
-            //       },
-            //     })
-            //   );
-            // }}
+            value={get(choosenWg, "border", "")}
+            onChange={(e) => {
+              dispatch(
+                setWidgetsList(
+                  widgetsList.map((w) => {
+                    return w?.id === choosenWidget?.id
+                      ? { ...choosenWg, border: e.target.value }
+                      : w;
+                  })
+                )
+              );
+            }}
             style={{
               width: "100px",
               maxWidth: "100px",
@@ -256,9 +226,21 @@ const ImgSettingsComp = ({ choosenWidget }) => {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
             }}
-            required
             inputProps={{
               id: "border-label",
+            }}
+            renderValue={() => {
+              return (
+                <div
+                  style={{
+                    maxWidth: "100px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {choosenWg?.border}
+                </div>
+              );
             }}
           >
             {["Dashed", "Dotted", "Double", "None", "Solid"].map((i) => {
@@ -298,30 +280,19 @@ const ImgSettingsComp = ({ choosenWidget }) => {
               </span>
               <SketchPicker
                 className="color-picker"
-                // color={
-                //   get(currentState, "basic.color") ||
-                //   get(settings, "reportSettings.basic.color") ||
-                //   "#CCC"
-                // }
-                // onChangeComplete={(color) => {
-                //   setCurrentState({
-                //     ...currentState,
-                //     basic: { ...currentState?.basic, color },
-                //   });
-                //
-                //   dispatch(
-                //     setSettings({
-                //       ...settings,
-                //       reportSettings: {
-                //         ...settings?.reportSettings,
-                //         basic: {
-                //           ...settings?.reportSettings?.basic,
-                //           color,
-                //         },
-                //       },
-                //     })
-                //   );
-                // }}
+                color={get(choosenWg, "borderColor") || "#CCC"}
+                value={get(choosenWg, "borderColor", "#fff")}
+                onChangeComplete={(color) => {
+                  dispatch(
+                    setWidgetsList(
+                      widgetsList.map((w) => {
+                        return w?.id === choosenWidget?.id
+                          ? { ...choosenWg, borderColor: color?.hex }
+                          : w;
+                      })
+                    )
+                  );
+                }}
               />
             </div>
           )}
@@ -329,42 +300,28 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           <div
             onClick={() => setColorPickerOpen(!colorPickerOpen)}
             className="color-box"
-            // style={{
-            //   background:
-            //     get(currentState, "basic.color.hex") ||
-            //     get(settings, "reportSettings.basic.color.hex") ||
-            //     "#CCC",
-            // }}
+            style={{
+              background: get(choosenWg, "borderColor", "#fff"),
+            }}
           />
         </div>
 
         <FormControl style={{ margin: "0 20px 0 0" }}>
           <InputLabel htmlFor="size-label">Sizing</InputLabel>
           <Select
-            name="Link"
-            // value={
-            //   get(currentState, "basic.border") ||
-            //   get(settings, "reportSettings.basic.border")
-            // }
-            // onChange={(e) => {
-            //   setCurrentState({
-            //     ...currentState,
-            //     basic: { ...currentState?.basic, border: e.target.value },
-            //   });
-            //
-            //   dispatch(
-            //     setSettings({
-            //       ...settings,
-            //       reportSettings: {
-            //         ...settings?.reportSettings,
-            //         basic: {
-            //           ...settings?.reportSettings?.basic,
-            //           border: e.target.value,
-            //         },
-            //       },
-            //     })
-            //   );
-            // }}
+            name="sizing"
+            value={get(choosenWg, "sizing", "")}
+            onChange={(e) => {
+              dispatch(
+                setWidgetsList(
+                  widgetsList.map((w) => {
+                    return w?.id === choosenWidget?.id
+                      ? { ...choosenWg, sizing: e.target.value }
+                      : w;
+                  })
+                )
+              );
+            }}
             style={{
               width: "100px",
               maxWidth: "100px",
@@ -372,7 +329,6 @@ const ImgSettingsComp = ({ choosenWidget }) => {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
             }}
-            required
             inputProps={{
               id: "size-label",
             }}
@@ -409,32 +365,24 @@ const ImgSettingsComp = ({ choosenWidget }) => {
                     }}
                     label={i}
                     name={i}
-                    // value={
-                    //   get(currentState, `${i}`) ||
-                    //   get(settings, `reportSettings.position.${i}`)
-                    // }
-                    // onChange={(e) => {
-                    //   setCurrentState({
-                    //     ...currentState,
-                    //     [i]: e.target.value >= 600 ? e.target.value : 600,
-                    //   });
-                    //
-                    //   dispatch(
-                    //     setSettings({
-                    //       ...settings,
-                    //       reportSettings: {
-                    //         ...settings.reportSettings,
-                    //         position: {
-                    //           ...settings?.reportSettings?.position,
-                    //           [i]:
-                    //             e.target.value >= 600
-                    //               ? parseInt(e.target.value)
-                    //               : 600,
-                    //         },
-                    //       },
-                    //     })
-                    //   );
-                    // }}
+                    value={get(choosenWg, `position.${i}`)}
+                    onChange={(e) => {
+                      dispatch(
+                        setWidgetsList(
+                          widgetsList.map((w) => {
+                            return w?.id === choosenWidget?.id
+                              ? {
+                                  ...choosenWg,
+                                  position: {
+                                    ...choosenWg.position,
+                                    [i]: e.target.value,
+                                  },
+                                }
+                              : w;
+                          })
+                        )
+                      );
+                    }}
                   />
                   px
                 </div>
@@ -463,32 +411,21 @@ const ImgSettingsComp = ({ choosenWidget }) => {
                     }}
                     label={i}
                     name={i}
-                    // value={
-                    //   get(currentState, `${i}`) ||
-                    //   get(settings, `reportSettings.position.${i}`)
-                    // }
-                    // onChange={(e) => {
-                    //   setCurrentState({
-                    //     ...currentState,
-                    //     [i]: e.target.value >= 600 ? e.target.value : 600,
-                    //   });
-                    //
-                    //   dispatch(
-                    //     setSettings({
-                    //       ...settings,
-                    //       reportSettings: {
-                    //         ...settings.reportSettings,
-                    //         position: {
-                    //           ...settings?.reportSettings?.position,
-                    //           [i]:
-                    //             e.target.value >= 600
-                    //               ? parseInt(e.target.value)
-                    //               : 600,
-                    //         },
-                    //       },
-                    //     })
-                    //   );
-                    // }}
+                    value={get(choosenWg, `size.${i}`)}
+                    onChange={(e) => {
+                      dispatch(
+                        setWidgetsList(
+                          widgetsList.map((w) => {
+                            return w?.id === choosenWidget?.id
+                              ? {
+                                  ...choosenWg,
+                                  size: { [i]: e.target.value },
+                                }
+                              : w;
+                          })
+                        )
+                      );
+                    }}
                   />
                   px
                 </div>
@@ -501,8 +438,18 @@ const ImgSettingsComp = ({ choosenWidget }) => {
             <Checkbox
               style={{ margin: "10px 0" }}
               defaultChecked
-              // checked={state.checkedB}
-              // onChange={handleChange}
+              checked={get(choosenWg, "visibility")}
+              onChange={(e) => {
+                dispatch(
+                  setWidgetsList(
+                    widgetsList.map((w) => {
+                      return w?.id === choosenWidget?.id
+                        ? { ...choosenWg, visibility: e.target.checked }
+                        : w;
+                    })
+                  )
+                );
+              }}
               name="checkedB"
               color="primary"
             />
@@ -511,7 +458,6 @@ const ImgSettingsComp = ({ choosenWidget }) => {
         />
 
         <TextField
-          required
           style={{
             width: "100%",
           }}
@@ -538,28 +484,23 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           Miscellaneous
         </h3>
         <TextField
-          required
           style={{
             width: "100%",
           }}
           label="Tooltip"
           name="widgetName"
-          // value={
-          //   get(currentState, "name") || get(settings, "generalSettings.name")
-          // }
-          // onChange={(e) => {
-          //   setCurrentState({ ...currentState, name: e.target.value });
-          //
-          //   dispatch(
-          //     setSettings({
-          //       ...settings,
-          //       generalSettings: {
-          //         ...settings?.generalSettings,
-          //         name: e.target.value,
-          //       },
-          //     })
-          //   );
-          // }}
+          value={get(choosenWg, "tooltip", "")}
+          onChange={(e) => {
+            dispatch(
+              setWidgetsList(
+                widgetsList.map((w) => {
+                  return w?.id === choosenWidget?.id
+                    ? { ...choosenWg, tooltip: e.target.value }
+                    : w;
+                })
+              )
+            );
+          }}
         />
 
         <SpecifyComponent>
@@ -611,7 +552,6 @@ const ImgSettingsComp = ({ choosenWidget }) => {
                     }}
                   >
                     <TextField
-                      required
                       // register={register}
                       style={{
                         width: "200px",

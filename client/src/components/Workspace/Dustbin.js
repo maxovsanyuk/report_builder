@@ -117,8 +117,8 @@ const DnDBox = styled.div`
 
   .resizible-btn {
     position: absolute;
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     background: #fff url(${ResizibleImg}) no-repeat center;
     background-size: 50%;
     border-radius: 50%;
@@ -151,16 +151,15 @@ const DnDBox = styled.div`
   .resizable .resizers {
     width: 100%;
     height: 100%;
-    border: 3px dashed #4286f4;
     box-sizing: border-box;
   }
 
   .resizable .resizers .resizer {
-    width: 10px;
-    height: 10px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: white;
-    border: 3px solid #4286f4;
+    border: 2px solid #4286f4;
     position: absolute;
     z-index: 1000;
   }

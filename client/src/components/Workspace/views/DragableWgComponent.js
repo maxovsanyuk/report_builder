@@ -153,6 +153,7 @@ const WgBox = ({
   const dispatch = useDispatch();
 
   console.log(widgetsList, "widgetsList");
+  console.log(widget, "widget");
 
   makeResizableDiv(`.${widget.name}_${widget.id}_resizable`);
 
@@ -252,12 +253,15 @@ const WgBox = ({
               px
             </span>
           </div>
-          {get(wgPosition, "clientX") && (
-            <div>
-              <span>X: {get(wgPosition, "clientX")}</span>{" "}
-              <span>Y: {get(wgPosition, "clientY")}</span>
-            </div>
-          )}
+
+          <div>
+            <span>
+              X: {get(wgPosition, "clientX", get(widget, "position.left"))}
+            </span>{" "}
+            <span>
+              Y: {get(wgPosition, "clientY", get(widget, "position.top"))}
+            </span>
+          </div>
         </div>
 
         <div
@@ -294,9 +298,31 @@ const DragableWgComponent = ({
 }) => {
   const [wgPosition, setWgPosition] = useState({});
 
+  // const state = useSelector((state) => state.app);
+  // const { widgetsList } = state;
+  // const dispatch = useDispatch();
+  //
+  // const choosenWg = widgetsList.find((w) => w?.id === widget?.id);
+
   return (
     <Draggable
-      onDrag={(e, d) => setWgPosition(e)}
+      onDrag={(e) => {
+        setWgPosition(e);
+
+        //
+        // dispatch(
+        //     setWidgetsList(
+        //         widgetsList.map((w) => {
+        //             return w?.id === widget?.id
+        //                 ? {
+        //                     ...choosenWg,
+        //                     // position: { top: e.clientY, left: e.clientX },
+        //                 }
+        //                 : w;
+        //         })
+        //     )
+        // );
+      }}
       key={widget.id}
       bounds="parent"
       {...dragHandlers}
@@ -312,9 +338,16 @@ const DragableWgComponent = ({
         }}
         className={`box resizable ${widget.name}_${widget.id}_resizable`}
         style={{
+          width: `${widget?.size?.width}px`,
+          height: `${widget?.size?.height}px`,
           position: "absolute",
           left: `${widget?.position?.left}px`,
           top: `${widget?.position?.top}px`,
+          border: `2px ${get(widget, "border", "solid")} ${get(
+            widget,
+            "borderColor",
+            "#4da6ff"
+          )}`,
         }}
       >
         <div

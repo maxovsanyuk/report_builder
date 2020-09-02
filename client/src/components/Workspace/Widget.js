@@ -58,10 +58,13 @@ export const Widget = ({ wgConfig, setCurrentWgInfo }) => {
             {
               id: new Date().getTime(),
               position: {
-                top: getCoords(widget).top,
-                left: getCoords(widget).left,
+                top: getCoords(widget).top?.toFixed(2),
+                left: getCoords(widget).left?.toFixed(2),
               },
               size: { height: 200, width: 200 },
+              border: "Solid",
+              borderColor: "#4da6ff",
+              visibility: true,
               ...wgConfig,
             },
           ])
