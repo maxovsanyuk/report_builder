@@ -23,7 +23,7 @@ ReactDOM.render(
     <Provider store={store}>
       <Router>
         <Switch>
-          <Route exact path="/" component={App} />
+          <Route path="/report_builder" component={App} />
           <Router
             render={() => {
               return "ERR 404";
