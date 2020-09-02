@@ -69,8 +69,6 @@ const NewDataSetList = ({
   const { dataSets, newDataSet, isShownAlert, isSavedNewDataSetData } = state;
   const dispatch = useDispatch();
 
-  console.log(dataSets, "dataSets");
-
   const {
     handleSubmit,
     register,

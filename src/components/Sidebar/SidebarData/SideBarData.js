@@ -43,8 +43,10 @@ const SideBarData = () => {
   const state = useSelector((state) => state.app);
   const { dataSets, newDataSet } = state;
 
+  console.log(JSON.stringify(dataSets, null, 2));
+  console.log(JSON.stringify(newDataSet, null, 2));
+
   console.log(dataSets, "dataSets");
-  console.log(newDataSet, "newDataSet");
 
   const dispatch = useDispatch();
 
