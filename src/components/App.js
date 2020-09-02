@@ -12,7 +12,6 @@ const MainCont = styled.div`
   display: flex;
   height: 100vh;
   position: relative;
-  
 `;
 
 class App extends Component {

@@ -129,10 +129,18 @@ const WidgetMenu = ({
               {
                 id: new Date().getTime(),
                 name: widget.name,
-                top: 20,
-                left: 20,
                 clone: true,
                 draggable: false,
+
+                position: {
+                  top: 20,
+                  left: 20,
+                },
+                size: { height: 200, width: 200 },
+                border: "Solid",
+                borderColor: "#4da6ff",
+                visibility: true,
+                customAttributes: [],
               },
             ])
           );
