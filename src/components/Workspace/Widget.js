@@ -21,6 +21,7 @@ const WidgetBox = styled.div`
     cursor: pointer;
     border: 1px solid #000;
     transition: 0.3s;
+
     .info-box {
       transition: 0.5s;
       transition-delay: 0.3s;
