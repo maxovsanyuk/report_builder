@@ -65,6 +65,7 @@ export const Widget = ({ wgConfig, setCurrentWgInfo }) => {
               border: "Solid",
               borderColor: "#4da6ff",
               visibility: true,
+              customAttributes: [],
               ...wgConfig,
             },
           ])

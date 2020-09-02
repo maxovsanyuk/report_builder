@@ -462,24 +462,21 @@ const ImgSettingsComp = ({ choosenWidget }) => {
             width: "100%",
           }}
           label="Toggle item"
-          name="widgetName"
-          // value={
-          //   get(currentState, "name") || get(settings, "generalSettings.name")
-          // }
-          // onChange={(e) => {
-          //   setCurrentState({ ...currentState, name: e.target.value });
-          //
-          //   dispatch(
-          //     setSettings({
-          //       ...settings,
-          //       generalSettings: {
-          //         ...settings?.generalSettings,
-          //         name: e.target.value,
-          //       },
-          //     })
-          //   );
-          // }}
+          name="toggleItem"
+          value={get(choosenWg, "toggleItem", "")}
+          onChange={(e) => {
+            dispatch(
+              setWidgetsList(
+                widgetsList.map((w) => {
+                  return w?.id === choosenWidget?.id
+                    ? { ...choosenWg, toggleItem: e.target.value }
+                    : w;
+                })
+              )
+            );
+          }}
         />
+
         <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>
           Miscellaneous
         </h3>
@@ -514,115 +511,166 @@ const ImgSettingsComp = ({ choosenWidget }) => {
             <button className="btn-title">Add Custom Attributes</button>
             <button
               className="add-btn"
-              // disabled={parametersList && parametersList.length && !isFullForm}
-              // style={{
-              //   opacity:
-              //     parametersList && parametersList.length && !isFullForm
-              //       ? ".3"
-              //       : 1,
-              // }}
-              // onClick={() => {
-              //   setParametersList([
-              //     ...parametersList,
-              //     { id: new Date().getTime(), value: "", label: "" },
-              //   ]);
-              //   setIsfullForm(false);
-              //   setNewList({});
-              // }}
+              disabled={
+                (!get(currentState, "name") || !get(currentState, "value")) &&
+                choosenWg?.customAttributes?.length
+              }
+              style={{
+                opacity:
+                  (!get(currentState, "name") || !get(currentState, "value")) &&
+                  choosenWg?.customAttributes?.length
+                    ? ".3"
+                    : 1,
+              }}
+              value={get(choosenWg, "border", "")}
+              onClick={(e) => {
+                setCurrentState({});
+                dispatch(
+                  setWidgetsList(
+                    widgetsList.map((w) => {
+                      return w?.id === choosenWidget?.id
+                        ? {
+                            ...choosenWg,
+                            customAttributes: [
+                              ...choosenWg.customAttributes,
+                              { name: "", value: "", id: new Date().getTime() },
+                            ],
+                          }
+                        : w;
+                    })
+                  )
+                );
+              }}
             >
               + ADD
             </button>
           </div>
 
           <div className="parameters-box">
-            {[2, 3].map(({ label, value, id }) => {
-              return (
-                <Paper
-                  key={id}
-                  style={{
-                    margin: "20px 20px 10px 20px",
-                  }}
-                >
-                  <form
+            {get(choosenWg, "customAttributes") &&
+              choosenWg?.customAttributes.map(({ name, value, id }) => {
+                return (
+                  <Paper
+                    key={id}
                     style={{
-                      display: "flex",
-                      width: "100%",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      margin: "20px 20px 10px 20px",
                     }}
                   >
-                    <TextField
-                      // register={register}
+                    <form
                       style={{
-                        width: "200px",
-                        margin: "5px 0 15px 15px",
-                      }}
-                      label="Default Value"
-                      name="DefaultValue"
-                      // onChange={(e) => {
-                      //   setNewList({
-                      //     ...newList,
-                      //     defaultValue: e.target.value,
-                      //   });
-                      //
-                      //   setParametersList(
-                      //     parametersList.map((p) => {
-                      //       return p.id === id
-                      //         ? { ...p, value: e.target.value }
-                      //         : p;
-                      //     })
-                      //   );
-                      //
-                      //   dispatch(
-                      //     setNewParametersSetState({
-                      //       ...newParametersSet,
-                      //       [name]: {
-                      //         ...newParametersSet[name],
-                      //         specify: {
-                      //           ...newParametersSet[name].specify,
-                      //           items: parametersList,
-                      //         },
-                      //       },
-                      //     })
-                      //   );
-                      // }}
-                      // value={value || get(newList, "value")}
-                    />
-
-                    <IconButton
-                      component="span"
-                      // onClick={() => {
-                      //   setParametersList(
-                      //     parametersList.filter((l) => l.id !== id)
-                      //   );
-                      //   setIsfullForm(true);
-                      //
-                      //   dispatch(
-                      //     setNewParametersSetState({
-                      //       ...newParametersSet,
-                      //       [name]: {
-                      //         ...newParametersSet[name],
-                      //         specify: {
-                      //           ...newParametersSet[name].specify,
-                      //           items: parametersList.filter(
-                      //             (l) => l.id !== id
-                      //           ),
-                      //         },
-                      //       },
-                      //     })
-                      //   );
-                      // }}
-                      style={{
-                        maxWidth: "28px",
-                        marginRight: "10px",
+                        display: "flex",
+                        width: "100%",
+                        justifyContent: "space-between",
+                        alignItems: "center",
                       }}
                     >
-                      <DeleteIcon />
-                    </IconButton>
-                  </form>
-                </Paper>
-              );
-            })}
+                      <TextField
+                        style={{
+                          width: "200px",
+                          margin: "5px 0 15px 15px",
+                        }}
+                        label="Name"
+                        name="name"
+                        onChange={(e) => {
+                          setCurrentState({
+                            ...currentState,
+                            name: e.target.value,
+                          });
+
+                          dispatch(
+                            setWidgetsList(
+                              widgetsList.map((w) => {
+                                return w?.id === choosenWidget?.id
+                                  ? {
+                                      ...choosenWg,
+                                      customAttributes: choosenWg
+                                        ?.customAttributes.length
+                                        ? choosenWg?.customAttributes.map(
+                                            (a) => {
+                                              return a?.id === id
+                                                ? { ...a, name: e.target.value }
+                                                : a;
+                                            }
+                                          )
+                                        : [],
+                                    }
+                                  : w;
+                              })
+                            )
+                          );
+                        }}
+                        value={name || get(currentState, "name", "")}
+                      />
+                      <TextField
+                        style={{
+                          width: "200px",
+                          margin: "5px 0 15px 15px",
+                        }}
+                        label="Value"
+                        name="value"
+                        onChange={(e) => {
+                          setCurrentState({
+                            ...currentState,
+                            value: e.target.value,
+                          });
+
+                          dispatch(
+                            setWidgetsList(
+                              widgetsList.map((w) => {
+                                return w?.id === choosenWidget?.id
+                                  ? {
+                                      ...choosenWg,
+                                      customAttributes: choosenWg
+                                        ?.customAttributes.length
+                                        ? choosenWg?.customAttributes.map(
+                                            (a) => {
+                                              return a?.id === id
+                                                ? {
+                                                    ...a,
+                                                    value: e.target.value,
+                                                  }
+                                                : a;
+                                            }
+                                          )
+                                        : [],
+                                    }
+                                  : w;
+                              })
+                            )
+                          );
+                        }}
+                        value={value || get(currentState, "value", "")}
+                      />
+
+                      <IconButton
+                        component="span"
+                        onClick={() => {
+                          dispatch(
+                            setWidgetsList(
+                              widgetsList.map((w) => {
+                                return w?.id === choosenWidget?.id
+                                  ? {
+                                      ...w,
+                                      customAttributes: w?.customAttributes.filter(
+                                        (a) => a.id !== id
+                                      ),
+                                    }
+                                  : w;
+                              })
+                            )
+                          );
+                        }}
+                        style={{
+                          maxWidth: "28px",
+                          marginRight: "10px",
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </form>
+                  </Paper>
+                );
+              })}
           </div>
         </SpecifyComponent>
       </Paper>
