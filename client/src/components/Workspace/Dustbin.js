@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setChoosenSettingsType,
@@ -194,6 +194,34 @@ export const Dustbin = () => {
   const { widgetsList, settings } = state;
   const { reportSettings } = settings;
 
+  useEffect(() => {
+    async function a() {
+      try {
+        const d = await fetch(
+          "https://reportbuilderaddon-api.dev.uds.systems/api/data-source/all-entities",
+          {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, *cors, same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            rejectUnauthorized: false,
+            headers: {
+              "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials": true,
+            },
+          }
+        );
+
+        console.log(d, "AAAAA");
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+
+    a();
+  }, []);
+
   const dispatch = useDispatch();
 
   const [{ canDrop, isOver }, drop] = useDrop({
@@ -229,16 +257,15 @@ export const Dustbin = () => {
   const dragHandlers = { onStart, onStop };
 
   return (
-    <DnDBox
-      reportSettings={reportSettings}
-      onClick={(e) => {
-        e.stopPropagation();
-        dispatch(setChoosenWidget(null));
-        dispatch(sideBarHandleOpen(true));
-        dispatch(setChoosenSettingsType("report_settings"));
-      }}
-    >
+    <DnDBox reportSettings={reportSettings}>
       <div
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          dispatch(setChoosenWidget(null));
+          dispatch(sideBarHandleOpen(true));
+          dispatch(setChoosenSettingsType("report_settings"));
+        }}
         style={{
           position: "relative",
           width: "fit-content",

@@ -80,7 +80,8 @@ const SettingsRow = ({ type, name }) => {
 
   const dispatch = useDispatch();
 
-  if (type === "widget_settings" && choosenSettingsType === type) {
+  if (type === "widget_settings" && choosenSettingsType !== type) {
+    return null;
   }
 
   return (
@@ -109,13 +110,6 @@ const SettingsRow = ({ type, name }) => {
 };
 
 const SidebarSettings = () => {
-  // const state = useSelector((state) => state.app);
-  // const { choosenSettingsType } = state;
-
-  // const a =
-  //   choosenSettingsType === "widget_settings"
-  //     ? settingsRows
-  //     : settingsRows.filter(({ type }) => type !== "widget_settings");
   return (
     <AnimatedComponent>
       <SettingsComp>

@@ -6,41 +6,41 @@ export function getDataSetFields(entityName) {
           resolve({
             items: [
               {
-                value: "idAttach",
+                logicalName: "idAttach",
                 label: "idAttach",
                 type: "field",
                 valueType: "number",
                 chosen: true,
               },
               {
-                value: "nameAttach",
+                logicalName: "nameAttach",
                 label: "attachmentName",
                 type: "field",
                 valueType: "date",
                 chosen: true,
               },
               {
-                value: "idAttach1",
+                logicalName: "idAttach1",
                 label: "idAttach",
                 type: "field",
                 valueType: "number",
                 chosen: true,
               },
               {
-                value: "nameAttach2",
+                logicalName: "nameAttach2",
                 label: "attachmentName",
                 type: "field",
                 valueType: "boolean",
                 chosen: true,
               },
               {
-                value: "activity_mime_attachment",
+                logicalName: "activity_mime_attachment",
                 label: "Attachments",
                 type: "related",
                 chosen: false,
               },
               {
-                value: "account",
+                logicalName: "account",
                 label: "Account",
                 type: "related",
                 chosen: false,
@@ -52,27 +52,27 @@ export function getDataSetFields(entityName) {
           resolve({
             items: [
               {
-                value: "idAcc",
+                logicalName: "idAcc",
                 label: "idAccount",
                 type: "field",
                 valueType: "boolean",
                 chosen: true,
               },
               {
-                value: "nameAcc",
+                logicalName: "nameAcc",
                 label: "accountName",
                 type: "field",
                 valueType: "number",
                 chosen: true,
               },
               {
-                value: "contacts",
+                logicalName: "contacts",
                 label: "Contacts",
                 type: "related",
                 chosen: false,
               },
               {
-                value: "activity_mime_attachment",
+                logicalName: "activity_mime_attachment",
                 label: "Attachments",
                 type: "related",
                 chosen: false,
@@ -84,27 +84,27 @@ export function getDataSetFields(entityName) {
           resolve({
             items: [
               {
-                value: "idContact",
+                logicalName: "idContact",
                 label: "idContact",
                 type: "field",
                 valueType: "boolean",
                 chosen: true,
               },
               {
-                value: "nameContact",
+                logicalName: "nameContact",
                 label: "contactName",
                 type: "field",
                 valueType: "date",
                 chosen: true,
               },
               {
-                value: "account",
+                logicalName: "account",
                 label: "Account",
                 type: "related",
                 chosen: false,
               },
               {
-                value: "activity_mime_attachment",
+                logicalName: "activity_mime_attachment",
                 label: "Attachments",
                 type: "related",
                 chosen: false,

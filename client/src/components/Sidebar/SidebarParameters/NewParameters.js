@@ -26,18 +26,6 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Checkbox from "@material-ui/core/Checkbox";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import AppBar from "@material-ui/core/AppBar";
-import Tab from "@material-ui/core/Tab";
-import Paper from "@material-ui/core/Paper";
-import TabContext from "@material-ui/lab/TabContext";
-import TabList from "@material-ui/lab/TabList";
-import TabPanel from "@material-ui/lab/TabPanel";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Radio from "@material-ui/core/Radio";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import ParameterAssignValuesDialog from "./views/ParameterAssignValuesDialog";
 
 const dateType = [

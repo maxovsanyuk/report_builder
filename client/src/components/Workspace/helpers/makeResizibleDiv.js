@@ -1,10 +1,3 @@
-import {
-  setChoosenSettingsType,
-  setChoosenWidget,
-  sideBarHandleOpen,
-} from "../../../redux/actions/app_action";
-import React from "react";
-
 export function makeResizableDiv(div) {
   const element = document.querySelector(div);
   const resizers = document.querySelectorAll(div + " .resizer");

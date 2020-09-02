@@ -1,9 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import PositionComp from "./reportSettingsComponents/PositionComp";
-import BackgroundImageComp from "./reportSettingsComponents/BackgroundImageComp";
-import BasicWidgetComp from "./widgetComponent/BasicWidgetComp";
+import DefineWidgetSettingsComp from "./widgetComponent/DefineWidgetSettingsComp";
 
 import styled from "styled-components";
 
@@ -60,13 +58,9 @@ const WidgetSettings = () => {
   const state = useSelector((state) => state.app);
   const { choosenWidget } = state;
 
-  console.log(choosenWidget, "choosenWidget");
-
   return (
     <SettingsBox>
-      <BasicWidgetComp choosenWidget={choosenWidget} />
-      {/*<BackgroundImageComp />*/}
-      {/*<PositionComp />*/}
+      <DefineWidgetSettingsComp choosenWidget={choosenWidget} />
     </SettingsBox>
   );
 };

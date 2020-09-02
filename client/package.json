@@ -28,6 +28,7 @@
     "prettier-eslint": "^11.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
+    "react-amazing-proxy": "^1.0.63",
     "react-color": "^2.18.1",
     "react-dnd": "^11.1.3",
     "react-dnd-html5-backend": "^11.1.3",
@@ -50,12 +51,12 @@
     "superagent": "^5.2.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "../node_modules/.bin/react-scripts build",
-    "test": "../node_modules/.bin/react-scripts test",
-    "eject": "../node_modules/.bin/react-scripts eject",
-    "server": "../node_modules/.bin/nodemon server.js",
-    "dev": "../node_modules/.bin/concurrently --kill-others-on-fail \\\"nodemon server.js\\\" \\\"yarn run react-scripts start\\\""
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "proxy:dev": "concurrently --kill-others-on-fail  \"node node_modules/react-amazing-proxy/start\" \"react-scripts start\"",
+    "start": "node node_modules/react-amazing-proxy/start"
   },
   "eslintConfig": {
     "extends": "react-app"

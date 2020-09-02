@@ -97,7 +97,7 @@ const FilterForNewDataSet = ({
       dispatch(setLoading(true));
       try {
         const dataSetFields = await getDataSetFields(
-          get(filterState, "selectedFieldType.value")
+          get(filterState, "selectedFieldType.logicalName")
         );
 
         dispatch(
