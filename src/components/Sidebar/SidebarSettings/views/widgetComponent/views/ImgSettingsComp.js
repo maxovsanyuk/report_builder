@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import styled from "styled-components";
 
@@ -69,18 +69,176 @@ const SpecifyComponent = styled.div`
   }
 `;
 
-const ImgSettingsComp = ({ choosenWidget }) => {
-  const [currentState, setCurrentState] = useState({});
-  const [colorPickerOpen, setColorPickerOpen] = useState(false);
+const CustomAttributeRow = ({
+  data,
+  setCurrentState,
+  currentState,
+  choosenWidget,
+  choosenWg,
+}) => {
+  const [currentRowState, setCurrentRowState] = useState(data);
 
   const state = useSelector((state) => state.app);
   const { widgetsList } = state;
 
   const dispatch = useDispatch();
 
-  const choosenWg = widgetsList.find((w) => w?.id === choosenWidget?.id);
+  useEffect(() => {
+    setCurrentState({
+      ...currentState,
+      disableAddBtn: !(
+        get(currentRowState, "name") && get(currentRowState, "value")
+      ),
+      isFullAtribute: true,
+    });
+  }, [get(currentRowState, "name"), get(currentRowState, "value")]);
 
-  console.log(choosenWg, "choosenWg");
+  return (
+    <Paper
+      style={{
+        margin: "20px 20px 10px 20px",
+      }}
+    >
+      <form
+        style={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <TextField
+          style={{
+            width: "200px",
+            margin: "5px 0 15px 15px",
+          }}
+          label="Name"
+          name="name"
+          onChange={(e) => {
+            e.target.value === "" &&
+              setCurrentState({
+                ...currentState,
+                disableAddBtn: true,
+                isFullAtribute: false,
+              });
+
+            setCurrentRowState({
+              ...currentRowState,
+              name: e.target.value,
+            });
+
+            dispatch(
+              setWidgetsList(
+                widgetsList.map((w) => {
+                  return w?.id === choosenWidget?.id
+                    ? {
+                        ...choosenWg,
+                        customAttributes: choosenWg?.customAttributes.length
+                          ? choosenWg?.customAttributes.map((a) => {
+                              return a?.id === data?.id
+                                ? { ...a, name: e.target.value }
+                                : a;
+                            })
+                          : [],
+                      }
+                    : w;
+                })
+              )
+            );
+          }}
+          value={data?.name || get(currentRowState, "name")}
+        />
+        <TextField
+          style={{
+            width: "200px",
+            margin: "5px 0 15px 15px",
+          }}
+          label="Value"
+          name="value"
+          onChange={(e) => {
+            e.target.value === "" &&
+              setCurrentState({
+                ...currentState,
+                disableAddBtn: true,
+                isFullAtribute: false,
+              });
+
+            setCurrentRowState({
+              ...currentRowState,
+              value: e.target.value,
+            });
+
+            dispatch(
+              setWidgetsList(
+                widgetsList.map((w) => {
+                  return w?.id === choosenWidget?.id
+                    ? {
+                        ...choosenWg,
+                        customAttributes: choosenWg?.customAttributes.length
+                          ? choosenWg?.customAttributes.map((a) => {
+                              return a?.id === data?.id
+                                ? { ...a, value: e.target.value }
+                                : a;
+                            })
+                          : [],
+                      }
+                    : w;
+                })
+              )
+            );
+          }}
+          value={data?.value || get(currentRowState, "value")}
+        />
+
+        <IconButton
+          component="span"
+          onClick={() => {
+            setCurrentState({
+              ...currentState,
+              disableAddBtn: false,
+              isFullAtribute: true,
+              isFirsNewAtribute: !choosenWg?.customAttributes.length,
+            });
+            dispatch(
+              setWidgetsList(
+                widgetsList.map((w) => {
+                  return w?.id === choosenWidget?.id
+                    ? {
+                        ...w,
+                        customAttributes: w?.customAttributes.filter(
+                          (a) => a.id !== data?.id
+                        ),
+                      }
+                    : w;
+                })
+              )
+            );
+          }}
+          style={{
+            maxWidth: "28px",
+            marginRight: "10px",
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </form>
+    </Paper>
+  );
+};
+
+const ImgSettingsComp = ({ choosenWidget }) => {
+  const [colorPickerOpen, setColorPickerOpen] = useState(false);
+  const [currentState, setCurrentState] = useState({
+    isFirsNewAtribute: true,
+    disableAddBtn: false,
+    isFullAtribute: false,
+  });
+
+  const state = useSelector((state) => state.app);
+  const { widgetsList } = state;
+
+  const dispatch = useDispatch();
+  const choosenWg = widgetsList.find((w) => w?.id === choosenWidget?.id);
 
   return (
     <>
@@ -512,19 +670,25 @@ const ImgSettingsComp = ({ choosenWidget }) => {
             <button
               className="add-btn"
               disabled={
-                (!get(currentState, "name") || !get(currentState, "value")) &&
-                choosenWg?.customAttributes?.length
+                currentState?.disableAddBtn ||
+                (!currentState.isFullAtribute &&
+                  !currentState.isFirsNewAtribute)
               }
               style={{
                 opacity:
-                  (!get(currentState, "name") || !get(currentState, "value")) &&
-                  choosenWg?.customAttributes?.length
-                    ? ".3"
-                    : 1,
+                  currentState?.disableAddBtn ||
+                  (!currentState.isFullAtribute &&
+                    !currentState.isFirsNewAtribute)
+                    ? "0.3"
+                    : "1",
               }}
-              value={get(choosenWg, "border", "")}
               onClick={(e) => {
-                setCurrentState({});
+                setCurrentState({
+                  ...currentState,
+                  isFirsNewAtribute: false,
+                  disableAddBtn: true,
+                  isFullAtribute: false,
+                });
                 dispatch(
                   setWidgetsList(
                     widgetsList.map((w) => {
@@ -548,127 +712,16 @@ const ImgSettingsComp = ({ choosenWidget }) => {
 
           <div className="parameters-box">
             {get(choosenWg, "customAttributes") &&
-              choosenWg?.customAttributes.map(({ name, value, id }) => {
+              choosenWg?.customAttributes.map((a) => {
                 return (
-                  <Paper
-                    key={id}
-                    style={{
-                      margin: "20px 20px 10px 20px",
-                    }}
-                  >
-                    <form
-                      style={{
-                        display: "flex",
-                        width: "100%",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <TextField
-                        style={{
-                          width: "200px",
-                          margin: "5px 0 15px 15px",
-                        }}
-                        label="Name"
-                        name="name"
-                        onChange={(e) => {
-                          setCurrentState({
-                            ...currentState,
-                            name: e.target.value,
-                          });
-
-                          dispatch(
-                            setWidgetsList(
-                              widgetsList.map((w) => {
-                                return w?.id === choosenWidget?.id
-                                  ? {
-                                      ...choosenWg,
-                                      customAttributes: choosenWg
-                                        ?.customAttributes.length
-                                        ? choosenWg?.customAttributes.map(
-                                            (a) => {
-                                              return a?.id === id
-                                                ? { ...a, name: e.target.value }
-                                                : a;
-                                            }
-                                          )
-                                        : [],
-                                    }
-                                  : w;
-                              })
-                            )
-                          );
-                        }}
-                        value={name || get(currentState, "name", "")}
-                      />
-                      <TextField
-                        style={{
-                          width: "200px",
-                          margin: "5px 0 15px 15px",
-                        }}
-                        label="Value"
-                        name="value"
-                        onChange={(e) => {
-                          setCurrentState({
-                            ...currentState,
-                            value: e.target.value,
-                          });
-
-                          dispatch(
-                            setWidgetsList(
-                              widgetsList.map((w) => {
-                                return w?.id === choosenWidget?.id
-                                  ? {
-                                      ...choosenWg,
-                                      customAttributes: choosenWg
-                                        ?.customAttributes.length
-                                        ? choosenWg?.customAttributes.map(
-                                            (a) => {
-                                              return a?.id === id
-                                                ? {
-                                                    ...a,
-                                                    value: e.target.value,
-                                                  }
-                                                : a;
-                                            }
-                                          )
-                                        : [],
-                                    }
-                                  : w;
-                              })
-                            )
-                          );
-                        }}
-                        value={value || get(currentState, "value", "")}
-                      />
-
-                      <IconButton
-                        component="span"
-                        onClick={() => {
-                          dispatch(
-                            setWidgetsList(
-                              widgetsList.map((w) => {
-                                return w?.id === choosenWidget?.id
-                                  ? {
-                                      ...w,
-                                      customAttributes: w?.customAttributes.filter(
-                                        (a) => a.id !== id
-                                      ),
-                                    }
-                                  : w;
-                              })
-                            )
-                          );
-                        }}
-                        style={{
-                          maxWidth: "28px",
-                          marginRight: "10px",
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </form>
-                  </Paper>
+                  <CustomAttributeRow
+                    key={a.id}
+                    data={a}
+                    setCurrentState={setCurrentState}
+                    currentState={currentState}
+                    choosenWg={choosenWg}
+                    choosenWidget={choosenWidget}
+                  />
                 );
               })}
           </div>

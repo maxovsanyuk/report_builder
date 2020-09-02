@@ -54,9 +54,8 @@
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "proxy:dev": "concurrently --kill-others-on-fail  \"node node_modules/react-amazing-proxy/start\" \"react-scripts start\"",
-    "start": "node node_modules/react-amazing-proxy/start"
+    "eject": "client/node_modules/.breact-scripts eject",
+    "proxy:dev": "node node_modules/react-amazing-proxy/start"
   },
   "eslintConfig": {
     "extends": "react-app"
