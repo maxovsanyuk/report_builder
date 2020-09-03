@@ -1,6 +1,3 @@
-const DEFAULT_WG_WEIGHT = 200;
-const DEFAULT_WG_HEIGHT = 200;
-
 export const widgetsConfig = [
   {
     title: "Basic items",
@@ -8,10 +5,6 @@ export const widgetsConfig = [
       { name: "text" },
       {
         name: "image",
-        size: {
-          width: DEFAULT_WG_WEIGHT,
-          height: DEFAULT_WG_HEIGHT,
-        },
       },
       { name: "line" },
       { name: "rectangle" },

@@ -28,6 +28,10 @@ import Alert from "@material-ui/lab/Alert";
 import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
 
+// LODASH
+
+import get from "lodash/get";
+
 const WidgetsToolBar = styled.div`
   display: flex;
   flex-direction: column;
@@ -146,8 +150,35 @@ const Row = styled.div`
   }
 `;
 
-const ToolbarRow = ({ toolData, zIndex, searchValue, setCurrentWgInfo }) => {
+const WorkSpaceComp = styled.div`
+  width: calc(100% - 120px);
+  height: calc(100% - 60px);
+  position: relative;
+  z-index: 80;
+  background: #eee;
+  margin: 60px 0 0 0;
+`;
+
+const AlertCont = styled.div`
+  position: fixed;
+  top: 10px;
+  z-index: 100;
+  animation: appearingBar 0.4s ease-in-out 0s 1 normal forwards;
+
+  @keyframes appearingBar {
+    0% {
+      right: -100px;
+    }
+    100% {
+      right: 70px;
+    }
+  }
+`;
+
+const ToolbarRow = ({ toolBarData, zIndex, searchValue, setCurrentWgInfo }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const reg = new RegExp(searchValue, "gi");
 
   useEffect(() => {
     setIsOpen(!!searchValue);
@@ -156,7 +187,7 @@ const ToolbarRow = ({ toolData, zIndex, searchValue, setCurrentWgInfo }) => {
   return (
     <Row zIndex={zIndex} isOpen={isOpen}>
       <div className="title-box">
-        <sapn className="title">{toolData?.title}</sapn>
+        <sapn className="title">{toolBarData?.title}</sapn>
 
         <div className="btns-box">
           {isOpen ? (
@@ -168,25 +199,19 @@ const ToolbarRow = ({ toolData, zIndex, searchValue, setCurrentWgInfo }) => {
       </div>
 
       <div className="widgets-box">
-        {toolData?.widgetsList?.map((w, i) => {
-          if (!searchValue) {
-            return (
-              <Widget
-                key={w.name}
-                wgConfig={w}
-                setCurrentWgInfo={setCurrentWgInfo}
-              />
-            );
-          }
-
-          return searchValue && w?.name?.startsWith(searchValue) ? (
-            <Widget
-              key={w.name}
-              name={w.name}
-              setCurrentWgInfo={setCurrentWgInfo}
-            />
-          ) : null;
-        })}
+        {get(toolBarData, "widgetsList") &&
+          toolBarData?.widgetsList
+            .filter((u) => u.name.match(reg))
+            .map((w, i) => {
+              return (
+                <Widget
+                  key={w.name}
+                  name={w.name}
+                  wgConfig={w}
+                  setCurrentWgInfo={setCurrentWgInfo}
+                />
+              );
+            })}
       </div>
     </Row>
   );
@@ -222,7 +247,7 @@ const Container = memo(function Container() {
           return (
             <ToolbarRow
               key={t.title}
-              toolData={t}
+              toolBarData={t}
               zIndex={50 - i}
               searchValue={searchValue}
               setCurrentWgInfo={setCurrentWgInfo}
@@ -233,31 +258,6 @@ const Container = memo(function Container() {
     </>
   );
 });
-
-const WorkSpaceComp = styled.div`
-  width: calc(100% - 120px);
-  height: calc(100% - 60px);
-  position: relative;
-  z-index: 80;
-  background: #eee;
-  margin: 60px 0 0 0;
-`;
-
-const AlertCont = styled.div`
-  position: fixed;
-  top: 10px;
-  z-index: 100;
-  animation: appearingBar 0.4s ease-in-out 0s 1 normal forwards;
-
-  @keyframes appearingBar {
-    0% {
-      right: -100px;
-    }
-    100% {
-      right: 70px;
-    }
-  }
-`;
 
 const Workspace = () => {
   const state = useSelector((state) => state.app);

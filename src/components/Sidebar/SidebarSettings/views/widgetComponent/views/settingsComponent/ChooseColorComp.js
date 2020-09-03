@@ -7,7 +7,6 @@ import { SketchPicker } from "react-color";
 
 import get from "lodash/get";
 import { useDispatch, useSelector } from "react-redux";
-import TextField from "@material-ui/core/TextField";
 
 const ChooseColorComp = ({ choosenWidget, param, objParam }) => {
   const [colorPickerOpen, setColorPickerOpen] = useState(false);

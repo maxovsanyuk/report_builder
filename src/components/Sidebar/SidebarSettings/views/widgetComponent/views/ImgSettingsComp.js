@@ -1,26 +1,18 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 
 // SETTINGS COMP
 
-import { setWidgetsList } from "../../../../../../redux/actions/app_action";
 import CustomAttributeComp from "./settingsComponent/CustomAttributesComp";
 import TextValueComp from "./settingsComponent/TextValueComp";
 import SelectValueComp from "./settingsComponent/SelectValueComp";
 import CheckBoxComp from "./settingsComponent/CheckBoxComp";
+import ChooseColorComp from "./settingsComponent/ChooseColorComp";
 
 import styled from "styled-components";
 
 // MATERIAL UI
 
 import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import { SketchPicker } from "react-color";
-
-// LODASH
-
-import get from "lodash/get";
-import ChooseColorComp from "./settingsComponent/ChooseColorComp";
 
 const SettingsBox = styled.div`
   display: flex;

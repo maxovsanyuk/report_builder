@@ -6,6 +6,10 @@ import { setWidgetsList } from "../../redux/actions/app_action";
 
 import styled from "styled-components";
 
+// LODASH
+
+import get from "lodash/get";
+
 const WidgetBox = styled.div`
   display: flex;
   justify-content: center;
@@ -31,7 +35,6 @@ const WidgetBox = styled.div`
 `;
 
 export const Widget = ({ wgConfig, setCurrentWgInfo }) => {
-  const { name } = wgConfig;
   const state = useSelector((state) => state.app);
   const { widgetsList } = state;
 
@@ -46,12 +49,12 @@ export const Widget = ({ wgConfig, setCurrentWgInfo }) => {
   }
 
   const [{ isDragging }, drag] = useDrag({
-    item: { name, type: "box" },
+    item: { name: get(wgConfig, "name"), type: "box" },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
 
       if (item && dropResult) {
-        var widget = document.getElementById(name);
+        var widget = document.getElementById(get(wgConfig, "name"));
 
         dispatch(
           setWidgetsList([
@@ -82,22 +85,25 @@ export const Widget = ({ wgConfig, setCurrentWgInfo }) => {
 
   return (
     <WidgetBox
-      id={name}
+      id={get(wgConfig, "name")}
       ref={drag}
       style={{ opacity: isDragging ? 0.4 : 1 }}
       onMouseEnter={() => {
-        setCurrentWgInfo(name);
+        setCurrentWgInfo(get(wgConfig, "name"));
       }}
       onMouseLeave={() => {
         setCurrentWgInfo(null);
       }}
       onMouseDown={() => {
-        widgetsList.filter((w) => w.name === name).length &&
+        widgetsList.filter((w) => w.name === get(wgConfig, "name")).length &&
           alert("Widget already exist");
         setCurrentWgInfo(null);
       }}
     >
-      <img src={require(`../WidgetsToolBar/images/${name}.png`)} alt={name} />
+      <img
+        src={require(`../WidgetsToolBar/images/${get(wgConfig, "name")}.png`)}
+        alt={get(wgConfig, "name")}
+      />
     </WidgetBox>
   );
 };
