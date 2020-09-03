@@ -1,26 +1,17 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 
 // SETTINGS COMP
 
-import { setWidgetsList } from "../../../../../../redux/actions/app_action";
-import CustomAttributeComp from "./settingsComponent/CustomAttributesComp";
 import TextValueComp from "./settingsComponent/TextValueComp";
 import SelectValueComp from "./settingsComponent/SelectValueComp";
 import CheckBoxComp from "./settingsComponent/CheckBoxComp";
+import CustomAttributeComp from "./settingsComponent/CustomAttributesComp";
 
 import styled from "styled-components";
 
 // MATERIAL UI
 
 import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import { SketchPicker } from "react-color";
-
-// LODASH
-
-import get from "lodash/get";
-import ChooseColorComp from "./settingsComponent/ChooseColorComp";
 
 const SettingsBox = styled.div`
   display: flex;
@@ -69,15 +60,7 @@ const SpecifyComponent = styled.div`
   }
 `;
 
-const selectStyle = {
-  width: "100px",
-  maxWidth: "100px",
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
-};
-
-const ImgSettingsComp = ({ choosenWidget }) => {
+const LineSettingsComp = ({ choosenWidget }) => {
   return (
     <>
       <h3 style={{ textAlign: "center" }}>{choosenWidget?.name} Settings</h3>
@@ -92,62 +75,18 @@ const ImgSettingsComp = ({ choosenWidget }) => {
 
         <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>Basic</h3>
 
-        <TextValueComp
-          choosenWidget={choosenWidget}
-          param="value"
-          label="Value"
-          style={{ width: "100%" }}
-        />
-
         <SelectValueComp
-          param="source"
-          label="Source"
-          choosenWidget={choosenWidget}
-          arrOfValuse={["Embedded", "External", "Database"]}
-          style={selectStyle}
-        />
-
-        <SelectValueComp
-          param="linkTo"
-          label="Link To"
-          choosenWidget={choosenWidget}
-          arrOfValuse={["None", "Report", "URL"]}
-          style={selectStyle}
-        />
-
-        <SelectValueComp
-          param="border"
-          label="Border"
+          param="line"
+          label="Line"
           choosenWidget={choosenWidget}
           arrOfValuse={["Dashed", "Dotted", "Double", "None", "Solid"]}
-          style={selectStyle}
-        />
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            margin: "20px 20px 0 0",
-            position: "relative",
-          }}
-        >
-          <span style={{ margin: "0 10px 0 0" }}>Border Color</span>
-
-          <ChooseColorComp choosenWidget={choosenWidget} param="borderColor" />
-        </div>
-
-        <SelectValueComp
-          param="sizing"
-          label="Sizing"
-          choosenWidget={choosenWidget}
-          arrOfValuse={["AutoSize", "Fit", "FitPropotional", "Clip"]}
-          style={selectStyle}
         />
 
         <SettingsBox>
           <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>
             Position
           </h3>
+
           <div style={{ display: "flex" }}>
             {["top", "left"].map((i) => {
               return (
@@ -164,27 +103,30 @@ const ImgSettingsComp = ({ choosenWidget }) => {
             })}
           </div>
         </SettingsBox>
+
         <SettingsBox>
           <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>Size</h3>
           <div style={{ display: "flex" }}>
-            {["height", "width"].map((i) => {
-              return (
-                <TextValueComp
-                  key={i}
-                  type="number"
-                  choosenWidget={choosenWidget}
-                  param={i}
-                  objParam="size"
-                  label={i}
-                  textAfter="px"
-                />
-              );
-            })}
+            <div style={{ display: "flex" }}>
+              {["height", "width"].map((i) => {
+                return (
+                  <TextValueComp
+                    key={i}
+                    type="number"
+                    choosenWidget={choosenWidget}
+                    param={i}
+                    objParam="size"
+                    label={i}
+                    textAfter="px"
+                  />
+                );
+              })}
+            </div>
           </div>
         </SettingsBox>
 
         <CheckBoxComp
-          param={"visibility"}
+          param="visibility"
           label="Visibility"
           choosenWidget={choosenWidget}
         />
@@ -192,7 +134,7 @@ const ImgSettingsComp = ({ choosenWidget }) => {
         <TextValueComp
           choosenWidget={choosenWidget}
           param="toggleItem"
-          label="Toggle item"
+          label="Toggle Item"
           style={{ width: "100%" }}
         />
 
@@ -200,21 +142,12 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           Miscellaneous
         </h3>
 
-        <TextValueComp
-          choosenWidget={choosenWidget}
-          param="tooltip"
-          label="Tooltip"
-          style={{ width: "100%" }}
-        />
-
         <SpecifyComponent>
-          <SpecifyComponent>
-            <CustomAttributeComp choosenWidget={choosenWidget} />
-          </SpecifyComponent>
+          <CustomAttributeComp choosenWidget={choosenWidget} />
         </SpecifyComponent>
       </Paper>
     </>
   );
 };
 
-export default ImgSettingsComp;
+export default LineSettingsComp;

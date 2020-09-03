@@ -63,8 +63,6 @@ export const Widget = ({ wgConfig, setCurrentWgInfo }) => {
                 left: getCoords(widget).left?.toFixed(2),
               },
               size: { height: 200, width: 200 },
-              border: "Solid",
-              borderColor: "#4da6ff",
               visibility: true,
               customAttributes: [],
               ...wgConfig,

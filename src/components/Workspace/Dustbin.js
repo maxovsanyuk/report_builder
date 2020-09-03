@@ -196,19 +196,21 @@ export const Dustbin = () => {
   useEffect(() => {
     async function a() {
       try {
-        const d = await fetch("https://my.uds.systems/api/test/registration", {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
-          body: "TEST",
-          // mode: "cors", // no-cors, *cors, same-origin
-          // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          // rejectUnauthorized: false,
-          // headers: {
-          //   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-          //   "Content-Type": "application/json",
-          //   "Access-Control-Allow-Origin": "*",
-          //   "Access-Control-Allow-Credentials": true,
-          // },
-        });
+        const d = await fetch(
+          "https://reportbuilderaddon-api.dev.uds.systems/api/report/",
+          {
+            method: "GET", // *GET, POST, PUT, DELETE, etc.
+            // mode: "cors", // no-cors, *cors, same-origin
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // rejectUnauthorized: false,
+            // headers: {
+            //   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            //   "Content-Type": "application/json",
+            //   "Access-Control-Allow-Origin": "*",
+            //   "Access-Control-Allow-Credentials": true,
+            // },
+          }
+        );
 
         console.log(d, "AAAAA");
       } catch (err) {

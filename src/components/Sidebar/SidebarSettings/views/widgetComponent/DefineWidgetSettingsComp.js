@@ -1,5 +1,6 @@
 import React from "react";
 import ImgSettingsComp from "./views/ImgSettingsComp";
+import LineSettingsComp from "./views/LineSettingsComp";
 
 const DefineWidgetSettingsComp = ({ choosenWidget }) => {
   console.log(choosenWidget, "choosenWidget");
@@ -9,7 +10,7 @@ const DefineWidgetSettingsComp = ({ choosenWidget }) => {
     case "image":
       return <ImgSettingsComp choosenWidget={choosenWidget} />;
     case "line":
-      return <ImgSettingsComp />;
+      return <LineSettingsComp choosenWidget={choosenWidget} />;
     case "rectangle":
       return <ImgSettingsComp />;
     case "text_box":

@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import Workspace from "./Workspace/Workspace";
 import Sidebar from "./Sidebar/Sidebar";
 import WidgetsToolBar from "./WidgetsToolBar/WidgetsToolBar";
-import MomentUtils from "@date-io/moment";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import Loader from "./views/Loader";
 import styled from "styled-components";
 import SettingsToolBar from "./SettingsToolBar/SettingsToolBar";
@@ -12,12 +10,13 @@ const MainCont = styled.div`
   display: flex;
   height: 100vh;
   position: relative;
+  font-family: Arial;
 `;
 
 class App extends Component {
   render() {
     return (
-      <MuiPickersUtilsProvider utils={MomentUtils}>
+      <div>
         <MainCont>
           <SettingsToolBar />
           <WidgetsToolBar />
@@ -26,7 +25,7 @@ class App extends Component {
         </MainCont>
 
         <Loader />
-      </MuiPickersUtilsProvider>
+      </div>
     );
   }
 }

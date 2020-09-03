@@ -137,8 +137,6 @@ const WidgetMenu = ({
                   left: 20,
                 },
                 size: { height: 200, width: 200 },
-                border: "Solid",
-                borderColor: "#4da6ff",
                 visibility: true,
                 customAttributes: [],
               },
@@ -359,7 +357,7 @@ const DragableWgComponent = ({
           border: `2px ${get(widget, "border", "solid")} ${get(
             widget,
             "borderColor",
-            "#4da6ff"
+            "#ccc"
           )}`,
         }}
       >
