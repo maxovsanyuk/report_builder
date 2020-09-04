@@ -211,7 +211,7 @@ const WgBox = ({
           position: "absolute",
           width: "100%",
           height: "100%",
-          background: `rgba(255,255,255,0.9) url(${require(`../../WidgetsToolBar/images/${widget.name}.png`)}) no-repeat center`,
+          background: `url(${require(`../../WidgetsToolBar/images/${widget.name}.png`)}) no-repeat center`,
         }}
         onMouseOver={(e) => {
           e.stopPropagation();
@@ -354,6 +354,7 @@ const DragableWgComponent = ({
           position: "absolute",
           left: `${widget?.position?.left}px`,
           top: `${widget?.position?.top}px`,
+          background: `${widget?.backgroundColor || "rgba(255,255,255,0.9)"}`,
           border: `2px ${get(widget, "border", "solid")} ${get(
             widget,
             "borderColor",

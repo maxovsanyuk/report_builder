@@ -14,6 +14,7 @@ const SelectValueComp = ({
   arrOfValues,
   selectedValue,
   label,
+  style,
 }) => {
   const state = useSelector((state) => state.app);
   const { widgetsList } = state;
@@ -44,23 +45,25 @@ const SelectValueComp = ({
           overflow: "hidden",
           textOverflow: "ellipsis",
           whiteSpace: "nowrap",
+          ...style,
         }}
         inputProps={{
           id: label,
         }}
-        renderValue={() => {
-          return (
-            <div
-              style={{
-                maxWidth: "100px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {get(choosenWg, `${param}`, selectedValue)}
-            </div>
-          );
-        }}
+        // renderValue={() => {
+        //   return (
+        //     <div
+        //       style={{
+        //         maxWidth: "100px",
+        //         overflow: "hidden",
+        //         textOverflow: "ellipsis",
+        //         ...style,
+        //       }}
+        //     >
+        //       {get(choosenWg, `${param}`, selectedValue)}
+        //     </div>
+        //   );
+        // }}
       >
         {arrOfValues.map((i) => {
           return (

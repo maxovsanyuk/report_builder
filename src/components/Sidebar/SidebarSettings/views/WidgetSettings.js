@@ -1,7 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import DefineWidgetSettingsComp from "./widgetComponent/DefineWidgetSettingsComp";
+// WIDGETS SETTINGS COMPONENTS
+
+import ImgSettingsComp from "./widgetComponent/views/ImgSettingsComp";
+import LineSettingsComp from "./widgetComponent/views/LineSettingsComp";
+import RectangleSettingsComp from "./widgetComponent/views/RectangleSettingsComp";
 
 import styled from "styled-components";
 
@@ -53,6 +57,23 @@ const SettingsBox = styled.div`
     }
   }
 `;
+
+const DefineWidgetSettingsComp = ({ choosenWidget }) => {
+  const { name } = choosenWidget;
+
+  switch (name) {
+    case "image":
+      return <ImgSettingsComp choosenWidget={choosenWidget} />;
+    case "line":
+      return <LineSettingsComp choosenWidget={choosenWidget} />;
+    case "rectangle":
+      return <RectangleSettingsComp choosenWidget={choosenWidget} />;
+    // case "text_box":
+    //   return <ImgSettingsComp />;
+    default:
+      return `${name} comming soon`;
+  }
+};
 
 const WidgetSettings = () => {
   const state = useSelector((state) => state.app);

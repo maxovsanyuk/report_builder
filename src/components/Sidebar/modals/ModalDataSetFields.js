@@ -18,14 +18,14 @@ const ModalDataSetFields = ({
           {entitiState &&
             entitiState?.dataSetFields?.items?.map((f) => {
               return (
-                <div key={f.value + f.label}>
+                <div key={f.logicalName + f.label}>
                   <Checkbox
                     defaultChecked={f.chosen}
-                    value={f.value}
+                    value={f.logicalName}
                     onChange={(e) => {
                       const items = entitiState?.dataSetFields?.items.map(
                         (f) => {
-                          if (f.value === e.target.value) {
+                          if (f.logicalName === e.target.value) {
                             return {
                               ...f,
                               chosen: e.target.checked,
@@ -46,7 +46,9 @@ const ModalDataSetFields = ({
                     color="primary"
                     inputProps={{ "aria-label": "secondary checkbox" }}
                   />
-                  <span style={{ margin: "0 10px 0 10px" }}>{f.value}</span>
+                  <span style={{ margin: "0 10px 0 10px" }}>
+                    {f.logicalName}
+                  </span>
                 </div>
               );
             })}
