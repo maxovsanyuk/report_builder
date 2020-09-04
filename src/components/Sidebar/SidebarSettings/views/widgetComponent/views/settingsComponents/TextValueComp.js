@@ -1,8 +1,15 @@
-import TextField from "@material-ui/core/TextField";
-import get from "lodash/get";
-import { setWidgetsList } from "../../../../../../../redux/actions/app_action";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+import { setWidgetsList } from "../../../../../../../redux/actions/app_action";
+
+// MATERIAL
+
+import TextField from "@material-ui/core/TextField";
+
+// LODASH
+
+import get from "lodash/get";
 
 const TextValueComp = ({
   choosenWidget,

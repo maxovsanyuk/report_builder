@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 const SelectValueComp = ({
   choosenWidget,
   param,
-  arrOfValuse,
+  arrOfValues,
   selectedValue,
   label,
 }) => {
@@ -62,7 +62,7 @@ const SelectValueComp = ({
           );
         }}
       >
-        {arrOfValuse.map((i) => {
+        {arrOfValues.map((i) => {
           return (
             <MenuItem key={i} value={i}>
               {i}

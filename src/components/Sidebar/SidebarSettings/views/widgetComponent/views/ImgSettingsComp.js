@@ -2,11 +2,11 @@ import React from "react";
 
 // SETTINGS COMP
 
-import CustomAttributeComp from "./settingsComponent/CustomAttributesComp";
-import TextValueComp from "./settingsComponent/TextValueComp";
-import SelectValueComp from "./settingsComponent/SelectValueComp";
-import CheckBoxComp from "./settingsComponent/CheckBoxComp";
-import ChooseColorComp from "./settingsComponent/ChooseColorComp";
+import CustomAttributeComp from "./settingsComponents/CustomAttributesComp";
+import TextValueComp from "./settingsComponents/TextValueComp";
+import SelectValueComp from "./settingsComponents/SelectValueComp";
+import CheckBoxComp from "./settingsComponents/CheckBoxComp";
+import ChooseColorComp from "./settingsComponents/ChooseColorComp";
 
 import styled from "styled-components";
 
@@ -95,7 +95,7 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           param="source"
           label="Source"
           choosenWidget={choosenWidget}
-          arrOfValuse={["Embedded", "External", "Database"]}
+          arrOfValues={["Embedded", "External", "Database"]}
           style={selectStyle}
         />
 
@@ -103,7 +103,7 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           param="linkTo"
           label="Link To"
           choosenWidget={choosenWidget}
-          arrOfValuse={["None", "Report", "URL"]}
+          arrOfValues={["None", "Report", "URL"]}
           style={selectStyle}
         />
 
@@ -111,7 +111,7 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           param="border"
           label="Border"
           choosenWidget={choosenWidget}
-          arrOfValuse={["Dashed", "Dotted", "Double", "None", "Solid"]}
+          arrOfValues={["Dashed", "Dotted", "Double", "None", "Solid"]}
           style={selectStyle}
         />
 
@@ -132,7 +132,7 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           param="sizing"
           label="Sizing"
           choosenWidget={choosenWidget}
-          arrOfValuse={["AutoSize", "Fit", "FitPropotional", "Clip"]}
+          arrOfValues={["AutoSize", "Fit", "FitPropotional", "Clip"]}
           style={selectStyle}
         />
 

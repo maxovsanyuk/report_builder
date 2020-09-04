@@ -2,10 +2,10 @@ import React from "react";
 
 // SETTINGS COMP
 
-import TextValueComp from "./settingsComponent/TextValueComp";
-import SelectValueComp from "./settingsComponent/SelectValueComp";
-import CheckBoxComp from "./settingsComponent/CheckBoxComp";
-import CustomAttributeComp from "./settingsComponent/CustomAttributesComp";
+import TextValueComp from "./settingsComponents/TextValueComp";
+import SelectValueComp from "./settingsComponents/SelectValueComp";
+import CheckBoxComp from "./settingsComponents/CheckBoxComp";
+import CustomAttributeComp from "./settingsComponents/CustomAttributesComp";
 
 import styled from "styled-components";
 
@@ -79,7 +79,7 @@ const LineSettingsComp = ({ choosenWidget }) => {
           param="line"
           label="Line"
           choosenWidget={choosenWidget}
-          arrOfValuse={["Dashed", "Dotted", "Double", "None", "Solid"]}
+          arrOfValues={["Dashed", "Dotted", "Double", "None", "Solid"]}
         />
 
         <SettingsBox>
