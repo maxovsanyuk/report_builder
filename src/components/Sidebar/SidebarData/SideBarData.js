@@ -16,6 +16,7 @@ import EditIcon from "@material-ui/icons/Edit";
 // LODASH
 
 import isEmpty from "lodash/isEmpty";
+import get from "lodash/get";
 
 const DataSetListCont = styled.div`
   display: flex;
@@ -46,7 +47,10 @@ const SideBarData = () => {
   console.log(JSON.stringify(dataSets, null, 2));
   console.log(JSON.stringify(newDataSet, null, 2));
 
-  console.log(dataSets, "dataSets");
+  console.log(
+    JSON.stringify(get(dataSets, "dataSetField"), null, 2),
+    "dataSetField"
+  );
 
   const dispatch = useDispatch();
 
