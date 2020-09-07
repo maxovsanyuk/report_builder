@@ -19,6 +19,10 @@ const TextValueComp = ({
   label,
   textAfter,
   style,
+  defaultValue,
+  multiline,
+  rows,
+  variant,
 }) => {
   const state = useSelector((state) => state.app);
   const { widgetsList } = state;
@@ -38,6 +42,10 @@ const TextValueComp = ({
           ...style,
         }}
         label={label}
+        multiline={multiline}
+        defaultValue={defaultValue}
+        rows={rows}
+        variant={variant}
         value={get(
           choosenWg,
           `${objParam ? `${objParam}.${param}` : param}`,

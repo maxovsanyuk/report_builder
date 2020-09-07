@@ -12,6 +12,7 @@ import {
 import styled from "styled-components";
 import ImgMenu from "../../WidgetsToolBar/images/menu-icon.png";
 import get from "lodash/get";
+import DefineWidgetAddComp from "./DefineWidgetAddComp";
 
 const WgMainBox = styled.div`
   min-height: 100%;
@@ -225,6 +226,8 @@ const WgBox = ({
           });
         }}
       >
+        <DefineWidgetAddComp widget={widget} />
+
         <div
           className="wg-menu"
           onClick={(e) => {

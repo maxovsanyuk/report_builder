@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import ImgSettingsComp from "./widgetComponent/views/ImgSettingsComp";
 import LineSettingsComp from "./widgetComponent/views/LineSettingsComp";
 import RectangleSettingsComp from "./widgetComponent/views/RectangleSettingsComp";
+import TextSettingsComp from "./widgetComponent/views/TextSettingsComp";
 
 import styled from "styled-components";
 
@@ -68,8 +69,8 @@ const DefineWidgetSettingsComp = ({ choosenWidget }) => {
       return <LineSettingsComp choosenWidget={choosenWidget} />;
     case "rectangle":
       return <RectangleSettingsComp choosenWidget={choosenWidget} />;
-    // case "text_box":
-    //   return <ImgSettingsComp />;
+    case "text":
+      return <TextSettingsComp choosenWidget={choosenWidget} />;
     default:
       return `${name} comming soon`;
   }
