@@ -43,7 +43,6 @@ const TextValueComp = ({
         }}
         label={label}
         multiline={multiline}
-        defaultValue={defaultValue}
         rows={rows}
         variant={variant}
         value={get(

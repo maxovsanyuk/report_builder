@@ -27,7 +27,6 @@ const DefineWidgetAddComp = ({ widget }) => {
           label="Text"
           multiline
           rows={4}
-          defaultValue="Default Text"
           variant="filled"
           value={get(widget, "text")}
           onChange={(e) => {

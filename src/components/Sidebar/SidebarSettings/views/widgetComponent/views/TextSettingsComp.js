@@ -76,7 +76,6 @@ const TextSettingsComp = ({ choosenWidget }) => {
           choosenWidget={choosenWidget}
           param="text"
           label="Text"
-          defaultValue="Default Text"
           multiline
           rows={4}
           variant="filled"
