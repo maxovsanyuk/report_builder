@@ -82,27 +82,6 @@ const TextSettingsComp = ({ choosenWidget }) => {
           style={{ width: "100%" }}
         />
 
-        {/*<TextField*/}
-        {/*    style={{ maxWidth: "80%", maxHeight: "80%", margin: "30px 0 0 0" }}*/}
-        {/*    label="Multiline"*/}
-        {/*    multiline*/}
-        {/*    rows={4}*/}
-        {/*    defaultValue="Default Text"*/}
-        {/*    variant="filled"*/}
-        {/*    value={get(widget, "text")}*/}
-        {/*    onChange={(e) => {*/}
-        {/*      dispatch(*/}
-        {/*          setWidgetsList(*/}
-        {/*              widgetsList.map((w) => {*/}
-        {/*                return w?.id === widget?.id*/}
-        {/*                    ? { ...widget, text: e.target.value }*/}
-        {/*                    : w;*/}
-        {/*              })*/}
-        {/*          )*/}
-        {/*      );*/}
-        {/*    }}*/}
-        {/*/> */}
-
         <SelectValueComp
           param="fontName"
           label="Font Name"

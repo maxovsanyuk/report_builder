@@ -17,13 +17,19 @@ const DefineWidgetAddComp = ({ widget }) => {
   const state = useSelector((state) => state.app);
   const { widgetsList } = state;
 
+  console.log(widget, "WWW");
+
   const dispatch = useDispatch();
 
   switch (widget?.name) {
     case "text":
       return (
         <TextField
-          style={{ maxWidth: "80%", maxHeight: "80%", margin: "30px 0 0 0" }}
+          style={{
+            maxWidth: "80%",
+            maxHeight: "80%",
+            margin: "30px 0 0 0",
+          }}
           label="Text"
           multiline
           rows={4}
