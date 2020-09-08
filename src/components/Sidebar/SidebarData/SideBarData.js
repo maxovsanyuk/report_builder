@@ -42,10 +42,11 @@ const DataSetListCont = styled.div`
 const SideBarData = () => {
   const [editDataSetId, setEditDataSetId] = useState(null);
   const state = useSelector((state) => state.app);
-  const { dataSets, newDataSet } = state;
+  const { dataSets, newDataSet, widgetsList } = state;
 
   console.log(JSON.stringify(dataSets, null, 2));
   console.log(JSON.stringify(newDataSet, null, 2));
+  console.log(JSON.stringify(widgetsList, null, 2));
 
   console.log(
     JSON.stringify(get(dataSets, "dataSetField"), null, 2),

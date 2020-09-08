@@ -193,33 +193,33 @@ export const Dustbin = () => {
   const { widgetsList, settings } = state;
   const { reportSettings } = settings;
 
-  useEffect(() => {
-    async function a() {
-      try {
-        const d = await fetch(
-          "https://reportbuilderaddon-api.dev.uds.systems/api/report/",
-          {
-            method: "GET", // *GET, POST, PUT, DELETE, etc.
-            // mode: "cors", // no-cors, *cors, same-origin
-            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            // rejectUnauthorized: false,
-            // headers: {
-            //   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-            //   "Content-Type": "application/json",
-            //   "Access-Control-Allow-Origin": "*",
-            //   "Access-Control-Allow-Credentials": true,
-            // },
-          }
-        );
-
-        console.log(d, "AAAAA");
-      } catch (err) {
-        console.warn(err);
-      }
-    }
-
-    a();
-  }, []);
+  // useEffect(() => {
+  //   async function a() {
+  //     try {
+  //       const d = await fetch(
+  //         "https://reportbuilderaddon-api.azurewebsites.net/api/data-source/all-entities",
+  //         {
+  //           method: "GET", // *GET, POST, PUT, DELETE, etc.
+  //           // mode: "no-cors", // no-cors, *cors, same-origin
+  //           // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+  //           // rejectUnauthorized: false,
+  //           headers: {
+  //             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  //             "Content-Type": "application/json",
+  //             "Access-Control-Allow-Origin": "*",
+  //             "Access-Control-Allow-Credentials": true,
+  //           },
+  //         }
+  //       );
+  //
+  //       console.log(d, "AAAAA");
+  //     } catch (err) {
+  //       console.warn(err);
+  //     }
+  //   }
+  //
+  //   a();
+  // }, []);
 
   const dispatch = useDispatch();
 
