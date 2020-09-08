@@ -17,8 +17,6 @@ const DefineWidgetAddComp = ({ widget }) => {
   const state = useSelector((state) => state.app);
   const { widgetsList } = state;
 
-  console.log(widget, "WWW");
-
   const dispatch = useDispatch();
 
   switch (widget?.name) {

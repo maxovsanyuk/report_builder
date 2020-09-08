@@ -165,8 +165,7 @@ const WgBox = ({
   const { widgetsList } = state;
   const dispatch = useDispatch();
 
-  console.log(widgetsList, "widgetsList");
-  console.log(widget, "widget");
+  console.log(JSON.stringify(widgetsList, null, 2));
 
   makeResizableDiv(`.${widget.name}_${widget.id}_resizable`);
 
