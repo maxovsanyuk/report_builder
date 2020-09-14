@@ -2,11 +2,11 @@ import React from "react";
 
 // SETTINGS COMP
 
-import CustomAttributeComp from "./settingsComponents/CustomAttributesComp";
-import TextValueComp from "./settingsComponents/TextValueComp";
-import SelectValueComp from "./settingsComponents/SelectValueComp";
-import CheckBoxComp from "./settingsComponents/CheckBoxComp";
-import ChooseColorComp from "./settingsComponents/ChooseColorComp";
+import CustomAttributeComp from "./settingsWidgetComponents/CustomAttributesComp";
+import TextValueComp from "./settingsWidgetComponents/TextValueComp";
+import SelectValueComp from "./settingsWidgetComponents/SelectValueComp";
+import CheckBoxComp from "./settingsWidgetComponents/CheckBoxComp";
+import ChooseColorComp from "./settingsWidgetComponents/ChooseColorComp";
 
 import styled from "styled-components";
 

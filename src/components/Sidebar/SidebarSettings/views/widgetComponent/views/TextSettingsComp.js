@@ -2,20 +2,18 @@ import React from "react";
 
 // SETTINGS COMP
 
-import TextValueComp from "./settingsComponents/TextValueComp";
-import SelectValueComp from "./settingsComponents/SelectValueComp";
-import CheckBoxComp from "./settingsComponents/CheckBoxComp";
-import CustomAttributeComp from "./settingsComponents/CustomAttributesComp";
+import TextValueComp from "./settingsWidgetComponents/TextValueComp";
+import SelectValueComp from "./settingsWidgetComponents/SelectValueComp";
+import CheckBoxComp from "./settingsWidgetComponents/CheckBoxComp";
+import CustomAttributeComp from "./settingsWidgetComponents/CustomAttributesComp";
+import ChooseColorComp from "./settingsWidgetComponents/ChooseColorComp";
+import FormatValueComp from "./settingsWidgetComponents/FormatValueComp";
 
 import styled from "styled-components";
 
 // MATERIAL UI
 
 import Paper from "@material-ui/core/Paper";
-import ChooseColorComp from "./settingsComponents/ChooseColorComp";
-import TextField from "@material-ui/core/TextField";
-import get from "lodash/get";
-import { setWidgetsList } from "../../../../../../redux/actions/app_action";
 
 const SettingsBox = styled.div`
   display: flex;
@@ -109,9 +107,9 @@ const TextSettingsComp = ({ choosenWidget }) => {
             style={{ width: "140px", maxWidth: "140px" }}
             arrOfValues={[
               "default",
-              "mone",
+              "none",
               "underline",
-              "lineThrough",
+              "line-through",
               "overline",
             ]}
           />
@@ -120,9 +118,10 @@ const TextSettingsComp = ({ choosenWidget }) => {
 
           <ChooseColorComp choosenWidget={choosenWidget} param="textColor" />
         </div>
-        <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>
-          Format (Comming soon)
-        </h3>
+        <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>Format</h3>
+
+        <FormatValueComp choosenWidget={choosenWidget} />
+
         <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>Alignment</h3>
         <SelectValueComp
           param="textAlignment"

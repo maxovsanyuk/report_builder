@@ -5,10 +5,6 @@ import React from "react";
 import { setWidgetsList } from "../../../redux/actions/app_action";
 import { useDispatch, useSelector } from "react-redux";
 
-// MATERIAL
-
-import TextField from "@material-ui/core/TextField";
-
 // LODASH
 
 import get from "lodash/get";
@@ -22,17 +18,21 @@ const DefineWidgetAddComp = ({ widget }) => {
   switch (widget?.name) {
     case "text":
       return (
-        <TextField
-          style={{
-            maxWidth: "80%",
-            maxHeight: "80%",
-            margin: "30px 0 0 0",
-          }}
-          label="Text"
-          multiline
-          rows={4}
-          variant="filled"
+        <textarea
           value={get(widget, "text")}
+          style={{
+            minWidth: "80%",
+            maxWidth: "80%",
+            minHeight: "50%",
+            maxHeight: "50%",
+            margin: "30px 0 0 0",
+            textDecoration: get(widget, "textDecoration", "none"),
+            textAlign: get(widget, "textAlignment", "left"),
+            color: get(widget, "textColor", "#000"),
+            verticalAlign: get(widget, "verticalAlignment", "top"),
+            fontFamily: get(widget, "fontName", ""),
+            fontStyle: get(widget, "italic", ""),
+          }}
           onChange={(e) => {
             dispatch(
               setWidgetsList(
