@@ -32,6 +32,7 @@ const DefineWidgetAddComp = ({ widget }) => {
             verticalAlign: get(widget, "verticalAlignment", "top"),
             fontFamily: get(widget, "fontName", ""),
             fontStyle: get(widget, "italic", ""),
+            fontSize: `${get(widget, "fontSize", "14")}px`,
           }}
           onChange={(e) => {
             dispatch(

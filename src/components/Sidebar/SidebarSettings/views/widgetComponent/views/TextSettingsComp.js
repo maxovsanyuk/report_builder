@@ -118,6 +118,16 @@ const TextSettingsComp = ({ choosenWidget }) => {
 
           <ChooseColorComp choosenWidget={choosenWidget} param="textColor" />
         </div>
+
+        <TextValueComp
+          type="number"
+          choosenWidget={choosenWidget}
+          param="fontSize"
+          label="Font size"
+          textAfter="px"
+          style={{ width: "100px", maxWidth: "100px" }}
+        />
+
         <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>Format</h3>
 
         <FormatValueComp choosenWidget={choosenWidget} />
