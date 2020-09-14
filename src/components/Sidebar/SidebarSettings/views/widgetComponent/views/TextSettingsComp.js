@@ -92,7 +92,7 @@ const TextSettingsComp = ({ choosenWidget }) => {
           param="fontStyle"
           label="Font Style"
           choosenWidget={choosenWidget}
-          arrOfValues={["default", "normall", "italic"]}
+          arrOfValues={["default", "normal", "italic"]}
         />
         <div
           style={{
@@ -166,7 +166,7 @@ const TextSettingsComp = ({ choosenWidget }) => {
           label="Writing mode"
           choosenWidget={choosenWidget}
           style={{ width: "180px", maxWidth: "180px" }}
-          arrOfValues={["Default", "Horizontal", "Vertical", "Rotate270"]}
+          arrOfValues={["default", "horizontal", "vertical", "rotate270"]}
         />
         <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>
           Appearence
@@ -190,7 +190,7 @@ const TextSettingsComp = ({ choosenWidget }) => {
           param="border"
           label="Border"
           choosenWidget={choosenWidget}
-          arrOfValues={["Dashed", "Dotted", "Double", "None", "Solid"]}
+          arrOfValues={["dashed", "dotted", "double", "none", "solid"]}
         />
         <div
           style={{
@@ -286,7 +286,7 @@ const TextSettingsComp = ({ choosenWidget }) => {
           param="language"
           label="Language"
           choosenWidget={choosenWidget}
-          arrOfValues={["EN", "UA", "PL"]}
+          arrOfValues={["en", "ua", "pl"]}
         />
 
         <h3 style={{ textAlign: "center", margin: "15px 0 0 0" }}>

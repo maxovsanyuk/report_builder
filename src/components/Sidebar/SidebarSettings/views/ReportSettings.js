@@ -82,7 +82,7 @@ const ReportSettings = () => {
 
         <SelectValueReportComp
           param="border"
-          arrOfValues={["Dashed", "Dotted", "Double", "None", "Solid"]}
+          arrOfValues={["dashed", "dotted", "double", "none", "solid"]}
           label="Border"
           objParam="basic"
         />
@@ -237,12 +237,12 @@ const ReportSettings = () => {
           <SelectValueReportComp
             param="repeat"
             arrOfValues={[
-              "Default",
-              "Repeat",
-              "RepeatX",
-              "RepeatY",
-              "Clip",
-              "Fit",
+              "default",
+              "repeat",
+              "repeatX",
+              "repeatY",
+              "clip",
+              "fit",
             ]}
             label="Repeat"
             objParam="backgroundImage"

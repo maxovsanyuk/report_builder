@@ -1,12 +1,17 @@
 import React from "react";
+import { setWidgetsList } from "../../../../../../../redux/actions/app_action";
+import { useDispatch, useSelector } from "react-redux";
+
+// MATERIAL
 
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
-import get from "lodash/get";
-import { setWidgetsList } from "../../../../../../../redux/actions/app_action";
 import MenuItem from "@material-ui/core/MenuItem";
-import { useDispatch, useSelector } from "react-redux";
+
+// LODASH
+
+import get from "lodash/get";
 
 const SelectValueComp = ({
   choosenWidget,

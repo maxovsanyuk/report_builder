@@ -95,7 +95,7 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           param="source"
           label="Source"
           choosenWidget={choosenWidget}
-          arrOfValues={["Embedded", "External", "Database"]}
+          arrOfValues={["embedded", "external", "database"]}
           style={selectStyle}
         />
 
@@ -103,7 +103,7 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           param="linkTo"
           label="Link To"
           choosenWidget={choosenWidget}
-          arrOfValues={["None", "Report", "URL"]}
+          arrOfValues={["none", "report", "url"]}
           style={selectStyle}
         />
 
@@ -111,7 +111,7 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           param="border"
           label="Border"
           choosenWidget={choosenWidget}
-          arrOfValues={["Dashed", "Dotted", "Double", "None", "Solid"]}
+          arrOfValues={["dashed", "dotted", "double", "none", "solid"]}
           style={selectStyle}
         />
 
@@ -132,7 +132,7 @@ const ImgSettingsComp = ({ choosenWidget }) => {
           param="sizing"
           label="Sizing"
           choosenWidget={choosenWidget}
-          arrOfValues={["AutoSize", "Fit", "FitPropotional", "Clip"]}
+          arrOfValues={["autoSize", "fit", "fitPropotional", "clip"]}
           style={selectStyle}
         />
 

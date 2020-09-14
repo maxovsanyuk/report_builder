@@ -79,7 +79,7 @@ const LineSettingsComp = ({ choosenWidget }) => {
           param="line"
           label="Line"
           choosenWidget={choosenWidget}
-          arrOfValues={["Dashed", "Dotted", "Double", "None", "Solid"]}
+          arrOfValues={["dashed", "dotted", "double", "none", "solid"]}
         />
 
         <SettingsBox>

@@ -88,7 +88,7 @@ const RectangleSettingsComp = ({ choosenWidget }) => {
           param="border"
           label="Border"
           choosenWidget={choosenWidget}
-          arrOfValues={["Dashed", "Dotted", "Double", "None", "Solid"]}
+          arrOfValues={["dashed", "dotted", "double", "none", "solid"]}
           style={selectStyle}
         />
 
@@ -129,7 +129,7 @@ const RectangleSettingsComp = ({ choosenWidget }) => {
           param="breakLocation"
           label="Break Location"
           choosenWidget={choosenWidget}
-          arrOfValues={["None", "Start", "End", "StartAndEnd", "Between"]}
+          arrOfValues={["none", "start", "end", "startAndEnd", "between"]}
           style={{ ...selectStyle, width: "200px", maxWidth: "200px" }}
         />
 
