@@ -176,7 +176,7 @@ const ImgSettingsComp = ({ choosenWidget }) => {
         </SettingsBox>
 
         <CheckBoxComp
-          param={"visibility"}
+          param="visibility"
           label="Visibility"
           choosenWidget={choosenWidget}
         />

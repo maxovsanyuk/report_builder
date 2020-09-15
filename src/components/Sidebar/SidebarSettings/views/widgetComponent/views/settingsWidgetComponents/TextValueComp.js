@@ -60,10 +60,23 @@ const TextValueComp = ({
                         ...choosenWg,
                         [objParam]: {
                           ...choosenWg[objParam],
-                          [param]: e.target.value,
+                          [param]:
+                            type === "number"
+                              ? parseInt(e.target.value) < 0
+                                ? 0
+                                : e.target.value
+                              : e.target.value,
                         },
                       }
-                    : { ...choosenWg, [param]: e.target.value }
+                    : {
+                        ...choosenWg,
+                        [param]:
+                          type === "number"
+                            ? parseInt(e.target.value) < 0
+                              ? 0
+                              : e.target.value
+                            : e.target.value,
+                      }
                   : w;
               })
             )

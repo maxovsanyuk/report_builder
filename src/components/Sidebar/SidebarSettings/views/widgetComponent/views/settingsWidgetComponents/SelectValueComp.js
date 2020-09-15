@@ -16,8 +16,10 @@ import get from "lodash/get";
 const SelectValueComp = ({
   choosenWidget,
   param,
+  objParam,
   arrOfValues,
   selectedValue,
+  resetObjBefore,
   label,
   style,
 }) => {
@@ -32,13 +34,29 @@ const SelectValueComp = ({
       <InputLabel htmlFor={label}>{label}</InputLabel>
       <Select
         name={label}
-        value={get(choosenWg, `${param}`, "")}
+        value={get(
+          choosenWg,
+          `${objParam ? `${objParam}.${param}` : param}`,
+          ""
+        )}
         onChange={(e) => {
           dispatch(
             setWidgetsList(
               widgetsList.map((w) => {
                 return w?.id === choosenWidget?.id
-                  ? { ...choosenWg, [param]: e.target.value }
+                  ? objParam
+                    ? {
+                        ...choosenWg,
+                        [objParam]: resetObjBefore
+                          ? { [param]: e.target.value }
+                          : {
+                              ...choosenWg[objParam],
+                              [param]: e.target.value,
+                            },
+                      }
+                    : resetObjBefore
+                    ? { [param]: e.target.value }
+                    : { ...choosenWg, [param]: e.target.value }
                   : w;
               })
             )
