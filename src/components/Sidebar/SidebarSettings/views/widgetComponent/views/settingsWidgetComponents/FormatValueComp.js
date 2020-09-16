@@ -79,13 +79,15 @@ const FormatValueComp = ({ choosenWidget }) => {
                   label="Type"
                   choosenWidget={choosenWidget}
                   style={{
-                    width: "140px",
-                    maxWidth: "140px",
+                    width: "100%",
+                    maxWidth: "100%",
                   }}
                   arrOfValues={[
                     "number",
                     "currency",
                     "date",
+                    "time",
+                    "percentage",
                     "scientific",
                     "custom",
                   ]}
@@ -125,15 +127,6 @@ const FormatValueComp = ({ choosenWidget }) => {
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <Button
-                    onClick={() => seIsModalOpen(false)}
-                    style={{ margin: "0 10px 0 0" }}
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                  >
-                    Save
-                  </Button>
                   <Button
                     size="small"
                     onClick={() => seIsModalOpen(false)}

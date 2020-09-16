@@ -30,7 +30,7 @@ const SelectValueComp = ({
   const choosenWg = widgetsList.find((w) => w?.id === choosenWidget?.id);
 
   return (
-    <FormControl style={{ margin: "0 20px 0 0" }}>
+    <FormControl style={{ margin: "5px 20px 0 0" }}>
       <InputLabel htmlFor={label}>{label}</InputLabel>
       <Select
         name={label}
