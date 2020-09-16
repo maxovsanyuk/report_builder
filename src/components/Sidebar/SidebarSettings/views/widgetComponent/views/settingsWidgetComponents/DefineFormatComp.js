@@ -42,13 +42,13 @@ const DefineFormatComp = ({ type, choosenWidget }) => {
     case "time":
       return (
         <SelectValueComp
-          param="date"
+          param="time"
           style={{
             width: "100%",
             maxWidth: "100%",
           }}
           objParam="format"
-          label="Date"
+          label="Time"
           choosenWidget={choosenWidget}
           arrOfValues={[
             moment().format("LT"),
@@ -90,6 +90,7 @@ const DefineFormatComp = ({ type, choosenWidget }) => {
       return (
         <>
           <TextValueComp
+            type="number"
             style={{
               width: "100%",
               maxWidth: "100%",
