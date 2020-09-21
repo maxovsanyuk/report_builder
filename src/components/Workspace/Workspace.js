@@ -187,7 +187,7 @@ const ToolbarRow = ({ toolBarData, zIndex, searchValue, setCurrentWgInfo }) => {
   return (
     <Row zIndex={zIndex} isOpen={isOpen}>
       <div className="title-box">
-        <sapn className="title">{toolBarData?.title}</sapn>
+        <span className="title">{toolBarData?.title}</span>
 
         <div className="btns-box">
           {isOpen ? (

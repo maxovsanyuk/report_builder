@@ -22,6 +22,26 @@ const FormatComp = styled.div`
 
 const TEST_NUMBER = 12345;
 
+const PreviewComp = ({ choosenWgObj }) => {
+  const testNumber = TEST_NUMBER.toFixed(
+    get(choosenWgObj, "format.decimalPlaces", 0)
+  ).toString();
+
+  const testNumberWithSeparator = get(choosenWgObj, "format.useThSeparator")
+    ? testNumber.substring(0, 2) +
+      "." +
+      testNumber.substring(2, testNumber.length)
+    : testNumber;
+
+  switch (get(choosenWgObj, "format.type")) {
+    case "number":
+      return <span>{testNumberWithSeparator}</span>;
+
+    default:
+      return 12345;
+  }
+};
+
 const FormatValueComp = ({ choosenWidget }) => {
   const [isModalOpen, seIsModalOpen] = useState(false);
 
@@ -121,9 +141,7 @@ const FormatValueComp = ({ choosenWidget }) => {
                     alignItems: "center",
                   }}
                 >
-                  {TEST_NUMBER.toFixed(
-                    get(choosenWgObj, "format.decimalPlaces", 0)
-                  )}
+                  <PreviewComp choosenWgObj={choosenWgObj} />
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>

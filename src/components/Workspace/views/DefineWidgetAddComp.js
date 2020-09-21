@@ -21,6 +21,7 @@ const DefineWidgetAddComp = ({ widget }) => {
         <textarea
           value={get(widget, "text")}
           style={{
+            background: "transparent",
             minWidth: "80%",
             maxWidth: "80%",
             minHeight: "50%",
@@ -33,6 +34,16 @@ const DefineWidgetAddComp = ({ widget }) => {
             fontFamily: get(widget, "fontName", ""),
             fontStyle: get(widget, "italic", ""),
             fontSize: `${get(widget, "fontSize", "14")}px`,
+            lineHeight: `${get(widget, "lineHeight")}px`,
+            padding: `${get(widget, "padding.top", 0)}px ${get(
+              widget,
+              "padding.right",
+              0
+            )}px ${get(widget, "padding.bottom", 0)}px ${get(
+              widget,
+              "padding.left",
+              0
+            )}px`,
           }}
           onChange={(e) => {
             dispatch(

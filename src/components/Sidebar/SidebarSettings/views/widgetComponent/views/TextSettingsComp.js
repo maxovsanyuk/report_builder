@@ -165,7 +165,6 @@ const TextSettingsComp = ({ choosenWidget }) => {
           type="number"
           choosenWidget={choosenWidget}
           param="lineHeight"
-          objParam="padding"
           label="Line Height"
           textAfter="px"
           style={{ width: "160px", maxWidth: "160px" }}
