@@ -37,6 +37,13 @@ const PreviewComp = ({ choosenWgObj }) => {
     case "number":
       return <span>{testNumberWithSeparator}</span>;
 
+    case "currency":
+      return (
+        <span>{`$${
+          get(choosenWgObj, "format.includeSpace") ? " " : ""
+        }${testNumberWithSeparator}`}</span>
+      );
+
     default:
       return 12345;
   }

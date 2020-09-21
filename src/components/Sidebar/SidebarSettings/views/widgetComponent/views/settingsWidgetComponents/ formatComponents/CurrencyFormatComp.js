@@ -80,6 +80,13 @@ const CurrencyFormatComp = ({ choosenWidget }) => {
         label="Use 1000 Separator(,)"
         choosenWidget={choosenWidget}
       />
+
+      <CheckBoxComp
+        objParam="format"
+        param="includeSpace"
+        label="Include a space"
+        choosenWidget={choosenWidget}
+      />
     </div>
   );
 };
