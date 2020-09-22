@@ -326,8 +326,8 @@ const NewParameters = ({
               name="parametersDate"
               format="DD MMM YYYY HH:mm"
               value={
-                parametersState.date ||
                 parametersState?.selectedDate ||
+                parametersState.date ||
                 moment().utc().format()
               }
               reqared
