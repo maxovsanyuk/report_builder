@@ -44,6 +44,31 @@ const PreviewComp = ({ choosenWgObj }) => {
         }${testNumberWithSeparator}`}</span>
       );
 
+    case "date":
+      return <span>{get(choosenWgObj, "format.date")}</span>;
+
+    case "time":
+      return <span>{get(choosenWgObj, "format.time")}</span>;
+
+    case "percentage":
+      return (
+        <span>
+          {`${Number(12).toFixed(
+            get(choosenWgObj, "format.decimalPlaces", 0)
+          )}${get(choosenWgObj, "format.includeSpace") ? " " : ""}%`}
+        </span>
+      );
+
+    case "scientific":
+      return (
+        <span>{`${Number(12).toFixed(
+          get(choosenWgObj, "format.decimalPlacesScientific")
+        )}E+004`}</span>
+      );
+
+    case "custom":
+      return null;
+
     default:
       return 12345;
   }
