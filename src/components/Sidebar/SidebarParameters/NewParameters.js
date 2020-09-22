@@ -18,8 +18,9 @@ import get from "lodash/get";
 
 // material-ui
 
+import MomentUtils from "@date-io/moment";
 import TextField from "@material-ui/core/TextField";
-import { KeyboardDateTimePicker } from "@material-ui/pickers";
+import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
@@ -137,8 +138,6 @@ const NewParameters = ({
   let parametersSetName = watch("parametersSetName");
   let parametersPromptName = watch("parametersPromptName");
 
-  // EDIT DATASET
-
   useEffect(() => {
     editedParametersSet &&
       dispatch(setNewParametersSetState(editedParametersSet));
@@ -146,8 +145,6 @@ const NewParameters = ({
     editedParametersSet,
     get(editedParametersSet, "entities") && editedParametersSet.entities.length,
   ]);
-
-  // LOADING DATASETS OPT
 
   useEffect(() => {
     isOpen &&
@@ -324,30 +321,32 @@ const NewParameters = ({
             "Prompt name already exists!"}
         </div>
         <div style={{ display: "flex", margin: "0 0 15px 0" }}>
-          <KeyboardDateTimePicker
-            name="parametersDate"
-            format="DD MMM YYYY HH:mm"
-            value={parametersState?.selectedDate || moment().utc().format()}
-            reqared
-            onChange={(date) => {
-              dispatch(savedNewParametersSetSettings(false));
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <DateTimePicker
+              name="parametersDate"
+              format="DD MMM YYYY HH:mm"
+              value={parametersState?.selectedDate || moment().utc().format()}
+              reqared
+              onChange={(date) => {
+                dispatch(savedNewParametersSetSettings(false));
 
-              setParametersState({
-                ...parametersState,
-                selectedDate: date?._d,
-              });
+                setParametersState({
+                  ...parametersState,
+                  selectedDate: date?._d,
+                });
 
-              dispatch(
-                setNewParametersSetState({
-                  ...newParametersSet,
-                  date: date?._d,
-                })
-              );
-            }}
-            style={{ marginRight: "40px" }}
-            label="Date"
-            showTodayButton
-          />
+                dispatch(
+                  setNewParametersSetState({
+                    ...newParametersSet,
+                    date: date?._d,
+                  })
+                );
+              }}
+              style={{ marginRight: "40px" }}
+              label="Date"
+              showTodayButton
+            />
+          </MuiPickersUtilsProvider>
           <FormControl>
             <InputLabel htmlFor="select-filter-value">Date Type*</InputLabel>
             <Select
