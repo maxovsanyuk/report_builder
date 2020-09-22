@@ -325,10 +325,16 @@ const NewParameters = ({
             <DateTimePicker
               name="parametersDate"
               format="DD MMM YYYY HH:mm"
-              value={parametersState?.selectedDate || moment().utc().format()}
+              value={
+                parametersState.date ||
+                parametersState?.selectedDate ||
+                moment().utc().format()
+              }
               reqared
               onChange={(date) => {
                 dispatch(savedNewParametersSetSettings(false));
+
+                console.log(date, "DD");
 
                 setParametersState({
                   ...parametersState,
